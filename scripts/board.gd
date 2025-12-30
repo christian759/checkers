@@ -1,6 +1,6 @@
 extends Node2D
 
-const TILE_SIZE = 64
+const TILE_SIZE = 80
 const OFFSET = Vector2(TILE_SIZE/2, TILE_SIZE/2)
 
 @onready var tile_container = $Tiles

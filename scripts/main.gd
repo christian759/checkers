@@ -8,6 +8,7 @@ func _ready():
 	GameManager.game_over.connect(_on_game_over)
 	
 	setup_ui()
+	center_board()
 
 func setup_ui():
 	main_ui.get_node("GameOverPopup/Center/VBox/RestartButton").pressed.connect(_on_restart_pressed)
@@ -45,3 +46,16 @@ func _on_game_over(winner):
 func _on_restart_pressed():
 	get_tree().reload_current_scene()
 	GameManager.reset_game()
+
+func center_board():
+	# Board size is 8 * 80 = 640
+	var board_size = Vector2(640, 640)
+	var viewport_size = get_viewport_rect().size
+	
+	# Center horizontally and vertically
+	# Vertical center might need offset for top bar, but pure center is usually fine
+	# Given top bar is 80px, maybe we want to center in the remaining space? 
+	# For now, let's just true center it on screen, it looks cleanest.
+	
+	board.position = -board_size / 2
+	$BoardContainer.position = viewport_size / 2
