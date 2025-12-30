@@ -30,12 +30,19 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
 
+[node name="HomeButton" type="Button" parent="TopBar/HBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "🏠"
+flat = true
+
 [node name="TurnIndicator" type="Label" parent="TopBar/HBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.345098, 0.8, 0.00784314, 1)
 theme_override_font_sizes/font_size = 24
 text = "YOUR TURN"
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="StreakLabel" type="Label" parent="TopBar/HBox"]

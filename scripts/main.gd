@@ -11,6 +11,10 @@ func _ready():
 
 func setup_ui():
 	main_ui.get_node("GameOverPopup/Center/VBox/RestartButton").pressed.connect(_on_restart_pressed)
+	main_ui.get_node("TopBar/HBox/HomeButton").pressed.connect(_on_home_pressed)
+
+func _on_home_pressed():
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 
 func _on_turn_changed(new_side):
 	var label = main_ui.get_node("TopBar/HBox/TurnIndicator")
@@ -29,6 +33,7 @@ func _on_game_over(winner):
 	if winner == GameManager.Side.PLAYER:
 		title.text = "GREAT JOB!"
 		GameManager.win_streak += 1
+		GameManager.check_win_condition(winner)
 		popup.get_node("Confetti").emitting = true
 		AudioManager.play_sound("win")
 	else:
