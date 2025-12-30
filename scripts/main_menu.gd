@@ -1,6 +1,6 @@
 extends Control
 
-var piece_tex = preload("res://assets/textures/piece_player.png")
+var piece_tex = load("res://assets/textures/piece_player.svg")
 
 func _ready():
 	$CenterContainer/VBoxContainer/PlayAI.pressed.connect(_on_play_ai_pressed)
@@ -19,7 +19,7 @@ func spawn_floating_pieces():
 		p.size = Vector2(64, 64)
 		p.position = Vector2(randf_range(0, 720), randf_range(0, 1280))
 		p.modulate = Color(1, 1, 1, 0.2)
-		p.set_expression_property("speed", randf_range(30, 80)) # Hacky way to pass speed? No, let's attach script.
+
 		p.set_script(load("res://scripts/floating_piece.gd"))
 		p.speed = randf_range(30, 80)
 		container.add_child(p)

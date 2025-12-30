@@ -1,0 +1,18 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+  
+  <!-- Crown Base -->
+  <path d="M12 46 L52 46 L52 38 C52 38 42 38 32 38 C22 38 12 38 12 38 Z" fill="#ffd700" stroke="#b8860b" stroke-width="1.5" filter="url(#shadow)"/>
+  
+  <!-- Crown Points -->
+  <path d="M12 40 L12 20 L22 30 L32 10 L42 30 L52 20 L52 40" fill="#ffd700" stroke="#b8860b" stroke-width="1.5" stroke-linejoin="round" filter="url(#shadow)"/>
+  
+  <!-- Jewels -->
+  <circle cx="12" cy="20" r="3" fill="#ff4b4b" stroke="#8b0000" stroke-width="1"/>
+  <circle cx="32" cy="10" r="3" fill="#ff4b4b" stroke="#8b0000" stroke-width="1"/>
+  <circle cx="52" cy="20" r="3" fill="#ff4b4b" stroke="#8b0000" stroke-width="1"/>
+</svg>

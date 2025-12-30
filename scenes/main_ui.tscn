@@ -1,7 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://bm7uffa2h1dq6"]
 
-[ext_resource type="PackedScene" path="res://scenes/confetti.tscn" id="1_confetti"]
-[ext_resource type="Script" path="res://scripts/bouncy_button.gd" id="2_script"]
+[ext_resource type="PackedScene" uid="uid://bd0kuo586gwmb" path="res://scenes/confetti.tscn" id="1_confetti"]
+[ext_resource type="Script" uid="uid://brr3k4mxr4w7h" path="res://scripts/bouncy_button.gd" id="2_script"]
 
 [node name="MainUI" type="Control"]
 layout_mode = 3

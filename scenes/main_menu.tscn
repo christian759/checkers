@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c8x7w6v5u4t3"]
 
-[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_script"]
-[ext_resource type="Theme" path="res://resources/main_theme.tres" id="2_theme"]
+[ext_resource type="Script" uid="uid://bc6qp5c8gi2qd" path="res://scripts/main_menu.gd" id="1_script"]
+[ext_resource type="Theme" uid="uid://b8q7x6y504w3" path="res://resources/main_theme.tres" id="2_theme"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -58,7 +58,6 @@ text = "PLAY vs AI"
 [node name="PlayFriend" type="Button" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
-theme_override_styles/normal = null
 text = "PLAY vs FRIEND"
 
 [node name="Levels" type="Button" parent="CenterContainer/VBoxContainer"]

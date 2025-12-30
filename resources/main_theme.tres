@@ -1,7 +1,7 @@
-[gd_resource type="Theme" load_steps=6 format=3 uid="uid://b8q7x6y5z4w3"]
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://b8q7x6y504w3"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_normal"]
-bg_color = Color(0.345098, 0.8, 0.00784314, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.380392, 0.878431, 0.00784314, 1)
 border_width_bottom = 6
 border_color = Color(0.258824, 0.6, 0.00392157, 1)
 corner_radius_top_left = 16
@@ -13,8 +13,8 @@ expand_margin_top = 10.0
 expand_margin_right = 10.0
 expand_margin_bottom = 10.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
-bg_color = Color(0.380392, 0.878431, 0.00784314, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_normal"]
+bg_color = Color(0.345098, 0.8, 0.00784314, 1)
 border_width_bottom = 6
 border_color = Color(0.258824, 0.6, 0.00392157, 1)
 corner_radius_top_left = 16

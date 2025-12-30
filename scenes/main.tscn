@@ -1,8 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://bq2gjscm5xtsd"]
 
-[ext_resource type="PackedScene" path="res://scenes/board.tscn" id="1_board"]
+[ext_resource type="PackedScene" uid="uid://du26l0vuu7ljf" path="res://scenes/board.tscn" id="1_board"]
 [ext_resource type="PackedScene" path="res://scenes/main_ui.tscn" id="2_ui"]
-[ext_resource type="Script" path="res://scripts/main.gd" id="3_script"]
+[ext_resource type="Script" uid="uid://dpk876eq7883j" path="res://scripts/main.gd" id="3_script"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("3_script")
@@ -16,7 +16,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 1, 1, 1)
 
 [node name="BoardContainer" type="Node2D" parent="."]
 position = Vector2(0, 100)
