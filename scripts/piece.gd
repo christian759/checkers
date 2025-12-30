@@ -15,11 +15,11 @@ func _ready():
 
 func update_visuals():
 	if side == GameManager.Side.PLAYER:
-		sprite.texture = load("res://assets/textures/piece_player.png")
+		sprite.texture = load("res://assets/textures/piece_player.svg")
 		shadow.texture = sprite.texture
 		modulate = Color(1, 1, 1) # Reset modulation for player
 	elif side == GameManager.Side.AI:
-		sprite.texture = load("res://assets/textures/piece_ai.png")
+		sprite.texture = load("res://assets/textures/piece_ai.svg")
 		shadow.texture = sprite.texture
 		modulate = Color(1, 1, 1) # Reset modulation for AI
 	
