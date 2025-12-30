@@ -14,7 +14,7 @@ func setup_ui():
 	main_ui.get_node("TopBar/HBox/HomeButton").pressed.connect(_on_home_pressed)
 
 func _on_home_pressed():
-	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+	SceneTransition.change_scene("res://scenes/main_menu.tscn")
 
 func _on_turn_changed(new_side):
 	var label = main_ui.get_node("TopBar/HBox/TurnIndicator")

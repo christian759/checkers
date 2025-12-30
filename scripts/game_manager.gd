@@ -39,7 +39,7 @@ func reset_game():
 
 func check_win_condition(winner):
 	if winner == Side.PLAYER:
-		if current_level == max_unlocked_level and max_unlocked_level < 3:
+		if current_level == max_unlocked_level and max_unlocked_level < 5:
 			max_unlocked_level += 1
 			# Save game logic here ideally
 
@@ -92,7 +92,7 @@ func play_ai_turn():
 
 	# Difficulty Logic
 	if current_level == 1:
-		# Random moves only (easy), ignores captures sometimes? No, checkers rules usually force capture, but let's say "Pure Random" from legal moves
+		# Random logic (Already implemented)
 		var all_legal = possible_captures + possible_moves
 		if all_legal.size() > 0:
 			var move = all_legal.pick_random()
@@ -100,13 +100,60 @@ func play_ai_turn():
 		else:
 			emit_signal("game_over", Side.PLAYER)
 			
-	else:
-		# Level 2+: Priority: captures, then random move (Smart-ish)
+	elif current_level <= 3:
+		# Level 2-3: Priority captures, then random
 		if possible_captures.size() > 0:
 			var move = possible_captures.pick_random()
 			board_node.execute_move(move.piece, move.to.x, move.to.y)
 		elif possible_moves.size() > 0:
 			var move = possible_moves.pick_random()
 			board_node.execute_move(move.piece, move.to.x, move.to.y)
+		else:
+			emit_signal("game_over", Side.PLAYER)
+			
+	else:
+		# Level 4 & 5: Heuristics
+		# Priority: Captures -> King Checks -> Center Control -> Random
+		if possible_captures.size() > 0:
+			# If multiple captures, pick one that lands centrally or is a King
+			var best_cap = possible_captures[0]
+			var best_score = -100
+			
+			for move in possible_captures:
+				var score = 0
+				if move.piece.is_king: score += 10
+				# Prefer center
+				var dist_to_center = abs(move.to.x - 3.5) + abs(move.to.y - 3.5)
+				score -= dist_to_center
+				
+				if score > best_score:
+					best_score = score
+					best_cap = move
+			
+			board_node.execute_move(best_cap.piece, best_cap.to.x, best_cap.to.y)
+			
+		elif possible_moves.size() > 0:
+			var best_move = possible_moves[0]
+			var best_score = -100
+			
+			for move in possible_moves:
+				var score = 0
+				# Level 5: Aggressive King promotion
+				if current_level == 5:
+					score += (move.to.x) # Move towards player side (higher row index is better for AI?) 
+					# Wait, AI starts at top (0-2)? No, checking Setup:
+					# AI is usually Top (0-2), Player Bottom (5-7).
+					# So AI wants to increase ROW index to promote.
+					if move.to.x == 7: score += 50 # Promotion incentive
+				
+				# Center control (Level 4+)
+				var dist_to_center = abs(move.to.x - 3.5) + abs(move.to.y - 3.5)
+				score -= dist_to_center
+				
+				if score > best_score:
+					best_score = score
+					best_move = move
+					
+			board_node.execute_move(best_move.piece, best_move.to.x, best_move.to.y)
 		else:
 			emit_signal("game_over", Side.PLAYER)
