@@ -28,11 +28,12 @@ func generate_board():
 			sb.corner_radius_bottom_right = 12
 			
 			if is_dark:
-				sb.bg_color = Color("#ebebeb")
+				sb.bg_color = Color("#7abf36") # Vibrant Green (Duolingo-ish Dark)
 			else:
-				sb.bg_color = Color("#f7f7f7")
+				sb.bg_color = Color("#ffffff") # White/Cream
 				
 			tile.add_theme_stylebox_override("panel", sb)
+			tile.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			tile_container.add_child(tile)
 
 func spawn_pieces():
@@ -61,8 +62,10 @@ func world_to_grid(pos):
 	return Vector2i(floor(local_pos.y / TILE_SIZE), floor(local_pos.x / TILE_SIZE))
 
 func _input(event):
-	if GameManager.current_turn != GameManager.Side.PLAYER:
-		return
+	if GameManager.current_mode == GameManager.Mode.PV_AI:
+		if GameManager.current_turn != GameManager.Side.PLAYER:
+			return
+	# In PvP, we just check if the clicked piece belongs to the current turn side later
 		
 	if event is InputEventMouseButton and event.pressed:
 		var grid_pos = world_to_grid(get_global_mouse_position())
@@ -72,7 +75,8 @@ func _input(event):
 func handle_tile_click(r, c):
 	var piece = GameManager.get_piece_at(r, c)
 	
-	if piece and piece.side == GameManager.Side.PLAYER:
+	# Allow selecting own pieces if it's your turn
+	if piece and piece.side == GameManager.current_turn:
 		select_piece(piece)
 	elif GameManager.selected_piece:
 		# Check if valid move

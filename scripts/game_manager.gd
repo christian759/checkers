@@ -2,10 +2,12 @@ extends Node
 
 # Piece types
 enum Side { NONE, PLAYER, AI }
+enum Mode { PV_AI, PV_P }
 
 # Game state
 var board = [] # 2D array [row][col]
 var current_turn = Side.PLAYER
+var current_mode = Mode.PV_AI # Default to PV_AI for now, will be set by menu
 var selected_piece = null
 var must_jump = false # For multi-jump logic
 var win_streak = 0
@@ -49,7 +51,7 @@ func switch_turn():
 	current_turn = Side.AI if current_turn == Side.PLAYER else Side.PLAYER
 	emit_signal("turn_changed", current_turn)
 	
-	if current_turn == Side.AI:
+	if current_mode == Mode.PV_AI and current_turn == Side.AI:
 		# Trigger AI logic after a short delay for "thinking"
 		await get_tree().create_timer(1.0).timeout
 		play_ai_turn()
