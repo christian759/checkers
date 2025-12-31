@@ -60,7 +60,7 @@ func unlock(id):
 		if not achievements[id].unlocked:
 			achievements[id].unlocked = true
 			emit_signal("achievement_unlocked", id, achievements[id].title)
-			GameManager.save_game()
+			# GameManager should listen to this signal and save
 			
 			# Show notification
 			var popup = load("res://scenes/confetti.tscn").instantiate()

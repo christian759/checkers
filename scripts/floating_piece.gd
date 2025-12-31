@@ -1,4 +1,7 @@
+extends Node2D
+
 @export var rot_speed = 0.5
+@export var speed = 100.0
 var time = 0.0
 var base_mod = 0.15
 

@@ -33,6 +33,8 @@ func _ready():
 	if not AchievementManager.is_unlocked("first_win"):
 		# Just a check to ensure persistence works
 		pass
+	
+	AchievementManager.achievement_unlocked.connect(func(id, title): save_game())
 
 func save_game():
 	var save_data = {
