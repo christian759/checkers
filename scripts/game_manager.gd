@@ -13,9 +13,13 @@ var must_jump = false # For multi-jump logic
 var win_streak = 0
 var current_level = 1
 var max_unlocked_level = 1
-var move_history = [] # Stack of {piece, from, to, captured_piece, promoted}
+var move_history = [] # Stack of {pieces_state, turn, settings}
 var is_daily_challenge = false
 var daily_completed = false
+
+# Settings
+var forced_jumps = true
+var movement_mode = "diagonal" # "diagonal" or "straight"
 
 signal turn_changed(new_side)
 signal game_over(winner)
@@ -44,7 +48,44 @@ func reset_game():
 	move_history = []
 	is_daily_challenge = false
 	setup_board()
-	# This will be populated by the Board scene
+
+func save_state():
+	var state = []
+	for r in range(8):
+		var row = []
+		for c in range(8):
+			var p = get_piece_at(r, c)
+			if p:
+				row.append({"side": p.side, "is_king": p.is_king, "grid_pos": p.grid_pos})
+			else:
+				row.append(null)
+		state.append(row)
+	
+	move_history.append({
+		"board": state,
+		"turn": current_turn,
+		"must_jump": must_jump
+	})
+	
+	if move_history.size() > 50:
+		move_history.pop_front()
+
+func undo():
+	if move_history.size() <= 1: return
+	
+	# Current state is the last one, so pop it
+	move_history.pop_back()
+	var prev_state = move_history.back()
+	
+	current_turn = prev_state.turn
+	must_jump = prev_state.must_jump
+	
+	# We need to tell the board to rebuild from state
+	var board_node = get_tree().root.find_child("Board", true, false)
+	if board_node:
+		board_node.rebuild_from_state(prev_state.board)
+	
+	emit_signal("turn_changed", current_turn)
 
 func check_win_condition(winner):
 	if winner == Side.PLAYER:

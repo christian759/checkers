@@ -7,4 +7,4 @@ func _ready():
 	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.5)
 
 func _draw():
-	draw_circle(Vector2.ZERO, 15, Color.WHITE)
+	draw_circle(Vector2.ZERO, 10, Color.WHITE)

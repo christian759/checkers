@@ -15,6 +15,30 @@ var forced_pieces = [] # Pieces that MUST move (due to jump)
 func _ready():
 	generate_board()
 	spawn_pieces()
+	GameManager.save_state() # Initial state
+
+func rebuild_from_state(state):
+	# Clear existing pieces
+	for p in piece_container.get_children():
+		p.queue_free()
+	
+	GameManager.setup_board() # Reset the logic array
+	
+	# Recreate pieces from state
+	for r in range(8):
+		for c in range(8):
+			var s = state[r][c]
+			if s:
+				var p = piece_scene.instantiate()
+				p.side = s.side
+				p.grid_pos = s.grid_pos
+				p.position = grid_to_world(p.grid_pos.x, p.grid_pos.y)
+				piece_container.add_child(p)
+				GameManager.set_piece_at(r, c, p)
+				if s.is_king:
+					p.promote_to_king()
+	
+	deselect_piece()
 
 func generate_board():
 	for r in range(8):
@@ -110,20 +134,22 @@ func handle_tile_click(r, c):
 
 	# Normal turn logic
 	if piece and piece.side == GameManager.current_turn:
-		# Check if forced captures exist for this side
-		var all_caps = get_all_captures(GameManager.current_turn)
-		if all_caps.size() > 0:
-			# Forced capture rule: only allow selecting pieces that can jump
-			var can_jump = false
-			for cap in all_caps:
-				if cap.piece == piece:
-					can_jump = true
-					break
-			if can_jump:
-				select_piece(piece)
+		if GameManager.forced_jumps:
+			# Check if forced captures exist for this side
+			var all_caps = get_all_captures(GameManager.current_turn)
+			if all_caps.size() > 0:
+				# Forced capture rule: only allow selecting pieces that can jump
+				var can_jump = false
+				for cap in all_caps:
+					if cap.piece == piece:
+						can_jump = true
+						break
+				if can_jump:
+					select_piece(piece)
+				else:
+					deselect_piece()
 			else:
-				# Feedback: "Must capture!"
-				deselect_piece()
+				select_piece(piece)
 		else:
 			select_piece(piece)
 	elif GameManager.selected_piece:
@@ -181,44 +207,39 @@ func get_legal_moves(piece: Piece):
 	var fr = piece.grid_pos.x
 	var fc = piece.grid_pos.y
 	
-	# Standard moves/captures for men
-	var directions = [Vector2i(-1, -1), Vector2i(-1, 1), Vector2i(1, -1), Vector2i(1, 1)]
+	var directions = []
+	if GameManager.movement_mode == "diagonal":
+		directions = [Vector2i(-1, -1), Vector2i(-1, 1), Vector2i(1, -1), Vector2i(1, 1)]
+	else:
+		directions = [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1)]
 	
 	# Filter directions for men
 	if not piece.is_king:
-		if piece.side == GameManager.Side.PLAYER:
-			directions = [Vector2i(-1, -1), Vector2i(-1, 1)]
+		if GameManager.movement_mode == "diagonal":
+			if piece.side == GameManager.Side.PLAYER:
+				directions = [Vector2i(-1, -1), Vector2i(-1, 1)]
+			else:
+				directions = [Vector2i(1, -1), Vector2i(1, 1)]
 		else:
-			directions = [Vector2i(1, -1), Vector2i(1, 1)]
+			if piece.side == GameManager.Side.PLAYER:
+				directions = [Vector2i(-1, 0), Vector2i(0, -1), Vector2i(0, 1)]
+			else:
+				directions = [Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1)]
 
-	# Directions for kings are always all 4
-	
-	# Check for captures first (Standard and King)
+	# Check for captures first
 	for d in directions:
-		if piece.is_king:
-			# American rules: King jumps adjacent piece only
-			var mid_r = fr + d.x
-			var mid_c = fc + d.y
-			var dest_r = fr + d.x * 2
-			var dest_c = fc + d.y * 2
-			if GameManager.is_on_board(dest_r, dest_c):
-				var mid_p = GameManager.get_piece_at(mid_r, mid_c)
-				var dest_p = GameManager.get_piece_at(dest_r, dest_c)
-				if mid_p and mid_p.side != piece.side and dest_p == null:
-					moves.append({"to": Vector2i(dest_r, dest_c), "is_capture": true})
-		else:
-			var mid_r = fr + d.x
-			var mid_c = fc + d.y
-			var dest_r = fr + d.x * 2
-			var dest_c = fc + d.y * 2
-			if GameManager.is_on_board(dest_r, dest_c):
-				var mid_p = GameManager.get_piece_at(mid_r, mid_c)
-				var dest_p = GameManager.get_piece_at(dest_r, dest_c)
-				if mid_p and mid_p.side != piece.side and dest_p == null:
-					moves.append({"to": Vector2i(dest_r, dest_c), "is_capture": true})
+		var mid_r = fr + d.x
+		var mid_c = fc + d.y
+		var dest_r = fr + d.x * 2
+		var dest_c = fc + d.y * 2
+		if GameManager.is_on_board(dest_r, dest_c):
+			var mid_p = GameManager.get_piece_at(mid_r, mid_c)
+			var dest_p = GameManager.get_piece_at(dest_r, dest_c)
+			if mid_p and mid_p.side != piece.side and dest_p == null:
+				moves.append({"to": Vector2i(dest_r, dest_c), "is_capture": true})
 
-	# If no captures, check for standard moves
-	if moves.size() == 0:
+	# If no captures OR if forced_jumps is off
+	if moves.size() == 0 or not GameManager.forced_jumps:
 		for d in directions:
 			var dest_r = fr + d.x
 			var dest_c = fc + d.y
@@ -343,6 +364,7 @@ func execute_move(piece, dest_r, dest_c):
 	GameManager.must_jump = false
 	deselect_piece()
 	GameManager.switch_turn()
+	GameManager.save_state()
 
 func has_any_captures(piece):
 	var r = piece.grid_pos.x

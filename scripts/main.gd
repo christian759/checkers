@@ -13,12 +13,22 @@ func _ready():
 func setup_ui():
 	main_ui.get_node("GameOverPopup/Center/VBox/RestartButton").pressed.connect(_on_restart_pressed)
 	main_ui.get_node("TopBar/HBox/HomeButton").pressed.connect(_on_home_pressed)
+	main_ui.get_node("TopBar/HBox/UndoButton").pressed.connect(_on_undo_pressed)
+
+func _on_undo_pressed():
+	GameManager.undo()
 
 func _on_home_pressed():
 	SceneTransition.change_scene("res://scenes/main_menu.tscn")
 
 func _on_turn_changed(new_side):
 	var label = main_ui.get_node("TopBar/HBox/TurnIndicator")
+	
+	if GameManager.is_daily_challenge:
+		label.text = "🌟 DAILY CHALLENGE 🌟"
+		label.add_theme_color_override("font_color", Color("#ffcc00"))
+		return
+
 	if GameManager.current_mode == GameManager.Mode.PV_AI:
 		if new_side == GameManager.Side.AI:
 			label.text = "AI THINKING..."
@@ -26,11 +36,7 @@ func _on_turn_changed(new_side):
 		else:
 			label.text = "YOUR TURN"
 			label.add_theme_color_override("font_color", Color("#58cc02"))
-	
-	if GameManager.is_daily_challenge:
-		label.text = "🌟 DAILY CHALLENGE 🌟"
-		label.add_theme_color_override("font_color", Color("#ffcc00"))
-	else: # PvE / PvP Mode
+	else: # PvP Mode
 		if new_side == GameManager.Side.PLAYER:
 			label.text = "PLAYER 1 TURN"
 			label.add_theme_color_override("font_color", Color("#58cc02"))

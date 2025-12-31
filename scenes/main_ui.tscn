@@ -45,6 +45,12 @@ text = "YOUR TURN"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="UndoButton" type="Button" parent="TopBar/HBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "⤴️"
+flat = true
+
 [node name="StreakLabel" type="Label" parent="TopBar/HBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
