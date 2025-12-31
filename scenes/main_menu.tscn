@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c8x7w6v5u4t3"]
+[gd_scene load_steps=18 format=3 uid="uid://c8x7w6v5u4t3"]
 
 [ext_resource type="Script" uid="uid://bc6qp5c8gi2qd" path="res://scripts/main_menu.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://b8q7x6y504w3" path="res://resources/main_theme.tres" id="2_theme"]
@@ -24,7 +24,7 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
-bg_color = Color(0.13, 0.55, 0.13, 1) # Green
+bg_color = Color(0.13, 0.55, 0.13, 1)
 corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_left = 16
@@ -38,7 +38,7 @@ content_margin_top = 10
 content_margin_bottom = 15
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
-bg_color = Color(0.18, 0.7, 0.18, 1) # Lighter Green
+bg_color = Color(0.18, 0.7, 0.18, 1)
 corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_left = 16
@@ -59,10 +59,10 @@ corner_radius_bottom_left = 16
 corner_radius_bottom_right = 16
 shadow_color = Color(0, 0.3, 0, 1)
 shadow_size = 0
-shadow_offset = Vector2(0, 2) # Pressed down
+shadow_offset = Vector2(0, 2)
 content_margin_left = 20
 content_margin_right = 20
-content_margin_top = 14 # Offset content
+content_margin_top = 14
 content_margin_bottom = 11
 
 [node name="MainMenu" type="Control"]
@@ -128,48 +128,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
-bg_color = Color(0.13, 0.55, 0.13, 1) # Green
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_left = 16
-corner_radius_bottom_right = 16
-shadow_color = Color(0, 0.3, 0, 1)
-shadow_size = 0
-shadow_offset = Vector2(0, 6)
-content_margin_left = 20
-content_margin_right = 20
-content_margin_top = 10
-content_margin_bottom = 15
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
-bg_color = Color(0.18, 0.7, 0.18, 1) # Lighter Green
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_left = 16
-corner_radius_bottom_right = 16
-shadow_color = Color(0, 0.3, 0, 1)
-shadow_size = 0
-shadow_offset = Vector2(0, 6)
-content_margin_left = 20
-content_margin_right = 20
-content_margin_top = 10
-content_margin_bottom = 15
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
-bg_color = Color(0.13, 0.55, 0.13, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_left = 16
-corner_radius_bottom_right = 16
-shadow_color = Color(0, 0.3, 0, 1)
-shadow_size = 0
-shadow_offset = Vector2(0, 2) # Pressed down
-content_margin_left = 20
-content_margin_right = 20
-content_margin_top = 14 # Offset content
-content_margin_bottom = 11
-
 [node name="GlassPanel" type="VBoxContainer" parent="ContentLayer"]
 custom_minimum_size = Vector2(500, 700)
 layout_mode = 2
@@ -214,6 +172,8 @@ layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_normal")
 theme_override_font_sizes/font_size = 32
 text = "PLAY vs AI"
 
@@ -223,6 +183,8 @@ layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_normal")
 theme_override_font_sizes/font_size = 32
 text = "PLAY vs FRIEND"
 
@@ -233,6 +195,8 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_normal")
 theme_override_font_sizes/font_size = 32
 text = "DAILY CHALLENGE"
 
@@ -242,5 +206,7 @@ layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_normal")
 theme_override_font_sizes/font_size = 32
 text = "LEVEL JOURNEY"
