@@ -18,7 +18,7 @@ var is_daily_challenge = false
 var daily_completed = false
 
 # Settings
-var forced_jumps = true
+var forced_jumps = false
 var movement_mode = "diagonal" # "diagonal" or "straight"
 
 signal turn_changed(new_side)

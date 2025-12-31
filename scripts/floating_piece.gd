@@ -1,4 +1,4 @@
-extends Node2D
+extends TextureRect
 
 @export var rot_speed = 0.5
 @export var speed = 100.0

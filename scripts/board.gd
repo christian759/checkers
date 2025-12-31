@@ -183,12 +183,16 @@ func deselect_piece():
 
 func show_valid_moves(piece):
 	clear_highlights()
+	
+	if GameManager.current_mode == GameManager.Mode.PV_AI and piece.side == GameManager.Side.AI:
+		return
+
 	var moves = get_legal_moves(piece)
 	
 	# If forced capture exists for this side, filter out non-capture moves
 	# (Though get_legal_moves already handles this if we call it correctly)
 	var all_caps = get_all_captures(piece.side)
-	if all_caps.size() > 0:
+	if all_caps.size() > 0 and GameManager.forced_jumps:
 		moves = moves.filter(func(m): return m.is_capture)
 
 	for move in moves:
@@ -261,7 +265,7 @@ func get_all_captures(side):
 				var moves = get_legal_moves(p)
 				for m in moves:
 					if m.is_capture:
-						all_caps.append({"piece": p, "to": m.to})
+						all_caps.append({"piece": p, "to": m.to, "is_capture": true})
 	return all_caps
 
 func is_valid_move(piece, dest_r, dest_c):
