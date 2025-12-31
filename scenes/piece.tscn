@@ -1,9 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://c6d3yuw2cdviy"]
 
-[ext_resource type="Script" path="res://scripts/piece.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/textures/piece_player.svg" id="2_player_tex"]
-[ext_resource type="Texture2D" path="res://assets/textures/piece_ai.svg" id="3_ai_tex"]
-[ext_resource type="Texture2D" path="res://assets/textures/king_icon.svg" id="4_king_tex"]
+[ext_resource type="Script" uid="uid://bom8wdvye7p2f" path="res://scripts/piece.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://oe72klu37uhf" path="res://assets/textures/piece_player.svg" id="2_player_tex"]
+[ext_resource type="Texture2D" uid="uid://2ap8mlmi43ka" path="res://assets/textures/king_icon.svg" id="4_king_tex"]
 
 [node name="Piece" type="Node2D"]
 script = ExtResource("1_script")

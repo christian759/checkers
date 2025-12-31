@@ -13,6 +13,7 @@ var must_jump = false # For multi-jump logic
 var win_streak = 0
 var current_level = 1
 var max_unlocked_level = 1
+var move_history = [] # Stack of {piece, from, to, captured_piece, promoted}
 
 signal turn_changed(new_side)
 signal game_over(winner)
@@ -34,6 +35,7 @@ func reset_game():
 	current_turn = Side.PLAYER
 	selected_piece = null
 	must_jump = false
+	move_history = []
 	setup_board()
 	# This will be populated by the Board scene
 
