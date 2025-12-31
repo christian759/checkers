@@ -17,6 +17,9 @@ func _ready():
 	spawn_pieces()
 	GameManager.save_state() # Initial state
 
+func _exit_tree():
+	clear_highlights()
+
 func rebuild_from_state(state):
 	# Clear existing pieces
 	for p in piece_container.get_children():

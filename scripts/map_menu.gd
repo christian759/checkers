@@ -103,7 +103,8 @@ func _on_shop_pressed():
 func scroll_to_current_level():
 	var spacing = 200
 	var total_height = 80 * spacing + 400
-	var y_pos = total_height - (GameManager.current_level * spacing) - 200
+	var safe_level = clampi(GameManager.current_level, 1, 80)
+	var y_pos = total_height - (safe_level * spacing) - 200
 	
 	# Center in viewport (approx 1280 height)
 	var viewport_mid = 1280 / 2

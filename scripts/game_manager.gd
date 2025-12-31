@@ -166,7 +166,6 @@ func switch_turn():
 func play_ai_turn():
 	var board_node = get_tree().root.find_child("Board", true, false)
 	if not board_node:
-		switch_turn()
 		return
 
 	var depth = 2
