@@ -72,95 +72,67 @@ func play_ai_turn():
 		switch_turn()
 		return
 
-	var possible_moves = []
-	var possible_captures = []
+	var depth = 2
+	if current_level >= 4: depth = 3
+	if current_level >= 7: depth = 4
+	if current_level >= 9: depth = 5
+	
+	var best_move = get_best_move(board_node, Side.AI, depth)
+	
+	if best_move.piece:
+		board_node.execute_move(best_move.piece, best_move.to.x, best_move.to.y)
+	else:
+		emit_signal("game_over", Side.PLAYER)
 
-	# Find all pieces for AI
+func get_best_move(board_node, side, depth):
+	var all_moves = []
+	var pieces = []
 	for r in range(8):
 		for c in range(8):
 			var p = get_piece_at(r, c)
-			if p and p.side == Side.AI:
-				# Check moves
-				for dr in [-1, 1, -2, 2]:
-					for dc in [-1, 1, -2, 2]:
-						if abs(dr) != abs(dc): continue
-						var tr = r + dr
-						var tc = c + dc
-						if is_on_board(tr, tc) and board_node.is_valid_move(p, tr, tc):
-							if abs(dr) == 2:
-								possible_captures.append({"piece": p, "to": Vector2i(tr, tc)})
-							else:
-								possible_moves.append({"piece": p, "to": Vector2i(tr, tc)})
-
-	# Difficulty Logic
-	if current_level == 1:
-		# Random logic (Already implemented)
-		var all_legal = possible_captures + possible_moves
-		if all_legal.size() > 0:
-			var move = all_legal.pick_random()
-			board_node.execute_move(move.piece, move.to.x, move.to.y)
-		else:
-			emit_signal("game_over", Side.PLAYER)
-			
-	elif current_level <= 3:
-		# Level 2-3: Priority captures, then random
-		if possible_captures.size() > 0:
-			var move = possible_captures.pick_random()
-			board_node.execute_move(move.piece, move.to.x, move.to.y)
-		elif possible_moves.size() > 0:
-			var move = possible_moves.pick_random()
-			board_node.execute_move(move.piece, move.to.x, move.to.y)
-		else:
-			emit_signal("game_over", Side.PLAYER)
-			
-	else:
-		# Level 4 & 5: Heuristics
-		# Priority: Captures -> King Checks -> Center Control -> Random
-		if possible_captures.size() > 0:
-			# If multiple captures, pick one that lands centrally or is a King
-			var best_cap = possible_captures[0]
-			var best_score = -100
-			
-			for move in possible_captures:
-				var score = 0
-				if move.piece.is_king: score += 10
-				# Prefer center
-				var dist_to_center = abs(move.to.x - 3.5) + abs(move.to.y - 3.5)
-				score -= dist_to_center
-				
-				if score > best_score:
-					best_score = score
-					best_cap = move
-			
-			board_node.execute_move(best_cap.piece, best_cap.to.x, best_cap.to.y)
-			
-		elif possible_moves.size() > 0:
-			var best_move = possible_moves[0]
-			var best_score = -100
-			
-			for move in possible_moves:
-				var score = 0
-				# Level 5: Aggressive King promotion
-				if current_level == 5:
-					score += (move.to.x) # Move towards player side (higher row index is better for AI?) 
-					# Wait, AI starts at top (0-2)? No, checking Setup:
-					# AI is usually Top (0-2), Player Bottom (5-7).
-					# So AI wants to increase ROW index to promote.
-					if move.to.x == 7: score += 50 # Promotion incentive
-				
-				# Center control (Level 4+)
-				var dist_to_center = abs(move.to.x - 3.5) + abs(move.to.y - 3.5)
-				score -= dist_to_center
-				
-				if score > best_score:
-					best_score = score
-					best_move = move
-					
-			board_node.execute_move(best_move.piece, best_move.to.x, best_move.to.y)
-		else:
-			emit_signal("game_over", Side.PLAYER)
+			if p and p.side == side:
+				pieces.append(p)
 	
-	# Handle multi-jump for AI
-	if current_turn == Side.AI:
-		await get_tree().create_timer(1.0).timeout
-		play_ai_turn()
+	# Forced captures check
+	var captures = board_node.get_all_captures(side)
+	if captures.size() > 0:
+		all_moves = captures
+	else:
+		for p in pieces:
+			var moves = board_node.get_legal_moves(p)
+			for m in moves:
+				all_moves.append({"piece": p, "to": m.to, "is_capture": m.is_capture})
+				
+	if all_moves.size() == 0:
+		return {"piece": null}
+		
+	# Simple heuristic evaluation for now (Minimax would be better but complex to state-copy Godot objects)
+	# Let's use a weighted heuristic for higher levels
+	var best_m = all_moves[0]
+	var best_score = -100000
+	
+	for m in all_moves:
+		var score = evaluate_move(board_node, m)
+		if score > best_score:
+			best_score = score
+			best_m = m
+			
+	return best_m
+
+func evaluate_move(_board_node, move):
+	var score = 0
+	if move.is_capture: score += 100
+	if move.piece.is_king: score += 10
+	
+	# Center control
+	var dist_to_center = abs(move.to.x - 3.5) + abs(move.to.y - 3.5)
+	score -= dist_to_center * 2
+	
+	# King promotion incentive
+	if move.to.x == 7: score += 50
+	
+	# Randomness for low levels
+	if current_level <= 2:
+		score += randf_range(-50, 50)
+		
+	return score

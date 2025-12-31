@@ -6,22 +6,21 @@ func _ready():
 	update_level_buttons()
 
 func update_level_buttons():
-	var btn1 = $VBoxContainer/GridContainer/Level1
-	var btn2 = $VBoxContainer/GridContainer/Level2
-	var btn3 = $VBoxContainer/GridContainer/Level3
-	var btn4 = $VBoxContainer/GridContainer/Level4
-	var btn5 = $VBoxContainer/GridContainer/Level5
+	var journey_container = $ScrollContainer/Journey
+	var levels = journey_container.get_children()
 	
-	btn1.pressed.connect(func(): _on_level_selected(1))
-	btn2.pressed.connect(func(): _on_level_selected(2))
-	btn3.pressed.connect(func(): _on_level_selected(3))
-	btn4.pressed.connect(func(): _on_level_selected(4))
-	btn5.pressed.connect(func(): _on_level_selected(5))
-	
-	btn2.disabled = GameManager.max_unlocked_level < 2
-	btn3.disabled = GameManager.max_unlocked_level < 3
-	btn4.disabled = GameManager.max_unlocked_level < 4
-	btn5.disabled = GameManager.max_unlocked_level < 5
+	for i in range(levels.size()):
+		var level_num = i + 1
+		var btn = levels[i]
+		if btn.has_signal("pressed"):
+			btn.pressed.connect(func(): _on_level_selected(level_num))
+		
+		if level_num > GameManager.max_unlocked_level:
+			btn.disabled = true
+			btn.modulate = Color(0.5, 0.5, 0.5) # Dim locked levels
+		else:
+			btn.disabled = false
+			btn.modulate = Color(1, 1, 1)
 
 func _on_back_pressed():
 	SceneTransition.change_scene("res://scenes/main_menu.tscn")
