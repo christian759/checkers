@@ -1,7 +1,7 @@
 extends Node2D
 
 const TILE_SIZE = 80
-const OFFSET = Vector2(TILE_SIZE/2, TILE_SIZE/2)
+const OFFSET = Vector2(TILE_SIZE/2.0, TILE_SIZE/2.0)
 
 @onready var tile_container = $Tiles
 @onready var piece_container = $Pieces
@@ -100,7 +100,7 @@ func deselect_piece():
 	GameManager.selected_piece = null
 	clear_highlights()
 
-func show_valid_moves(piece):
+func show_valid_moves(_piece):
 	clear_highlights()
 	# Simplified move logic for highlighting
 	# In a real game, this would call is_valid_move for all neighbors

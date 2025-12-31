@@ -23,8 +23,8 @@ func update_visuals():
 		shadow.texture = sprite.texture
 		modulate = Color(1, 1, 1) # Reset modulation for AI
 	
-	sprite.scale = Vector2(0.3, 0.3)
-	shadow.scale = Vector2(0.3, 0.3)
+	sprite.scale = Vector2(0.5, 0.5)
+	shadow.scale = Vector2(0.5, 0.5)
 	
 	if is_king:
 		$KingIcon.show()

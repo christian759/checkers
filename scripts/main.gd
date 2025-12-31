@@ -19,12 +19,20 @@ func _on_home_pressed():
 
 func _on_turn_changed(new_side):
 	var label = main_ui.get_node("TopBar/HBox/TurnIndicator")
-	if GameManager.current_mode == GameManager.Mode.PV_AI and new_side == GameManager.Side.AI:
-		label.text = "AI THINKING..."
-		label.add_theme_color_override("font_color", Color("#ff4b4b"))
-	else:
-		label.text = "YOUR TURN"
-		label.add_theme_color_override("font_color", Color("#58cc02"))
+	if GameManager.current_mode == GameManager.Mode.PV_AI:
+		if new_side == GameManager.Side.AI:
+			label.text = "AI THINKING..."
+			label.add_theme_color_override("font_color", Color("#ff4b4b"))
+		else:
+			label.text = "YOUR TURN"
+			label.add_theme_color_override("font_color", Color("#58cc02"))
+	else: # PvE / PvP Mode
+		if new_side == GameManager.Side.PLAYER:
+			label.text = "PLAYER 1 TURN"
+			label.add_theme_color_override("font_color", Color("#58cc02"))
+		else:
+			label.text = "PLAYER 2 TURN"
+			label.add_theme_color_override("font_color", Color("#ff4b4b"))
 
 func _on_game_over(winner):
 	var popup = main_ui.get_node("GameOverPopup")

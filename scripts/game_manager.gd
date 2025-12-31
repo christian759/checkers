@@ -157,3 +157,8 @@ func play_ai_turn():
 			board_node.execute_move(best_move.piece, best_move.to.x, best_move.to.y)
 		else:
 			emit_signal("game_over", Side.PLAYER)
+	
+	# Handle multi-jump for AI
+	if current_turn == Side.AI:
+		await get_tree().create_timer(1.0).timeout
+		play_ai_turn()
