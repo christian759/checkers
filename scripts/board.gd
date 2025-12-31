@@ -166,6 +166,7 @@ func is_valid_move(piece, tr, tc):
 			
 	return false
 
+func execute_move(piece, tr, tc):
 	var fr = piece.grid_pos.x
 	var fc = piece.grid_pos.y
 	
