@@ -2,66 +2,89 @@ extends Control
 
 var piece_tex = load("res://assets/textures/piece_player.svg")
 
+@onready var buttons_container = $ContentLayer/GlassPanel/VBoxContainer
+@onready var glass_panel = $ContentLayer/GlassPanel
+@onready var logo = $ContentLayer/GlassPanel/VBoxContainer/LogoContainer/LogoTexture
+@onready var accent1 = $ParallaxLayers/Accent1
+@onready var accent2 = $ParallaxLayers/Accent2
+
 func _ready():
-	$CenterContainer/VBoxContainer/PlayAI.pressed.connect(_on_play_ai_pressed)
-	$CenterContainer/VBoxContainer/PlayFriend.pressed.connect(_on_play_friend_pressed)
-	$CenterContainer/VBoxContainer/Levels.pressed.connect(_on_levels_pressed)
-	$CenterContainer/VBoxContainer/DailyChallenge.pressed.connect(_on_daily_pressed)
+	buttons_container.get_node("PlayAI").pressed.connect(_on_play_ai_pressed)
+	buttons_container.get_node("PlayFriend").pressed.connect(_on_play_friend_pressed)
+	buttons_container.get_node("Levels").pressed.connect(_on_levels_pressed)
+	buttons_container.get_node("DailyChallenge").pressed.connect(_on_daily_pressed)
 	
 	spawn_floating_pieces()
 	animate_entrance()
 
+func _process(delta):
+	# Parallax effect based on mouse position
+	var mouse_pos = get_viewport().get_mouse_position()
+	var center = get_viewport_rect().size / 2
+	var offset = (mouse_pos - center) / center # Range -1 to 1
+	
+	accent1.position.x = lerp(accent1.position.x, -228.0 + offset.x * 30.0, delta * 2.0)
+	accent1.position.y = lerp(accent1.position.y, 114.0 + offset.y * 30.0, delta * 2.0)
+	
+	accent2.position.x = lerp(accent2.position.x, 370.0 - offset.x * 20.0, delta * 2.0)
+	accent2.position.y = lerp(accent2.position.y, 649.0 - offset.y * 20.0, delta * 2.0)
+	
+	glass_panel.position.x = lerp(glass_panel.position.x, (get_viewport_rect().size.x - 400)/2 + offset.x * 10.0, delta * 3.0)
+	glass_panel.position.y = lerp(glass_panel.position.y, (get_viewport_rect().size.y - 700)/2 + offset.y * 10.0, delta * 3.0)
+
 func spawn_floating_pieces():
 	var container = $FloatingPieces
-	for i in range(12):
+	for i in range(15):
 		var p = TextureRect.new()
 		p.texture = piece_tex
 		p.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		var s = randf_range(48, 96)
+		var s = randf_range(40, 120)
 		p.custom_minimum_size = Vector2(s, s)
 		p.size = Vector2(s, s)
 		p.position = Vector2(randf_range(0, 720), randf_range(0, 1280))
 		p.pivot_offset = Vector2(s/2, s/2)
+		p.modulate.a = 0 # Initially hidden
 
 		p.set_script(load("res://scripts/floating_piece.gd"))
-		p.speed = randf_range(20, 60)
-		p.rot_speed = randf_range(-1.0, 1.0)
+		p.speed = randf_range(15, 45)
+		p.rot_speed = randf_range(-0.5, 0.5)
 		container.add_child(p)
 
 func animate_entrance():
-	var title = $CenterContainer/VBoxContainer/Label
-	var buttons = [
-		$CenterContainer/VBoxContainer/PlayAI,
-		$CenterContainer/VBoxContainer/PlayFriend,
-		$CenterContainer/VBoxContainer/Levels,
-		$CenterContainer/VBoxContainer/DailyChallenge
-	]
+	# Initial states for animation
+	glass_panel.modulate.a = 0
+	glass_panel.scale = Vector2(0.9, 0.9)
+	logo.scale = Vector2(0, 0)
 	
-	# Initial states
-	title.modulate.a = 0
-	title.position.y -= 50
+	var buttons = [
+		buttons_container.get_node("PlayAI"),
+		buttons_container.get_node("PlayFriend"),
+		buttons_container.get_node("DailyChallenge"),
+		buttons_container.get_node("Levels")
+	]
 	
 	for b in buttons:
 		b.modulate.a = 0
-		b.scale = Vector2(0.8, 0.8)
-		b.pivot_offset = b.size / 2
+		b.position.x += 40
 	
-	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 	
-	# Title animation
-	tween.tween_property(title, "modulate:a", 1.0, 0.6)
-	tween.tween_property(title, "position:y", title.position.y + 50, 0.8)
+	# Main panel fade in
+	tween.tween_property(glass_panel, "modulate:a", 1.0, 1.0)
+	tween.tween_property(glass_panel, "scale", Vector2(1.0, 1.0), 1.2).set_trans(Tween.TRANS_EXPO)
 	
-	# Buttons stagger
+	# Logo pop
+	var logo_tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	logo_tween.tween_interval(0.4)
+	logo_tween.tween_property(logo, "scale", Vector2(1.0, 1.0), 0.8)
+	
+	# Stagger buttons
 	for i in range(buttons.size()):
 		var b = buttons[i]
-		var t = create_tween().set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
-		t.stop()
-		get_tree().create_timer(0.3 + i * 0.15).timeout.connect(func():
-			t.play()
-			t.tween_property(b, "modulate:a", 1.0, 0.4)
-			t.tween_property(b, "scale", Vector2(1.0, 1.0), 0.6)
-		)
+		var bt = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		bt.tween_interval(0.6 + i * 0.12)
+		bt.tween_property(b, "modulate:a", 1.0, 0.5)
+		bt.parallel().tween_property(b, "position:x", b.position.x - 40, 0.6)
 
 func _on_play_ai_pressed():
 	GameManager.current_mode = GameManager.Mode.PV_AI
@@ -76,6 +99,6 @@ func _on_levels_pressed():
 
 func _on_daily_pressed():
 	GameManager.is_daily_challenge = true
-	GameManager.current_level = 10 # Let's make it tough
+	GameManager.current_level = 10 
 	GameManager.current_mode = GameManager.Mode.PV_AI
 	SceneTransition.change_scene("res://scenes/main.tscn")
