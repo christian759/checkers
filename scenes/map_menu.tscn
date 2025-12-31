@@ -54,6 +54,14 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="PathLine" type="Line2D" parent="ScrollContainer/PathContainer"]
+width = 20.0
+default_color = Color(0.345098, 0.8, 0.00784314, 1)
+texture_mode = 1
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
 [node name="Island1" type="TextureRect" parent="ScrollContainer/PathContainer/Islands"]
 layout_mode = 0
 offset_top = 200.0
@@ -123,6 +131,18 @@ text = "💎"
 [node name="Label" type="Label" parent="TopBar/HBox/Gems"]
 layout_mode = 2
 text = "60"
+
+[node name="Achievements" type="Button" parent="TopBar"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -160.0
+offset_top = 110.0
+offset_right = -100.0
+offset_bottom = 170.0
+grow_horizontal = 0
+text = "🏆"
 
 [node name="Settings" type="Button" parent="TopBar"]
 layout_mode = 1

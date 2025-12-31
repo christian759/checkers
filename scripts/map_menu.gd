@@ -15,6 +15,7 @@ func _ready():
 	
 	# Connect top and bottom bar buttons
 	$TopBar/Settings.pressed.connect(_on_settings_pressed)
+	$TopBar/Achievements.pressed.connect(_on_achievements_pressed)
 	$BottomBar/HBox/Shop.pressed.connect(_on_shop_pressed)
 	
 	# Scroll to current level
@@ -31,14 +32,20 @@ func generate_map():
 	var levels_count = 80
 	var points = []
 	
+	# We want level 1 at the bottom, level 80 at the top
+	# Let's say each level takes 200px vertical space
+	# Total height = 16000
+	var spacing = 200
+	var total_height = levels_count * spacing + 400
+	path_container.custom_minimum_size = Vector2(0, total_height)
+	
 	for i in range(1, levels_count + 1):
 		var node = LEVEL_NODE.instantiate()
 		var btn = node.get_node("Button")
 		btn.text = str(i)
 		
-		# Improved "Organic" Path
-		# Base Sine wave + some noise or variation
-		var y_pos = (i-1) * -180 + 800 # Start lower and go up
+		# Position from bottom up
+		var y_pos = total_height - (i * spacing) - 200
 		var x_offset = sin(i * 0.6) * 150 + cos(i * 0.3) * 50
 		var pos = Vector2(x_offset + 360, y_pos) # Center at 360 (720/2)
 		
@@ -87,22 +94,17 @@ func _on_settings_pressed():
 	# Open settings overlay or scene
 	SceneTransition.change_scene("res://scenes/settings_menu.tscn")
 
+func _on_achievements_pressed():
+	SceneTransition.change_scene("res://scenes/achievements_menu.tscn")
+
 func _on_shop_pressed():
 	print("Shop not implemented")
 
 func scroll_to_current_level():
-	# Calculate target scroll position
-	# y_pos formula from generation: (i-1) * -180 + 800
-	var level_y = (GameManager.current_level - 1) * -180 + 800
-	var viewport_height = get_viewport_rect().size.y
+	var spacing = 200
+	var total_height = 80 * spacing + 400
+	var y_pos = total_height - (GameManager.current_level * spacing) - 200
 	
-	# Scroll container content likely starts at 0 and goes negative?
-	# Wait, control positions in ScrollContainer are relative to top-left.
-	# But we're placing them at negative Y... relative to what?
-	# Ah, PathContainer checks. We should probably offset everything to be positive for ScrollContainer to work "normally".
-	# OR, we just set the scroll_vertical.
-	
-	# Let's adjust the generation to be positive Y downwards, it's easier.
-	# But "upward" progression (Level 1 at bottom) is standard for these games.
-	# So level 1 is at Y=Max, Level 80 is at Y=0.
-	pass
+	# Center in viewport (approx 1280 height)
+	var viewport_mid = 1280 / 2
+	scroll_container.scroll_vertical = y_pos - viewport_mid
