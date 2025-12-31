@@ -110,12 +110,12 @@ func clear_highlights():
 	for h in highlights.get_children():
 		h.queue_free()
 
-func is_valid_move(piece, tr, tc):
+func is_valid_move(piece, dest_r, dest_c):
 	var fr = piece.grid_pos.x
 	var fc = piece.grid_pos.y
 	
-	var dr = tr - fr
-	var dc = tc - fc
+	var dr = dest_r - fr
+	var dc = dest_c - fc
 	
 	# Basic diagonal check
 	if abs(dr) != abs(dc): return false
@@ -128,7 +128,7 @@ func is_valid_move(piece, tr, tc):
 	# Single step / Flying King empty move
 	var distance = abs(dr)
 	if distance == 1:
-		return GameManager.get_piece_at(tr, tc) == null
+		return GameManager.get_piece_at(dest_r, dest_c) == null
 		
 	# Check path for obstructions
 	if piece.is_king:
@@ -148,7 +148,7 @@ func is_valid_move(piece, tr, tc):
 				captured = p # Found an enemy to capture
 		
 		# Destination must be empty
-		if GameManager.get_piece_at(tr, tc) != null: return false
+		if GameManager.get_piece_at(dest_r, dest_c) != null: return false
 		
 		# If we found a piece, it's a capture move. If not, it's just a long move.
 		# Note: In some rules, you MUST capture if possible.
@@ -157,23 +157,23 @@ func is_valid_move(piece, tr, tc):
 
 	# Standard piece jump step
 	if distance == 2:
-		if GameManager.get_piece_at(tr, tc) != null: return false
-		var mid_r = (fr + tr) / 2
-		var mid_c = (fc + tc) / 2
+		if GameManager.get_piece_at(dest_r, dest_c) != null: return false
+		var mid_r = (fr + dest_r) / 2
+		var mid_c = (fc + dest_c) / 2
 		var mid_piece = GameManager.get_piece_at(mid_r, mid_c)
 		if mid_piece and mid_piece.side != piece.side:
 			return true
 			
 	return false
 
-func execute_move(piece, tr, tc):
+func execute_move(piece, dest_r, dest_c):
 	var fr = piece.grid_pos.x
 	var fc = piece.grid_pos.y
 	
 	# Find if there was a capture
 	var captured_piece = null
-	var dr = tr - fr
-	var dc = tc - fc
+	var dr = dest_r - fr
+	var dc = dest_c - fc
 	var distance = abs(dr)
 	
 	if distance >= 2:
@@ -195,14 +195,14 @@ func execute_move(piece, tr, tc):
 	
 	# Move logic
 	GameManager.set_piece_at(fr, fc, null)
-	GameManager.set_piece_at(tr, tc, piece)
-	piece.move_to(Vector2i(tr, tc), grid_to_world(tr, tc))
+	GameManager.set_piece_at(dest_r, dest_c, piece)
+	piece.move_to(Vector2i(dest_r, dest_c), grid_to_world(dest_r, dest_c))
 	AudioManager.play_sound("move")
 	
 	# King promotion
 	var promoted = false
 	if not piece.is_king:
-		if (piece.side == GameManager.Side.PLAYER and tr == 0) or (piece.side == GameManager.Side.AI and tr == 7):
+		if (piece.side == GameManager.Side.PLAYER and dest_r == 0) or (piece.side == GameManager.Side.AI and dest_r == 7):
 			piece.promote_to_king()
 			promoted = true
 	
@@ -226,10 +226,10 @@ func has_any_captures(piece):
 		if piece.is_king:
 			# Scan outward
 			for i in range(2, 8):
-				var tr = r + d.x * i
-				var tc = c + d.y * i
-				if not GameManager.is_on_board(tr, tc): break
-				if is_valid_move(piece, tr, tc):
+				var scan_r = r + d.x * i
+				var scan_c = c + d.y * i
+				if not GameManager.is_on_board(scan_r, scan_c): break
+				if is_valid_move(piece, scan_r, scan_c):
 					# Check if it's actually a capture move
 					# We can reuse the logic we just wrote or simplify
 					# A valid move of distance >= 2 for a king MIGHT be a capture
@@ -242,10 +242,10 @@ func has_any_captures(piece):
 					if captured: return true
 		else:
 			# Standard man capture (distance 2)
-			var tr = r + d.x * 2
-			var tc = c + d.y * 2
-			if GameManager.is_on_board(tr, tc):
-				if is_valid_move(piece, tr, tc):
+			var scan_r = r + d.x * 2
+			var scan_c = c + d.y * 2
+			if GameManager.is_on_board(scan_r, scan_c):
+				if is_valid_move(piece, scan_r, scan_c):
 					# is_valid_move for non-king distance 2 IS a capture check
 					return true
 	return false
