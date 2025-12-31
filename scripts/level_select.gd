@@ -1,13 +1,16 @@
 extends Control
 
 func _ready():
-	$VBoxContainer/Back.pressed.connect(_on_back_pressed)
+	$VBoxContainer/TopBar/Back.pressed.connect(_on_back_pressed)
 	
 	update_level_buttons()
 
 func update_level_buttons():
-	var journey_container = $ScrollContainer/Journey
-	var levels = journey_container.get_children()
+	var journey_container = $VBoxContainer/ScrollContainer/Journey
+	var levels = []
+	for child in journey_container.get_children():
+		if child is Button:
+			levels.append(child)
 	
 	for i in range(levels.size()):
 		var level_num = i + 1
