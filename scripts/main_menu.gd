@@ -2,9 +2,9 @@ extends Control
 
 var piece_tex = load("res://assets/textures/piece_player.svg")
 
-@onready var buttons_container = $ContentLayer/GlassPanel/VBoxContainer
+@onready var buttons_container = $ContentLayer/GlassPanel
 @onready var glass_panel = $ContentLayer/GlassPanel
-@onready var logo = $ContentLayer/GlassPanel/VBoxContainer/LogoContainer/LogoTexture
+@onready var logo = $ContentLayer/GlassPanel/LogoContainer/LogoTexture
 @onready var accent1 = $ParallaxLayers/Accent1
 @onready var accent2 = $ParallaxLayers/Accent2
 

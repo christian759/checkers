@@ -41,25 +41,23 @@ func generate_map():
 	
 	for i in range(1, levels_count + 1):
 		var node = LEVEL_NODE.instantiate()
+		# Call new script API
+		var is_locked = (i > GameManager.max_unlocked_level)
+		node.set_level_data(i, is_locked)
+		
 		var btn = node.get_node("Button")
-		btn.text = str(i)
 		
 		# Position from bottom up
 		var y_pos = total_height - (i * spacing) - 200
 		var x_offset = sin(i * 0.6) * 150 + cos(i * 0.3) * 50
-		var pos = Vector2(x_offset + 360, y_pos) # Center at 360 (720/2)
+		var pos = Vector2(x_offset + 360, y_pos) 
 		
-		node.position = pos - Vector2(60, 60) # Center node
+		node.position = pos - Vector2(60, 60)
 		points.append(pos)
 		
-		# Lock/Unlock logic
-		if i > GameManager.max_unlocked_level:
-			btn.disabled = true
-			node.modulate = Color(0.7, 0.7, 0.7)
-		else:
-			btn.disabled = false
+		if not is_locked:
 			btn.pressed.connect(_on_level_selected.bind(i))
-			node.modulate = Color.WHITE
+			# node.modulate is handled by texture in set_level_data
 			
 		# Current level indicator (Coffee icon)
 		if i == GameManager.current_level:

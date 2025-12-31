@@ -86,24 +86,54 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GlassPanel" type="Panel" parent="ContentLayer"]
-custom_minimum_size = Vector2(400, 700)
-layout_mode = 2
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
+bg_color = Color(0.13, 0.55, 0.13, 1) # Green
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_left = 16
+corner_radius_bottom_right = 16
+shadow_color = Color(0, 0.3, 0, 1)
+shadow_size = 0
+shadow_offset = Vector2(0, 6)
+content_margin_left = 20
+content_margin_right = 20
+content_margin_top = 10
+content_margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ContentLayer/GlassPanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 40.0
-offset_top = 40.0
-offset_right = -40.0
-offset_bottom = -40.0
-grow_horizontal = 2
-grow_vertical = 2
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+bg_color = Color(0.18, 0.7, 0.18, 1) # Lighter Green
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_left = 16
+corner_radius_bottom_right = 16
+shadow_color = Color(0, 0.3, 0, 1)
+shadow_size = 0
+shadow_offset = Vector2(0, 6)
+content_margin_left = 20
+content_margin_right = 20
+content_margin_top = 10
+content_margin_bottom = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
+bg_color = Color(0.13, 0.55, 0.13, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_left = 16
+corner_radius_bottom_right = 16
+shadow_color = Color(0, 0.3, 0, 1)
+shadow_size = 0
+shadow_offset = Vector2(0, 2) # Pressed down
+content_margin_left = 20
+content_margin_right = 20
+content_margin_top = 14 # Offset content
+content_margin_bottom = 11
+
+[node name="GlassPanel" type="VBoxContainer" parent="ContentLayer"]
+custom_minimum_size = Vector2(500, 700)
+layout_mode = 2
 theme_override_constants/separation = 24
 
-[node name="LogoContainer" type="Control" parent="ContentLayer/GlassPanel/VBoxContainer"]
+[node name="LogoContainer" type="Control" parent="ContentLayer/GlassPanel"]
 custom_minimum_size = Vector2(0, 180)
 layout_mode = 2
 
@@ -136,23 +166,39 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="PlayAI" type="Button" parent="ContentLayer/GlassPanel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 64)
+[node name="PlayAI" type="Button" parent="ContentLayer/GlassPanel"]
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
-text = "Player vs AI"
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_font_sizes/font_size = 32
+text = "PLAY vs AI"
 
-[node name="PlayFriend" type="Button" parent="ContentLayer/GlassPanel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 64)
+[node name="PlayFriend" type="Button" parent="ContentLayer/GlassPanel"]
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
-text = "PvP Match"
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_font_sizes/font_size = 32
+text = "PLAY vs FRIEND"
 
-[node name="DailyChallenge" type="Button" parent="ContentLayer/GlassPanel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 64)
+[node name="DailyChallenge" type="Button" parent="ContentLayer/GlassPanel"]
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.4, 1)
-text = "Daily Challenge"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_font_sizes/font_size = 32
+text = "DAILY CHALLENGE"
 
-[node name="Levels" type="Button" parent="ContentLayer/GlassPanel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 64)
+[node name="Levels" type="Button" parent="ContentLayer/GlassPanel"]
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
-text = "Level Journey"
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_font_sizes/font_size = 32
+text = "LEVEL JOURNEY"
