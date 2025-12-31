@@ -220,39 +220,77 @@ func get_legal_moves(piece: Piece):
 	else:
 		directions = [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1)]
 	
-	# Filter directions for men
+	# If NOT King, filter directions
 	if not piece.is_king:
+		var forward_dirs = []
 		if GameManager.movement_mode == "diagonal":
 			if piece.side == GameManager.Side.PLAYER:
-				directions = [Vector2i(-1, -1), Vector2i(-1, 1)]
+				forward_dirs = [Vector2i(-1, -1), Vector2i(-1, 1)]
 			else:
-				directions = [Vector2i(1, -1), Vector2i(1, 1)]
+				forward_dirs = [Vector2i(1, -1), Vector2i(1, 1)]
 		else:
 			if piece.side == GameManager.Side.PLAYER:
-				directions = [Vector2i(-1, 0), Vector2i(0, -1), Vector2i(0, 1)]
+				forward_dirs = [Vector2i(-1, 0), Vector2i(0, -1), Vector2i(0, 1)]
 			else:
-				directions = [Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1)]
-
-	# Check for captures first
-	for d in directions:
-		var mid_r = fr + d.x
-		var mid_c = fc + d.y
-		var dest_r = fr + d.x * 2
-		var dest_c = fc + d.y * 2
-		if GameManager.is_on_board(dest_r, dest_c):
-			var mid_p = GameManager.get_piece_at(mid_r, mid_c)
-			var dest_p = GameManager.get_piece_at(dest_r, dest_c)
-			if mid_p and mid_p.side != piece.side and dest_p == null:
-				moves.append({"to": Vector2i(dest_r, dest_c), "is_capture": true})
-
-	# If no captures OR if forced_jumps is off
-	if moves.size() == 0 or not GameManager.forced_jumps:
+				forward_dirs = [Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1)]
+		
+		# Standard Piece Logic
 		for d in directions:
-			var dest_r = fr + d.x
-			var dest_c = fc + d.y
+			# Check capture (distance 2)
+			var dest_r = fr + d.x * 2
+			var dest_c = fc + d.y * 2
+			var mid_r = fr + d.x
+			var mid_c = fc + d.y
+			
 			if GameManager.is_on_board(dest_r, dest_c):
-				if GameManager.get_piece_at(dest_r, dest_c) == null:
-					moves.append({"to": Vector2i(dest_r, dest_c), "is_capture": false})
+				var dest_p = GameManager.get_piece_at(dest_r, dest_c)
+				var mid_p = GameManager.get_piece_at(mid_r, mid_c)
+				if dest_p == null and mid_p != null and mid_p.side != piece.side:
+					moves.append({"to": Vector2i(dest_r, dest_c), "is_capture": true})
+
+		# Check normal move (distance 1) - ONLY forward directions
+		# (Captures can be backwards in International rules, usually?)
+		# For simplicity, standard pieces capture in all directions (standard rule)? 
+		# Actually English Draughts: men can only capture forward. International: backwards too.
+		# Let's stick to: Men move/capture only forward (unless changed later).
+		# Wait, code above checked ALL directions for capture. Let's keep that if that was intended.
+		# But movement is restricted.
+		
+		if moves.size() == 0 or not GameManager.forced_jumps:
+			for d in forward_dirs:
+				var dest_r = fr + d.x
+				var dest_c = fc + d.y
+				if GameManager.is_on_board(dest_r, dest_c):
+					if GameManager.get_piece_at(dest_r, dest_c) == null:
+						moves.append({"to": Vector2i(dest_r, dest_c), "is_capture": false})
+
+	else:
+		# Flying King Logic
+		for d in directions:
+			var captured_piece = null
+			for i in range(1, 8):
+				var r = fr + d.x * i
+				var c = fc + d.y * i
+				
+				if not GameManager.is_on_board(r, c): break
+				
+				var p = GameManager.get_piece_at(r, c)
+				if p == null:
+					if captured_piece == null:
+						# Free move
+						# Only add if allowed (e.g. if forced jumps is on, we might filter later)
+						moves.append({"to": Vector2i(r, c), "is_capture": false})
+					else:
+						# Landing after capture
+						moves.append({"to": Vector2i(r, c), "is_capture": true})
+				else:
+					if p.side == piece.side:
+						break # Blocked by own piece
+					else:
+						if captured_piece == null:
+							captured_piece = p # Found potential capture
+						else:
+							break # Blocked by second piece (cannot jump 2)
 	
 	return moves
 
@@ -278,8 +316,9 @@ func is_valid_move(piece, dest_r, dest_c):
 	# Basic diagonal check
 	if abs(dr) != abs(dc): return false
 	
-	# Direction check (unless king)
-	if not piece.is_king:
+	# Direction check (unless king or capturing)
+	var distance = max(abs(dr), abs(dc))
+	if not piece.is_king and distance == 1:
 		if piece.side == GameManager.Side.PLAYER and dr >= 0: return false
 		if piece.side == GameManager.Side.AI and dr <= 0: return false
 	
@@ -330,16 +369,30 @@ func execute_move(piece, dest_r, dest_c):
 	
 	var dr = dest_r - fr
 	var dc = dest_c - fc
-	var is_capture = abs(dr) == 2
+	var distance = max(abs(dr), abs(dc)) # Use max for straight/diagonal consistency
 	
-	if is_capture:
-		var mid_r = (fr + dest_r) / 2
-		var mid_c = (fc + dest_c) / 2
-		var captured_piece = GameManager.get_piece_at(mid_r, mid_c)
-		if captured_piece:
-			GameManager.set_piece_at(mid_r, mid_c, null)
-			captured_piece.queue_free()
-			AudioManager.play_sound("capture")
+	var is_capture = false
+	var captured_piece = null
+	
+	# Detect capture by checking path
+	var dir_r = dr / distance if distance > 0 else 0
+	var dir_c = dc / distance if distance > 0 else 0
+	
+	for i in range(1, distance):
+		var check_r = fr + dir_r * i
+		var check_c = fc + dir_c * i
+		var p = GameManager.get_piece_at(check_r, check_c)
+		if p != null and p != piece:
+			is_capture = true
+			captured_piece = p
+			break
+	
+	if is_capture and captured_piece:
+		var m_r = captured_piece.grid_pos.x
+		var m_c = captured_piece.grid_pos.y
+		GameManager.set_piece_at(m_r, m_c, null)
+		captured_piece.queue_free()
+		AudioManager.play_sound("capture")
 	
 	# Move logic
 	GameManager.set_piece_at(fr, fc, null)
