@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=6 format=3 uid="uid://b8q7x6y504w3"]
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://b8q7x6y504w3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
 bg_color = Color(0.15, 0.45, 0.25, 1)
