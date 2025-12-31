@@ -23,6 +23,48 @@ gradient = SubResource("Gradient_accent")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
+bg_color = Color(0.13, 0.55, 0.13, 1) # Green
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_left = 16
+corner_radius_bottom_right = 16
+shadow_color = Color(0, 0.3, 0, 1)
+shadow_size = 0
+shadow_offset = Vector2(0, 6)
+content_margin_left = 20
+content_margin_right = 20
+content_margin_top = 10
+content_margin_bottom = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+bg_color = Color(0.18, 0.7, 0.18, 1) # Lighter Green
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_left = 16
+corner_radius_bottom_right = 16
+shadow_color = Color(0, 0.3, 0, 1)
+shadow_size = 0
+shadow_offset = Vector2(0, 6)
+content_margin_left = 20
+content_margin_right = 20
+content_margin_top = 10
+content_margin_bottom = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
+bg_color = Color(0.13, 0.55, 0.13, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_left = 16
+corner_radius_bottom_right = 16
+shadow_color = Color(0, 0.3, 0, 1)
+shadow_size = 0
+shadow_offset = Vector2(0, 2) # Pressed down
+content_margin_left = 20
+content_margin_right = 20
+content_margin_top = 14 # Offset content
+content_margin_bottom = 11
+
 [node name="MainMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -137,7 +179,7 @@ theme_override_constants/separation = 24
 custom_minimum_size = Vector2(0, 180)
 layout_mode = 2
 
-[node name="LogoTexture" type="TextureRect" parent="ContentLayer/GlassPanel/VBoxContainer/LogoContainer"]
+[node name="LogoTexture" type="TextureRect" parent="ContentLayer/GlassPanel/LogoContainer"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -154,7 +196,7 @@ texture = ExtResource("3_logo")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Title" type="Label" parent="ContentLayer/GlassPanel/VBoxContainer"]
+[node name="Title" type="Label" parent="ContentLayer/GlassPanel"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 48
@@ -162,7 +204,7 @@ text = "CHECKERS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Control" type="Control" parent="ContentLayer/GlassPanel/VBoxContainer"]
+[node name="Control" type="Control" parent="ContentLayer/GlassPanel"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
