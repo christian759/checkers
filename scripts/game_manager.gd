@@ -89,9 +89,8 @@ func undo():
 
 func check_win_condition(winner):
 	if winner == Side.PLAYER:
-		if current_level == max_unlocked_level and max_unlocked_level < 5:
+		if current_level == max_unlocked_level and max_unlocked_level < 80:
 			max_unlocked_level += 1
-			# Save game logic here ideally
 
 func is_on_board(r, c):
 	return r >= 0 and r < 8 and c >= 0 and c < 8
@@ -121,9 +120,10 @@ func play_ai_turn():
 		return
 
 	var depth = 2
-	if current_level >= 4: depth = 3
-	if current_level >= 7: depth = 4
-	if current_level >= 9: depth = 5
+	if current_level > 5: depth = 3
+	if current_level > 20: depth = 4
+	if current_level > 40: depth = 5
+	if current_level > 60: depth = 6
 	
 	var best_move = get_best_move(board_node, Side.AI, depth)
 	
