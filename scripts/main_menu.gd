@@ -6,6 +6,7 @@ func _ready():
 	$CenterContainer/VBoxContainer/PlayAI.pressed.connect(_on_play_ai_pressed)
 	$CenterContainer/VBoxContainer/PlayFriend.pressed.connect(_on_play_friend_pressed)
 	$CenterContainer/VBoxContainer/Levels.pressed.connect(_on_levels_pressed)
+	$CenterContainer/VBoxContainer/DailyChallenge.pressed.connect(_on_daily_pressed)
 	
 	spawn_floating_pieces()
 	animate_entrance()
@@ -32,7 +33,8 @@ func animate_entrance():
 	var buttons = [
 		$CenterContainer/VBoxContainer/PlayAI,
 		$CenterContainer/VBoxContainer/PlayFriend,
-		$CenterContainer/VBoxContainer/Levels
+		$CenterContainer/VBoxContainer/Levels,
+		$CenterContainer/VBoxContainer/DailyChallenge
 	]
 	
 	# Initial states
@@ -71,3 +73,9 @@ func _on_play_friend_pressed():
 
 func _on_levels_pressed():
 	SceneTransition.change_scene("res://scenes/level_select.tscn")
+
+func _on_daily_pressed():
+	GameManager.is_daily_challenge = true
+	GameManager.current_level = 10 # Let's make it tough
+	GameManager.current_mode = GameManager.Mode.PV_AI
+	SceneTransition.change_scene("res://scenes/main.tscn")

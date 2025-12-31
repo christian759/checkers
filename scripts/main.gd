@@ -26,6 +26,10 @@ func _on_turn_changed(new_side):
 		else:
 			label.text = "YOUR TURN"
 			label.add_theme_color_override("font_color", Color("#58cc02"))
+	
+	if GameManager.is_daily_challenge:
+		label.text = "🌟 DAILY CHALLENGE 🌟"
+		label.add_theme_color_override("font_color", Color("#ffcc00"))
 	else: # PvE / PvP Mode
 		if new_side == GameManager.Side.PLAYER:
 			label.text = "PLAYER 1 TURN"

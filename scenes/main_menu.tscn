@@ -76,3 +76,9 @@ text = "PLAY vs FRIEND"
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 text = "LEVELS"
+
+[node name="DailyChallenge" type="Button" parent="CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
+text = "🌟 DAILY CHALLENGE"

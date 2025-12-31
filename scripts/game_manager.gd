@@ -14,6 +14,8 @@ var win_streak = 0
 var current_level = 1
 var max_unlocked_level = 1
 var move_history = [] # Stack of {piece, from, to, captured_piece, promoted}
+var is_daily_challenge = false
+var daily_completed = false
 
 signal turn_changed(new_side)
 signal game_over(winner)
@@ -31,11 +33,16 @@ func setup_board():
 			row.append(null)
 		board.append(row)
 
+func get_daily_seed() -> int:
+	var t = Time.get_date_dict_from_system()
+	return t.year * 10000 + t.month * 100 + t.day
+
 func reset_game():
 	current_turn = Side.PLAYER
 	selected_piece = null
 	must_jump = false
 	move_history = []
+	is_daily_challenge = false
 	setup_board()
 	# This will be populated by the Board scene
 

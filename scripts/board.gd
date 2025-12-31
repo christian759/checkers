@@ -40,14 +40,32 @@ func generate_board():
 			tile_container.add_child(tile)
 
 func spawn_pieces():
-	for r in range(8):
-		for c in range(8):
+	if GameManager.is_daily_challenge:
+		seed(GameManager.get_daily_seed())
+		# Generate a "Challenge" layout - e.g. mid-game scenario
+		var pieces_placed = 0
+		while pieces_placed < 10:
+			var r = randi() % 8
+			var c = randi() % 8
 			var is_dark = (r + c) % 2 == 1
-			if is_dark:
-				if r < 3:
-					create_piece(r, c, GameManager.Side.AI)
-				elif r > 4:
-					create_piece(r, c, GameManager.Side.PLAYER)
+			if is_dark and GameManager.get_piece_at(r, c) == null:
+				var side = GameManager.Side.PLAYER if pieces_placed < 5 else GameManager.Side.AI
+				create_piece(r, c, side)
+				pieces_placed += 1
+		# Ensure at least one king for excitement
+		var player_pieces = piece_container.get_children().filter(func(p): return p.side == GameManager.Side.PLAYER)
+		if player_pieces.size() > 0:
+			player_pieces.pick_random().promote_to_king()
+	else:
+		# Standard layout
+		for r in range(8):
+			for c in range(8):
+				var is_dark = (r + c) % 2 == 1
+				if is_dark:
+					if r < 3:
+						create_piece(r, c, GameManager.Side.AI)
+					elif r > 4:
+						create_piece(r, c, GameManager.Side.PLAYER)
 
 func create_piece(r, c, side):
 	var p = piece_scene.instantiate()
