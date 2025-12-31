@@ -13,14 +13,23 @@ grow_vertical = 2
 theme = ExtResource("2_theme")
 script = ExtResource("1_script")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[sub_resource type="Gradient" id="Gradient_bg"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.960784, 0.960784, 0.960784, 1, 0.85, 0.9, 0.8, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]
+gradient = SubResource("Gradient_bg")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.96, 0.96, 0.96, 1)
+texture = SubResource("GradientTexture2D_bg")
 
 [node name="FloatingPieces" type="Control" parent="."]
 layout_mode = 1
@@ -46,7 +55,10 @@ theme_override_constants/separation = 20
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.345098, 0.8, 0.00784314, 1)
-theme_override_font_sizes/font_size = 64
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 6
+theme_override_font_sizes/font_size = 72
 text = "CHECKERS"
 horizontal_alignment = 1
 
