@@ -16,6 +16,7 @@ var max_unlocked_level = 1
 var move_history = [] # Stack of {pieces_state, turn, settings}
 var is_daily_challenge = false
 var daily_completed = false
+var game_start_time = 0
 
 # Settings
 var forced_jumps = false
@@ -36,43 +37,7 @@ func _ready():
 	
 	AchievementManager.achievement_unlocked.connect(func(id, title): save_game())
 
-# ... (skip to check_win_condition)
-
-func check_win_condition(winner):
-	var next_level_possible = false
-	
-	# Achievement: First Win, Speed Demon
-	if winner == Side.PLAYER:
-		if current_level == max_unlocked_level and max_unlocked_level < 80:
-			max_unlocked_level += 1
-		
-		if current_level < 80:
-			next_level_possible = true
-		
-		AchievementManager.unlock("first_win")
-		
-		var duration = Time.get_unix_time_from_system() - game_start_time
-		if duration < 60:
-			AchievementManager.unlock("speed_demon")
-			
-		save_game()
-		
-		# ... existing streak logic ...
-		if win_streak >= 3: AchievementManager.unlock("win_streak_3")
-		if win_streak >= 5: AchievementManager.unlock("win_streak_5")
-		if win_streak >= 10: AchievementManager.unlock("win_streak_10")
-		
-		if current_level >= 5: AchievementManager.unlock("level_5")
-		if current_level >= 10: AchievementManager.unlock("level_10")
-		if current_level >= 20: AchievementManager.unlock("level_20")
-		if current_level >= 40: AchievementManager.unlock("level_40")
-		if current_level >= 60: AchievementManager.unlock("level_60")
-		if current_level >= 80: AchievementManager.unlock("level_80")
-
-	elif winner == Side.AI:
-		AchievementManager.unlock("first_loss")
-	
-	emit_signal("game_over", winner, next_level_possible)
+func save_game():
 	var save_data = {
 		"current_level": current_level,
 		"max_unlocked_level": max_unlocked_level,
@@ -163,10 +128,16 @@ func undo():
 	emit_signal("turn_changed", current_turn)
 
 func check_win_condition(winner):
+	var next_level_possible = false
+	
 	# Achievement: First Win, Speed Demon
 	if winner == Side.PLAYER:
 		if current_level == max_unlocked_level and max_unlocked_level < 80:
 			max_unlocked_level += 1
+		
+		# Only check for next level button if we aren't at the absolute max
+		if current_level < 80:
+			next_level_possible = true
 		
 		AchievementManager.unlock("first_win")
 		
@@ -190,42 +161,10 @@ func check_win_condition(winner):
 
 	elif winner == Side.AI:
 		AchievementManager.unlock("first_loss")
+	
+	emit_signal("game_over", winner, next_level_possible)
 
-# ... (skipped helper functions) ...
-
-func evaluate_move(board_node, move):
-	var score = 0
-	if move.is_capture: score += 100
-	if move.piece.is_king: score += 10
-	
-	# Center control
-	var dist_to_center = abs(move.to.x - 3.5) + abs(move.to.y - 3.5)
-	score -= dist_to_center * 2
-	
-	# Material Advancement: Encourage moving towards enemy side
-	if move.piece.side == Side.AI:
-		score += move.to.x * 2 # Higher X (row 7) is better for AI (starts at 0-2)
-	
-	# Mobility Score: Encourage using different pieces
-	# (Simplified: Random nudge to break repetition)
-	score += randf_range(0, 5)
-
-	# Repetition Penalty: Avoid immediate back-and-forth
-	# This would require tracking historical moves, which we can simplify:
-	# Just discourage moving back to where we started if possible?
-	# Hard to detect without history in this function.
-	# The random mobility nudge should help enough for now.
-	
-	# King promotion incentive
-	if move.to.x == 7: score += 50
-	
-	# Randomness for low levels
-	if current_level <= 2:
-		score += randf_range(-50, 50)
-		
-	return score
-
-var game_start_time = 0 # Initialize this
+func is_on_board(r, c):
 	return r >= 0 and r < 8 and c >= 0 and c < 8
 
 func get_piece_at(r, c):
@@ -316,6 +255,20 @@ func evaluate_move(_board_node, move):
 	# Center control
 	var dist_to_center = abs(move.to.x - 3.5) + abs(move.to.y - 3.5)
 	score -= dist_to_center * 2
+	
+	# Material Advancement: Encourage moving towards enemy side
+	if move.piece.side == Side.AI:
+		score += move.to.x * 2 # Higher X (row 7) is better for AI (starts at 0-2)
+	
+	# Mobility Score: Encourage using different pieces
+	# (Simplified: Random nudge to break repetition)
+	score += randf_range(0, 5)
+
+	# Repetition Penalty: Avoid immediate back-and-forth
+	# This would require tracking historical moves, which we can simplify:
+	# Just discourage moving back to where we started if possible?
+	# Hard to detect without history in this function.
+	# The random mobility nudge should help enough for now.
 	
 	# King promotion incentive
 	if move.to.x == 7: score += 50
