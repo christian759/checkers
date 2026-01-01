@@ -15,10 +15,6 @@ run/main_scene="res://scenes/main_menu.tscn"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
 
-[gui]
-
-theme/custom="res://resources/main_theme.tres"
-
 [autoload]
 
 GameManager="*res://scripts/game_manager.gd"
@@ -32,6 +28,10 @@ window/size/viewport_width=720
 window/size/viewport_height=1280
 window/stretch/mode="canvas_items"
 window/handheld/orientation=1
+
+[gui]
+
+theme/custom="res://resources/main_theme.tres"
 
 [rendering]
 

@@ -15,16 +15,16 @@ func _ready():
 
 func update_visuals():
 	if side == GameManager.Side.PLAYER:
-		sprite.texture = load("res://assets/textures/piece_glossy.svg")
-		sprite.modulate = Color(0.34, 0.8, 0.0) # Green Piece
+		sprite.texture = load("res://assets/textures/piece_player.svg")
+		sprite.modulate = Color(1, 1, 1) # Reset modulation for player
 		shadow.texture = sprite.texture
 	elif side == GameManager.Side.AI:
-		sprite.texture = load("res://assets/textures/piece_glossy.svg")
-		sprite.modulate = Color(0.9, 0.9, 0.9) # White Piece
+		sprite.texture = load("res://assets/textures/piece_ai.svg")
+		sprite.modulate = Color(1, 1, 1) # Reset modulation for AI
 		shadow.texture = sprite.texture
 	
-	sprite.scale = Vector2(1.0, 1.0)
-	shadow.scale = Vector2(1.0, 1.0)
+	sprite.scale = Vector2(0.5, 0.5)
+	shadow.scale = Vector2(0.5, 0.5)
 	
 	if is_king:
 		$KingIcon.show()
