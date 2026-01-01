@@ -22,20 +22,18 @@ func _setup_navigation():
 	$BottomNav/HBox/Mastery.pressed.connect(_on_pvp_pressed)
 	$BottomNav/HBox/Settings.pressed.connect(_on_settings_pressed)
 	
-	# Peak button logic
-	var peak_btn = $BottomNav/HBox/PeakShift/Peak
+	# Peak button logic - Scroll to top
+	var peak_panel = $BottomNav/Peak
 	var hidden_btn = Button.new()
 	hidden_btn.flat = true
 	hidden_btn.layout_mode = 1
 	hidden_btn.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	peak_btn.add_child(hidden_btn)
+	peak_panel.add_child(hidden_btn)
 	hidden_btn.pressed.connect(func(): scroll_container.scroll_vertical = 0)
 
 func generate_levels():
-	# journey already defined via @onready
 	for child in journey.get_children():
-		if child.name != "Padding":
-			child.queue_free()
+		child.queue_free()
 	
 	var island_scene = preload("res://scenes/island.tscn")
 	

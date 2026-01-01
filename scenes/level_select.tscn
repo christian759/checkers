@@ -1,9 +1,31 @@
+[gd_scene load_steps=18 format=3 uid="uid://level_select_scene"]
+
+[ext_resource type="Script" path="res://scripts/level_select.gd" id="1_level_select_script"]
+[ext_resource type="Theme" uid="uid://theme_premium" path="res://assets/ui/theme_premium.tres" id="2_theme"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_achievements.svg" id="3_badge"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_daily.svg" id="4_daily"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_tour_map.svg" id="5_tour"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_mastery.svg" id="6_mastery"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_settings.svg" id="7_settings"]
+
 [sub_resource type="Gradient" id="Gradient_Ocean"]
 colors = PackedColorArray(0.141176, 0.811765, 0.945098, 1, 0.054902, 0.501961, 0.8, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_Ocean"]
 gradient = SubResource("Gradient_Ocean")
 fill_to = Vector2(0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Nav"]
+bg_color = Color(0.105882, 0.301961, 0.0392157, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Peak"]
+bg_color = Color(0.145098, 0.45098, 0.054902, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+border_width_top = 4
+border_color = Color(1, 1, 1, 0.2)
 
 [node name="LevelSelect" type="Control"]
 layout_mode = 3
@@ -38,7 +60,7 @@ vertical_scroll_mode = 3
 [node name="Journey" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 300
+theme_override_constants/separation = 400
 alignment = 1
 
 [node name="BottomNav" type="Panel" parent="."]
@@ -51,6 +73,45 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_Nav")
+
+[node name="Peak" type="Panel" parent="BottomNav"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -220.0
+offset_right = 100.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_Peak")
+
+[node name="VBox" type="VBoxContainer" parent="BottomNav/Peak"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = -5
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="BottomNav/Peak/VBox"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("5_tour")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="BottomNav/Peak/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "TOUR"
+horizontal_alignment = 1
 
 [node name="HBox" type="HBoxContainer" parent="BottomNav"]
 layout_mode = 1
@@ -79,48 +140,9 @@ flat = true
 icon_alignment = 1
 expand_icon = true
 
-[node name="PeakShift" type="Control" parent="BottomNav/HBox"]
-custom_minimum_size = Vector2(160, 0)
+[node name="Spacer" type="Control" parent="BottomNav/HBox"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-
-[node name="Peak" type="Panel" parent="BottomNav/HBox/PeakShift"]
-custom_minimum_size = Vector2(180, 200)
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -90.0
-offset_top = -200.0
-offset_right = 90.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_Peak")
-
-[node name="VBox" type="VBoxContainer" parent="BottomNav/HBox/PeakShift/Peak"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = -10
-alignment = 1
-
-[node name="Icon" type="TextureRect" parent="BottomNav/HBox/PeakShift/Peak/VBox"]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-texture = ExtResource("5_tour")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Label" type="Label" parent="BottomNav/HBox/PeakShift/Peak/VBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "TOUR"
-horizontal_alignment = 1
 
 [node name="Mastery" type="Button" parent="BottomNav/HBox"]
 custom_minimum_size = Vector2(100, 100)

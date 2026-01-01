@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://island_scene"]
+[gd_scene load_steps=4 format=3 uid="uid://island_scene"]
 
 [ext_resource type="Script" path="res://scripts/island.gd" id="1_island_script"]
 [ext_resource type="Theme" uid="uid://theme_premium" path="res://assets/ui/theme_premium.tres" id="2_theme"]
