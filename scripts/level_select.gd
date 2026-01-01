@@ -11,55 +11,34 @@ func _ready():
 	$UI/SettingsButton.pressed.connect(_on_settings_pressed)
 	$VBoxContainer/ScrollContainer.get_v_scroll_bar().value_changed.connect(_on_scroll)
 	
-	# Initial Setup
-	generate_levels()
-	update_level_buttons()
-	setup_islands()
-	update_season_display(0)
-
-# --- Vertical Map & Seasons ---
-
 func generate_levels():
 	var journey = $VBoxContainer/ScrollContainer/Journey
-	if journey.has_node("Level1"):
-		journey.get_node("Level1").queue_free()
+	for child in journey.get_children():
+		if child.name != "Padding":
+			child.queue_free()
 	
-	for i in range(TOTAL_LEVELS):
-		var btn = Button.new()
-		btn.name = "Level" + str(i + 1)
-		btn.custom_minimum_size = Vector2(140, 140)
-		btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		btn.flat = true
-		btn.text = str(i + 1)
-		btn.add_theme_font_size_override("font_size", 32)
-		btn.pivot_offset = Vector2(70, 70)
-		btn.pressed.connect(func(): _on_level_selected(i + 1))
-		btn.button_down.connect(func(): _animate_press(btn, true))
-		btn.button_up.connect(func(): _animate_press(btn, false))
-		journey.add_child(btn)
+	var island_scene = preload("res://scenes/island.tscn")
+	
+	for i in range(16): # 80 levels / 5 per island = 16 islands
+		var island = island_scene.instantiate()
+		journey.add_child(island)
+		
+		# Prepare level data for this island
+		var levels_data = []
+		for j in range(5):
+			var level_num = i * 5 + j + 1
+			var data = {"num": level_num}
+			if level_num % 20 == 0: data["boss"] = "crown"
+			elif level_num % 10 == 0: data["boss"] = "skull"
+			levels_data.append(data)
+		
+		var season_idx = clamp(int((i * 5) / LEVELS_PER_SEASON), 0, 3)
+		island.setup(season_idx, levels_data)
 
 func update_level_buttons():
-	var journey_container = $VBoxContainer/ScrollContainer/Journey
-	var buttons = journey_container.get_children().filter(func(c): return c is Button)
-	
-	var tex_locked = preload("res://assets/ui/level_node_locked.svg")
-	var tex_unlocked = preload("res://assets/ui/level_node_unlocked.svg")
-	var tex_current = preload("res://assets/ui/level_node_current.svg")
-	
-	for i in range(buttons.size()):
-		var level_num = i + 1
-		var btn = buttons[i]
-		btn.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		btn.expand_icon = true
-		
-		if level_num < GameManager.max_unlocked_level:
-			btn.icon = tex_unlocked
-		elif level_num == GameManager.max_unlocked_level:
-			btn.icon = tex_current
-		else:
-			btn.icon = tex_locked
-			btn.disabled = true
-			btn.modulate = Color(0.8, 0.8, 0.8)
+	# Now handled via the Island component's setup, 
+	# but we can refresh all islands if needed
+	generate_levels() 
 
 func _on_scroll(value):
 	var max_scroll = $VBoxContainer/ScrollContainer.get_v_scroll_bar().max_value

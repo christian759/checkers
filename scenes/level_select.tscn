@@ -145,6 +145,18 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_bottom")
 
+[node name="BottomBar" type="Panel" parent="."]
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -130.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bottom")
+
 [node name="HBox" type="HBoxContainer" parent="BottomBar"]
 layout_mode = 1
 anchors_preset = 15
@@ -154,43 +166,110 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Trophy" type="Button" parent="BottomBar/HBox"]
+[node name="Social" type="VBoxContainer" parent="BottomBar/HBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-flat = true
+alignment = 1
+
+[node name="Btn" type="Button" parent="BottomBar/HBox/Social"]
+layout_mode = 2
 icon = ExtResource("7_ribbon")
-icon_alignment = 1
-
-[node name="Calendar" type="Button" parent="BottomBar/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
 flat = true
-icon = ExtResource("8_calendar")
 icon_alignment = 1
 
-[node name="Tour" type="Button" parent="BottomBar/HBox"]
+[node name="Label" type="Label" parent="BottomBar/HBox/Social"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "FRIENDS"
+horizontal_alignment = 1
+
+[node name="Daily" type="VBoxContainer" parent="BottomBar/HBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 24
-text = "TOUR"
+alignment = 1
+
+[node name="Btn" type="Button" parent="BottomBar/HBox/Daily"]
+layout_mode = 2
+icon = ExtResource("8_calendar")
+flat = true
+icon_alignment = 1
+
+[node name="Label" type="Label" parent="BottomBar/HBox/Daily"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "DAILY"
+horizontal_alignment = 1
+
+[node name="TourTab" type="Control" parent="BottomBar/HBox"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+
+[node name="TourBG" type="ColorRect" parent="BottomBar/HBox/TourTab"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12549, 0.435294, 0.0156863, 1)
+
+[node name="VBox" type="VBoxContainer" parent="BottomBar/HBox/TourTab"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Tour" type="Button" parent="BottomBar/HBox/TourTab/VBox"]
+layout_mode = 2
 icon = ExtResource("9_tour")
 flat = true
 icon_alignment = 1
 
-[node name="Shop" type="Button" parent="BottomBar/HBox"]
+[node name="Label" type="Label" parent="BottomBar/HBox/TourTab/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "TOUR"
+horizontal_alignment = 1
+
+[node name="Shop" type="VBoxContainer" parent="BottomBar/HBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-flat = true
+alignment = 1
+
+[node name="Btn" type="Button" parent="BottomBar/HBox/Shop"]
+layout_mode = 2
 icon = ExtResource("10_shop")
+flat = true
 icon_alignment = 1
 
-[node name="Ribbon" type="Button" parent="BottomBar/HBox"]
+[node name="Label" type="Label" parent="BottomBar/HBox/Shop"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "SHOP"
+horizontal_alignment = 1
+
+[node name="Settings" type="VBoxContainer" parent="BottomBar/HBox"]
 layout_mode = 2
 size_flags_horizontal = 3
+alignment = 1
+
+[node name="Btn" type="Button" parent="BottomBar/HBox/Settings"]
+layout_mode = 2
+icon = ExtResource("6_settings")
 flat = true
-icon = ExtResource("7_ribbon")
 icon_alignment = 1
+
+[node name="Label" type="Label" parent="BottomBar/HBox/Settings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "SETUP"
+horizontal_alignment = 1
 
 [node name="AIJourney" type="Control" parent="."]
 visible = false
