@@ -87,16 +87,23 @@ func animate_entrance():
 		bt.parallel().tween_property(b, "position:x", b.position.x - 40, 0.6)
 
 func _on_play_ai_pressed():
+	GameManager.reset_game()
+	GameManager.is_daily_challenge = false
 	SceneTransition.change_scene("res://scenes/map_menu.tscn")
 
 func _on_play_friend_pressed():
+	GameManager.reset_game()
+	GameManager.is_daily_challenge = false
 	GameManager.current_mode = GameManager.Mode.PV_P
 	SceneTransition.change_scene("res://scenes/main.tscn")
 
 func _on_levels_pressed():
+	GameManager.reset_game()
+	GameManager.is_daily_challenge = false
 	SceneTransition.change_scene("res://scenes/map_menu.tscn")
 
 func _on_daily_pressed():
+	GameManager.reset_game()
 	GameManager.is_daily_challenge = true
 	GameManager.current_level = 10 
 	GameManager.current_mode = GameManager.Mode.PV_AI

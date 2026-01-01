@@ -2,13 +2,24 @@ extends Node2D
 
 @onready var main_ui = $UI/MainUI
 @onready var board = $BoardContainer/Board
+@onready var board_container = $BoardContainer
 
 func _ready():
+	get_viewport().size_changed.connect(_on_resize)
+	call_deferred("_on_resize")
+	
 	GameManager.turn_changed.connect(_on_turn_changed)
 	GameManager.game_over.connect(_on_game_over)
 	
 	setup_ui()
-	center_board()
+
+func _on_resize():
+	# Board is 640x640 (8 * 80)
+	var board_size = Vector2(640, 640)
+	var viewport_size = get_viewport_rect().size
+	
+	board_container.position = viewport_size / 2
+	board.position = -board_size / 2
 
 func setup_ui():
 	main_ui.get_node("TopBar/HBox/HomeButton").pressed.connect(_on_home_pressed)
@@ -61,16 +72,3 @@ func _on_game_over(winner, next_level_possible):
 func _on_restart_pressed():
 	get_tree().reload_current_scene()
 	GameManager.reset_game()
-
-func center_board():
-	# Board size is 8 * 80 = 640
-	var board_size = Vector2(640, 640)
-	var viewport_size = get_viewport_rect().size
-	
-	# Center horizontally and vertically
-	# Vertical center might need offset for top bar, but pure center is usually fine
-	# Given top bar is 80px, maybe we want to center in the remaining space? 
-	# For now, let's just true center it on screen, it looks cleanest.
-	
-	board.position = -board_size / 2
-	$BoardContainer.position = viewport_size / 2

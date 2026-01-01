@@ -2,6 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://bd0kuo586gwmb" path="res://scenes/confetti.tscn" id="1_confetti"]
 [ext_resource type="Script" uid="uid://brr3k4mxr4w7h" path="res://scripts/bouncy_button.gd" id="2_script"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_home.svg" id="3_home"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_undo.svg" id="4_undo"]
 
 [node name="MainUI" type="Control"]
 layout_mode = 3
@@ -31,10 +33,13 @@ grow_vertical = 2
 theme_override_constants/separation = 20
 
 [node name="HomeButton" type="Button" parent="TopBar/HBox"]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "🏠"
+icon = ExtResource("3_home")
 flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="TurnIndicator" type="Label" parent="TopBar/HBox"]
 layout_mode = 2
@@ -46,10 +51,13 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="UndoButton" type="Button" parent="TopBar/HBox"]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "⤴️"
+icon = ExtResource("4_undo")
 flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="StreakLabel" type="Label" parent="TopBar/HBox"]
 layout_mode = 2

@@ -31,6 +31,8 @@ func _on_back_pressed():
 func _on_level_selected(level):
 	# Set difficulty or load specific map
 	print("Selected level ", level)
+	GameManager.reset_game()
+	GameManager.is_daily_challenge = false
 	GameManager.current_level = level
 	GameManager.current_mode = GameManager.Mode.PV_AI
 	SceneTransition.change_scene("res://scenes/main.tscn")
