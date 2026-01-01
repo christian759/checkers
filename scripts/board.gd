@@ -13,6 +13,7 @@ var marker_script = preload("res://scripts/move_marker.gd")
 var forced_pieces = [] # Pieces that MUST move (due to jump)
 
 func _ready():
+	GameManager.board_theme_changed.connect(_on_board_theme_changed)
 	generate_board()
 	spawn_pieces()
 	GameManager.save_state() # Initial state
@@ -43,7 +44,15 @@ func rebuild_from_state(state):
 	
 	deselect_piece()
 
+func _on_board_theme_changed(theme_data):
+	# Simple redraw: clear tiles and regen
+	for c in tile_container.get_children():
+		c.queue_free()
+	generate_board()
+
 func generate_board():
+	var theme = GameManager.get_current_board_theme()
+	
 	for r in range(8):
 		for c in range(8):
 			var is_dark = (r + c) % 2 == 1
@@ -58,9 +67,9 @@ func generate_board():
 			sb.corner_radius_bottom_right = 12
 			
 			if is_dark:
-				sb.bg_color = Color("#b8860b") # Darker Wood/Brown
+				sb.bg_color = theme.dark
 			else:
-				sb.bg_color = Color("#f5deb3") # Wheat/Creme
+				sb.bg_color = theme.light
 				
 			tile.add_theme_stylebox_override("panel", sb)
 			tile.mouse_filter = Control.MOUSE_FILTER_IGNORE

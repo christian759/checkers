@@ -28,12 +28,22 @@ signal piece_moved(from, to)
 signal piece_captured(pos)
 signal coins_changed(new_amount)
 signal hearts_changed(new_amount)
+signal board_theme_changed(theme_data)
 
 const WIN_REWARD = 50
 const MAX_HEARTS = 5
 
+const BOARD_THEMES = [
+	{"name": "CLASSIC", "light": Color("#f5deb3"), "dark": Color("#b8860b")},
+	{"name": "OCEAN", "light": Color("#e0f7fa"), "dark": Color("#0277bd")},
+	{"name": "FOREST", "light": Color("#dcedc8"), "dark": Color("#33691e")},
+	{"name": "PINK", "light": Color("#f8bbd0"), "dark": Color("#c2185b")},
+	{"name": "NIGHT", "light": Color("#cfcfcf"), "dark": Color("#202020")}
+]
+
 var coins = 0
 var hearts = 5
+var board_theme_index = 0
 
 func _ready():
 	load_game()
@@ -52,6 +62,7 @@ func save_game():
 		"win_streak": win_streak,
 		"coins": coins,
 		"hearts": hearts,
+		"board_theme_index": board_theme_index,
 		"stats": {},
 		"achievements": AchievementManager.achievements
 	}
@@ -71,6 +82,7 @@ func load_game():
 			win_streak = data.get("win_streak", 0)
 			coins = data.get("coins", 0)
 			hearts = data.get("hearts", 5)
+			board_theme_index = data.get("board_theme_index", 0)
 			
 			var saved_achievements = data.get("achievements", {})
 			# Merge saved achievement state
@@ -89,6 +101,14 @@ func setup_board():
 func get_daily_seed() -> int:
 	var t = Time.get_date_dict_from_system()
 	return t.year * 10000 + t.month * 100 + t.day
+
+func cycle_board_theme():
+	board_theme_index = (board_theme_index + 1) % BOARD_THEMES.size()
+	emit_signal("board_theme_changed", BOARD_THEMES[board_theme_index])
+	save_game()
+
+func get_current_board_theme():
+	return BOARD_THEMES[board_theme_index]
 
 func reset_game():
 	current_turn = Side.PLAYER
@@ -244,18 +264,26 @@ func get_best_move(board_node, side, depth):
 	if all_moves.size() == 0:
 		return {"piece": null}
 		
-	# Simple heuristic evaluation for now (Minimax would be better but complex to state-copy Godot objects)
-	# Let's use a weighted heuristic for higher levels
-	var best_m = all_moves[0]
+	# Better AI: Find all best moves and pick random
+	var best_moves = []
 	var best_score = -100000
 	
 	for m in all_moves:
 		var score = evaluate_move(board_node, m)
+		
+		# Add a small fuzzy factor to break score ties naturally
+		score += randf_range(-0.5, 0.5)
+		
 		if score > best_score:
 			best_score = score
-			best_m = m
+			best_moves = [m]
+		elif abs(score - best_score) < 0.1: # Treated as equal
+			best_moves.append(m)
 			
-	return best_m
+	if best_moves.size() > 0:
+		return best_moves.pick_random()
+		
+	return all_moves.pick_random()
 
 func evaluate_move(_board_node, move):
 	var score = 0
@@ -283,9 +311,8 @@ func evaluate_move(_board_node, move):
 	# King promotion incentive
 	if move.to.x == 7: score += 50
 	
-	# Randomness for low levels
-	if current_level <= 2:
-		score += randf_range(-50, 50)
+	# Randomness for all levels to ensure variety
+	score += randf_range(0, 5)
 		
 	return score
 

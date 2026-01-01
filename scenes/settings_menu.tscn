@@ -122,14 +122,33 @@ theme_override_colors/font_color = Color(0.3, 0.3, 0.3, 1)
 theme_override_font_sizes/font_size = 28
 text = "Move Rules"
 
-[node name="Button" type="Button" parent="Panel/VBoxContainer/MovementMode"]
-custom_minimum_size = Vector2(160, 60)
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn")
-text = "DIAGONAL"
+	[node name="Button" type="Button" parent="Panel/VBoxContainer/MovementMode"]
+	custom_minimum_size = Vector2(160, 60)
+	layout_mode = 2
+	theme_override_font_sizes/font_size = 24
+	theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+	theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+	theme_override_styles/pressed = SubResource("StyleBoxFlat_btn")
+	text = "DIAGONAL"
+
+	[node name="BoardTheme" type="HBoxContainer" parent="Panel/VBoxContainer"]
+	layout_mode = 2
+
+	[node name="Label" type="Label" parent="Panel/VBoxContainer/BoardTheme"]
+	layout_mode = 2
+	size_flags_horizontal = 3
+	theme_override_colors/font_color = Color(0.3, 0.3, 0.3, 1)
+	theme_override_font_sizes/font_size = 28
+	text = "Board Theme"
+
+	[node name="Button" type="Button" parent="Panel/VBoxContainer/BoardTheme"]
+	custom_minimum_size = Vector2(160, 60)
+	layout_mode = 2
+	theme_override_font_sizes/font_size = 24
+	theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+	theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+	theme_override_styles/pressed = SubResource("StyleBoxFlat_btn")
+	text = "CLASSIC"
 
 [node name="Back" type="Button" parent="Panel"]
 custom_minimum_size = Vector2(200, 70)
@@ -153,4 +172,5 @@ text = "BACK"
 
 [connection signal="pressed" from="Panel/VBoxContainer/ForcedJumps/Button" to="." method="_on_forced_jumps_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/MovementMode/Button" to="." method="_on_movement_mode_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/BoardTheme/Button" to="." method="_on_board_theme_pressed"]
 [connection signal="pressed" from="Panel/Back" to="." method="_on_back_pressed"]

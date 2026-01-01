@@ -7,6 +7,7 @@ func _update_ui():
 	# Update button states based on GameManager settings
 	$Panel/VBoxContainer/ForcedJumps/Button.text = "ON" if GameManager.forced_jumps else "OFF"
 	$Panel/VBoxContainer/MovementMode/Button.text = "DIAGONAL" if GameManager.movement_mode == "diagonal" else "STRAIGHT"
+	$Panel/VBoxContainer/BoardTheme/Button.text = GameManager.get_current_board_theme().name
 
 func _on_back_pressed():
 	# Go back to Main Menu
@@ -24,3 +25,7 @@ func _on_movement_mode_pressed():
 		GameManager.movement_mode = "diagonal"
 	_update_ui()
 	GameManager.save_game()
+
+func _on_board_theme_pressed():
+	GameManager.cycle_board_theme()
+	_update_ui()
