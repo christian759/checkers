@@ -24,17 +24,16 @@ func _on_resize():
 	board.position = -board_size / 2
 
 func setup_ui():
-	main_ui.get_node("TopBar/HBox/HomeButton").pressed.connect(_on_home_pressed)
-	main_ui.get_node("TopBar/HBox/UndoButton").pressed.connect(_on_undo_pressed)
+	main_ui.get_node("TopBar/Layout/Home").pressed.connect(_on_home_pressed)
+	main_ui.get_node("TopBar/Layout/Undo").pressed.connect(_on_undo_pressed)
 	
-	# Initially update labels
-	_on_coins_changed(GameManager.coins)
-	main_ui.get_node("TopBar/HBox/GemsContainer/Label").text = "0"
-	main_ui.get_node("TopBar/HBox/LivesContainer/Label").text = str(GameManager.hearts)
+	# Initial update
+	main_ui.update_coins(GameManager.coins)
+	main_ui.update_hearts(GameManager.hearts)
+	main_ui.update_gems(0)
 
 func _on_coins_changed(amount):
-	main_ui.get_node("TopBar/HBox/CoinsContainer/Label").text = str(amount)
-
+	main_ui.update_coins(amount)
 
 func _on_undo_pressed():
 	GameManager.undo()
@@ -43,10 +42,10 @@ func _on_home_pressed():
 	SceneTransition.change_scene("res://scenes/level_select.tscn")
 
 func _on_turn_changed(new_side):
-	var label = main_ui.get_node("TopBar/HBox/TurnIndicator")
+	var label = main_ui.get_node("TopBar/Layout/TurnIndicator")
 	
 	if GameManager.is_daily_challenge:
-		label.text = "🌟 DAILY CHALLENGE 🌟"
+		label.text = "DAILY CHALLENGE"
 		label.add_theme_color_override("font_color", Color("#ffcc00"))
 		return
 
@@ -57,7 +56,7 @@ func _on_turn_changed(new_side):
 		else:
 			label.text = "YOUR TURN"
 			label.add_theme_color_override("font_color", Color("#58cc02"))
-	else: # PvP Mode
+	else:
 		if new_side == GameManager.Side.PLAYER:
 			label.text = "PLAYER 1 TURN"
 			label.add_theme_color_override("font_color", Color("#58cc02"))
@@ -78,7 +77,7 @@ func _on_game_over(winner, next_level_possible):
 	else:
 		GameManager.win_streak = 0
 	
-	main_ui.get_node("TopBar/HBox/StreakLabel").text = "🔥 " + str(GameManager.win_streak)
+	main_ui._update_streak(GameManager.win_streak)
 
 func _on_restart_pressed():
 	get_tree().reload_current_scene()

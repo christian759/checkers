@@ -1,6 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://game_over_scene"]
 
 [ext_resource type="Script" uid="uid://game_over_script" path="res://scripts/game_over_screen.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/bouncy_button.gd" id="1_bouncy"]
 [ext_resource type="Theme" uid="uid://b8q7x6y504w3" path="res://resources/main_theme.tres" id="2_theme"]
 [ext_resource type="Texture2D" path="res://assets/ui/star.svg" id="3_star"]
 
@@ -56,10 +57,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.5)
+color = Color(0, 0, 0, 0.6)
 
 [node name="Panel" type="Panel" parent="."]
-custom_minimum_size = Vector2(600, 500)
+custom_minimum_size = Vector2(600, 700)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -67,11 +68,12 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -300.0
-offset_top = -250.0
+offset_top = -350.0
 offset_right = 300.0
-offset_bottom = 250.0
+offset_bottom = 350.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(300, 350)
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
 [node name="Title" type="Label" parent="Panel"]
@@ -79,10 +81,10 @@ layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 60.0
-offset_bottom = 140.0
+offset_bottom = 160.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 64
-text = "YOU WON!"
+theme_override_font_sizes/font_size = 72
+text = "VICTORY!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -90,28 +92,32 @@ vertical_alignment = 1
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 160.0
-offset_bottom = 240.0
+offset_top = 180.0
+offset_bottom = 280.0
 grow_horizontal = 2
+theme_override_constants/separation = 20
 alignment = 1
 
 [node name="Star1" type="TextureRect" parent="Panel/StarContainer"]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
+pivot_offset = Vector2(50, 50)
 texture = ExtResource("3_star")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="Star2" type="TextureRect" parent="Panel/StarContainer"]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
+pivot_offset = Vector2(60, 60)
 texture = ExtResource("3_star")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="Star3" type="TextureRect" parent="Panel/StarContainer"]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
+pivot_offset = Vector2(50, 50)
 texture = ExtResource("3_star")
 expand_mode = 1
 stretch_mode = 5
@@ -120,29 +126,13 @@ stretch_mode = 5
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 240.0
-offset_bottom = 280.0
+offset_top = 320.0
+offset_bottom = 380.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(1, 0.8, 0, 1)
+theme_override_font_sizes/font_size = 42
 text = "+50 COINS"
 horizontal_alignment = 1
-
-[node name="ProgressBar" type="ProgressBar" parent="Panel"]
-layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = 50.0
-offset_top = 40.0
-offset_right = -50.0
-offset_bottom = 70.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_fill")
-value = 75.0
-show_percentage = false
 
 [node name="HBox" type="VBoxContainer" parent="Panel"]
 layout_mode = 1
@@ -150,38 +140,46 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 50.0
-offset_top = -220.0
-offset_right = -50.0
-offset_bottom = -20.0
+offset_left = 60.0
+offset_top = -280.0
+offset_right = -60.0
+offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_constants/separation = 20
+theme_override_constants/separation = 15
 alignment = 1
 
 [node name="NextLevel" type="Button" parent="Panel/HBox"]
-custom_minimum_size = Vector2(0, 80)
+custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn")
 text = "NEXT LEVEL"
+script = ExtResource("1_bouncy")
 
 [node name="Restart" type="Button" parent="Panel/HBox"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_colors/font_color = Color(0.3, 0.3, 0.3, 1)
 theme_override_font_sizes/font_size = 28
-text = "RESTART"
+text = "PLAY AGAIN"
 flat = true
+script = ExtResource("1_bouncy")
 
 [node name="Menu" type="Button" parent="Panel/HBox"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.3, 0.3, 1)
 theme_override_font_sizes/font_size = 28
 text = "RETURN TO MAP"
 flat = true
+script = ExtResource("1_bouncy")
+
+[node name="Confetti" parent="." instance=ExtResource("1_confetti")]
+position = Vector2(360, 200)
+
+[connection signal="pressed" from="Panel/HBox/NextLevel" to="." method="_on_next_level_pressed"]
+[connection signal="pressed" from="Panel/HBox/Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="Panel/HBox/Menu" to="." method="_on_menu_pressed"]
 
 [connection signal="pressed" from="Panel/HBox/NextLevel" to="." method="_on_next_level_pressed"]
 [connection signal="pressed" from="Panel/HBox/Restart" to="." method="_on_restart_pressed"]
