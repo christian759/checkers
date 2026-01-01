@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://eay8x7w6v5u4"]
+[gd_scene load_steps=5 format=3 uid="uid://eay8x7w6v5u4"]
 
 [ext_resource type="Script" uid="uid://bh0nrsqt483r3" path="res://scripts/level_select.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://b8q7x6y504w3" path="res://resources/main_theme.tres" id="2_theme"]
 
 [sub_resource type="Gradient" id="Gradient_bg"]
-offsets = PackedFloat32Array(0, 1)
 colors = PackedColorArray(0.960784, 0.960784, 0.960784, 1, 0.8, 0.85, 0.95, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]

@@ -306,104 +306,103 @@ func get_all_captures(side):
 						all_caps.append({"piece": p, "to": m.to, "is_capture": true})
 	return all_caps
 
-func is_valid_move(piece, dest_r, dest_c):
-	var fr = piece.grid_pos.x
-	var fc = piece.grid_pos.y
+func is_valid_move(piece, destination_row, destination_col):
+	var from_row = piece.grid_pos.x
+	var from_col = piece.grid_pos.y
 	
-	var dr = dest_r - fr
-	var dc = dest_c - fc
+	var delta_row = destination_row - from_row
+	var delta_col = destination_col - from_col
 	
 	# Basic diagonal check
-	if abs(dr) != abs(dc): return false
+	if abs(delta_row) != abs(delta_col): return false
 	
+	# Variable to hold move distance
+	var move_distance = max(abs(delta_row), abs(delta_col))
+
 	# Direction check (unless king or capturing)
-	var distance = max(abs(dr), abs(dc))
-	if not piece.is_king and distance == 1:
-		if piece.side == GameManager.Side.PLAYER and dr >= 0: return false
-		if piece.side == GameManager.Side.AI and dr <= 0: return false
+	if not piece.is_king and move_distance == 1:
+		if piece.side == GameManager.Side.PLAYER and delta_row >= 0: return false
+		if piece.side == GameManager.Side.AI and delta_row <= 0: return false
 	
 	# Single step / Flying King empty move
-	var distance = abs(dr)
-	if distance == 1:
-		return GameManager.get_piece_at(dest_r, dest_c) == null
+	if move_distance == 1:
+		return GameManager.get_piece_at(destination_row, destination_col) == null
 		
 	# Check path for obstructions
 	if piece.is_king:
-		var captured = null
-		var r_step = dr / distance
-		var c_step = dc / distance
+		var captured_piece = null
+		var step_row = delta_row / move_distance
+		var step_col = delta_col / move_distance
 		
 		# Check all squares in between
-		for i in range(1, distance):
-			var check_r = fr + i * r_step
-			var check_c = fc + i * c_step
-			var p = GameManager.get_piece_at(check_r, check_c)
+		for i in range(1, move_distance):
+			var check_row = from_row + i * step_row
+			var check_col = from_col + i * step_col
+			var piece_at_check = GameManager.get_piece_at(check_row, check_col)
 			
-			if p != null:
-				if captured != null: return false # Can't jump two pieces
-				if p.side == piece.side: return false # Can't jump own piece
-				captured = p # Found an enemy to capture
+			if piece_at_check != null:
+				if captured_piece != null: return false # Can't jump two pieces
+				if piece_at_check.side == piece.side: return false # Can't jump own piece
+				captured_piece = piece_at_check # Found an enemy to capture
 		
 		# Destination must be empty
-		if GameManager.get_piece_at(dest_r, dest_c) != null: return false
+		if GameManager.get_piece_at(destination_row, destination_col) != null: return false
 		
 		# If we found a piece, it's a capture move. If not, it's just a long move.
-		# Note: In some rules, you MUST capture if possible.
-		# For now, we return valid if it's a valid move or valid capture.
 		return true
 
 	# Standard piece jump step
-	if distance == 2:
-		if GameManager.get_piece_at(dest_r, dest_c) != null: return false
-		var mid_r = (fr + dest_r) / 2
-		var mid_c = (fc + dest_c) / 2
-		var mid_piece = GameManager.get_piece_at(mid_r, mid_c)
+	if move_distance == 2:
+		if GameManager.get_piece_at(destination_row, destination_col) != null: return false
+		var mid_row = (from_row + destination_row) / 2
+		var mid_col = (from_col + destination_col) / 2
+		var mid_piece = GameManager.get_piece_at(mid_row, mid_col)
 		if mid_piece and mid_piece.side != piece.side:
 			return true
 			
 	return false
 
-func execute_move(piece, dest_r, dest_c):
-	var fr = piece.grid_pos.x
-	var fc = piece.grid_pos.y
+func execute_move(piece, destination_row, destination_col):
+	var from_row = piece.grid_pos.x
+	var from_col = piece.grid_pos.y
 	
-	var dr = dest_r - fr
-	var dc = dest_c - fc
-	var distance = max(abs(dr), abs(dc)) # Use max for straight/diagonal consistency
+	var delta_row = destination_row - from_row
+	var delta_col = destination_col - from_col
+	var move_distance = max(abs(delta_row), abs(delta_col)) # Use max for straight/diagonal consistency
 	
 	var is_capture = false
 	var captured_piece = null
 	
 	# Detect capture by checking path
-	var dir_r = dr / distance if distance > 0 else 0
-	var dir_c = dc / distance if distance > 0 else 0
+	var dir_row = delta_row / move_distance if move_distance > 0 else 0
+	var dir_col = delta_col / move_distance if move_distance > 0 else 0
 	
-	for i in range(1, distance):
-		var check_r = fr + dir_r * i
-		var check_c = fc + dir_c * i
-		var p = GameManager.get_piece_at(check_r, check_c)
-		if p != null and p != piece:
+	for i in range(1, move_distance):
+		var check_row = from_row + dir_row * i
+		var check_col = from_col + dir_col * i
+		var piece_at_check = GameManager.get_piece_at(check_row, check_col)
+		if piece_at_check != null and piece_at_check != piece:
 			is_capture = true
-			captured_piece = p
+			captured_piece = piece_at_check
 			break
 	
 	if is_capture and captured_piece:
-		var m_r = captured_piece.grid_pos.x
-		var m_c = captured_piece.grid_pos.y
-		GameManager.set_piece_at(m_r, m_c, null)
+		var capture_row = captured_piece.grid_pos.x
+		var capture_col = captured_piece.grid_pos.y
+		GameManager.set_piece_at(capture_row, capture_col, null)
 		captured_piece.queue_free()
 		AudioManager.play_sound("capture")
 	
 	# Move logic
-	GameManager.set_piece_at(fr, fc, null)
-	GameManager.set_piece_at(dest_r, dest_c, piece)
-	piece.move_to(Vector2i(dest_r, dest_c), grid_to_world(dest_r, dest_c))
+	GameManager.set_piece_at(from_row, from_col, null)
+	GameManager.set_piece_at(destination_row, destination_col, piece)
+	piece.move_to(Vector2i(destination_row, destination_col), grid_to_world(destination_row, destination_col))
 	AudioManager.play_sound("move")
 	
 	# King promotion
 	var promoted = false
 	if not piece.is_king:
-		if (piece.side == GameManager.Side.PLAYER and dest_r == 0) or (piece.side == GameManager.Side.AI and dest_r == 7):
+		if (piece.side == GameManager.Side.PLAYER and destination_row == 0) or (piece.side == GameManager.Side.AI and destination_row == 7):
 			piece.promote_to_king()
 			promoted = true
 	

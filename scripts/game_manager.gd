@@ -180,17 +180,25 @@ func play_ai_turn():
 	
 	if best_move.piece:
 		board_node.execute_move(best_move.piece, best_move.to.x, best_move.to.y)
+		
+		# If multi-jump is active, keep playing
+		if must_jump:
+			await get_tree().create_timer(0.8).timeout
+			play_ai_turn()
 	else:
 		emit_signal("game_over", Side.PLAYER)
 
 func get_best_move(board_node, side, depth):
 	var all_moves = []
 	var pieces = []
-	for r in range(8):
-		for c in range(8):
-			var p = get_piece_at(r, c)
-			if p and p.side == side:
-				pieces.append(p)
+	if must_jump and selected_piece:
+		pieces = [selected_piece]
+	else:
+		for r in range(8):
+			for c in range(8):
+				var p = get_piece_at(r, c)
+				if p and p.side == side:
+					pieces.append(p)
 	
 	# Forced captures check
 	var captures = board_node.get_all_captures(side)
