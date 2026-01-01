@@ -65,6 +65,15 @@ shadow_color = Color(0, 0, 0, 0.5)
 shadow_size = 40
 shadow_offset = Vector2(0, 20)
 
+[sub_resource type="Gradient" id="Gradient_Sky"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.11, 0.65, 0.95, 1, 0.2, 0.7, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_Sky"]
+gradient = SubResource("Gradient_Sky")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
 [node name="LevelSelect" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -82,259 +91,100 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("GradientTexture2D_Ocean")
+texture = SubResource("GradientTexture2D_Sky")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="World" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="World"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 100.0
+offset_bottom = -120.0
 grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 3
 
-[node name="Journey" type="VBoxContainer" parent="ScrollContainer"]
+[node name="Journey" type="VBoxContainer" parent="World/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 450
+theme_override_constants/separation = 0
 alignment = 1
 
-[node name="BottomNav" type="Panel" parent="."]
-custom_minimum_size = Vector2(680, 160)
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -340.0
-offset_top = -180.0
-offset_right = 340.0
-offset_bottom = -20.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_NavBase")
+[node name="ForegroundUI" type="CanvasLayer" parent="."]
 
-[node name="PeakSystem" type="Control" parent="BottomNav"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_top = -60.0
+[node name="Header" type="Panel" parent="ForegroundUI"]
+custom_minimum_size = Vector2(0, 100)
+anchors_preset = 10
+anchor_right = 1.0
 grow_horizontal = 2
+theme_type_variation = &"Header"
 
-[node name="Border" type="Panel" parent="BottomNav/PeakSystem"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -110.0
-offset_top = -40.0
-offset_right = 110.0
-offset_bottom = 60.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_PeakBorder")
-
-[node name="Core" type="Panel" parent="BottomNav/PeakSystem"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -100.0
-offset_top = -130.0
-offset_right = 100.0
-offset_bottom = 100.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_PeakCore")
-
-[node name="VBox" type="VBoxContainer" parent="BottomNav/PeakSystem/Core"]
+[node name="HBox" type="HBoxContainer" parent="ForegroundUI/Header"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 20.0
+offset_left = 30.0
+offset_right = -30.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = -5
-alignment = 1
+theme_override_constants/separation = 40
 
-[node name="Icon" type="TextureRect" parent="BottomNav/PeakSystem/Core/VBox"]
-custom_minimum_size = Vector2(100, 100)
+[node name="Hearts" type="Label" parent="ForegroundUI/Header/HBox"]
 layout_mode = 2
-texture = ExtResource("5_tour")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Label" type="Label" parent="BottomNav/PeakSystem/Core/VBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 28
-text = "TOUR"
-horizontal_alignment = 1
-
-[node name="HBox" type="HBoxContainer" parent="BottomNav"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 10
-alignment = 1
-
-[node name="PvP" type="Button" parent="BottomNav/HBox"]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-size_flags_horizontal = 3
-icon = ExtResource("3_pvp")
-flat = true
-icon_alignment = 1
-expand_icon = true
-
-[node name="AI" type="Button" parent="BottomNav/HBox"]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-size_flags_horizontal = 3
-icon = ExtResource("4_ai")
-flat = true
-icon_alignment = 1
-expand_icon = true
-
-[node name="CenterSpacer" type="Control" parent="BottomNav/HBox"]
-custom_minimum_size = Vector2(220, 0)
-layout_mode = 2
-
-[node name="Mastery" type="Button" parent="BottomNav/HBox"]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-size_flags_horizontal = 3
-icon = ExtResource("6_mastery")
-flat = true
-icon_alignment = 1
-expand_icon = true
-
-[node name="Daily" type="Button" parent="BottomNav/HBox"]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-size_flags_horizontal = 3
-icon = ExtResource("7_daily")
-flat = true
-icon_alignment = 1
-expand_icon = true
-
-[node name="ModeSelect" type="Panel" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_Overlay")
-
-[node name="Panel" type="Panel" parent="ModeSelect"]
-custom_minimum_size = Vector2(600, 500)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -250.0
-offset_right = 300.0
-offset_bottom = 250.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_Modal")
-
-[node name="VBox" type="VBoxContainer" parent="ModeSelect/Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 40.0
-offset_top = 40.0
-offset_right = -40.0
-offset_bottom = -40.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 30
-alignment = 1
-
-[node name="Title" type="Label" parent="ModeSelect/Panel/VBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 64
-text = "LEVEL 1"
-horizontal_alignment = 1
-
-[node name="PvAI" type="Button" parent="ModeSelect/Panel/VBox"]
-custom_minimum_size = Vector2(0, 110)
-layout_mode = 2
-theme_override_font_sizes/font_size = 40
-text = "BATTLE AI"
-
-[node name="PvP" type="Button" parent="ModeSelect/Panel/VBox"]
-custom_minimum_size = Vector2(0, 110)
-layout_mode = 2
-theme_override_font_sizes/font_size = 40
-text = "2 PLAYERS"
-
-[node name="AIJourney" type="Panel" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_Overlay")
-
-[node name="VBox" type="VBoxContainer" parent="AIJourney"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Header" type="Panel" parent="AIJourney/VBox"]
-custom_minimum_size = Vector2(0, 180)
-layout_mode = 2
-
-[node name="Label" type="Label" parent="AIJourney/VBox/Header"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 64
-text = "AI MASTERY"
-horizontal_alignment = 1
+text = "❤ FULL 5"
 vertical_alignment = 1
 
-[node name="ScrollWrap" type="Control" parent="AIJourney/VBox"]
+[node name="Spacer" type="Control" parent="ForegroundUI/Header/HBox"]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_horizontal = 3
 
-[node name="ScrollContainer" type="ScrollContainer" parent="AIJourney/VBox/ScrollWrap"]
+[node name="Currency" type="Label" parent="ForegroundUI/Header/HBox"]
+layout_mode = 2
+text = "💎 2,100"
+vertical_alignment = 1
+
+[node name="Gems" type="Label" parent="ForegroundUI/Header/HBox"]
+layout_mode = 2
+text = "⭐ 60"
+vertical_alignment = 1
+
+[node name="BottomNav" type="Panel" parent="ForegroundUI"]
+custom_minimum_size = Vector2(0, 120)
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"BottomNav"
+
+[node name="HBox" type="HBoxContainer" parent="ForegroundUI/BottomNav"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
 
-[node name="Cards" type="VBoxContainer" parent="AIJourney/VBox/ScrollWrap/ScrollContainer"]
+[node name="Tour" type="Button" parent="ForegroundUI/BottomNav/HBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 40
-alignment = 1
+flat = true
+text = "TOUR"
+
+[node name="Shop" type="Button" parent="ForegroundUI/BottomNav/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+flat = true
+text = "SHOP"

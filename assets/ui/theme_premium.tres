@@ -68,20 +68,101 @@ corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_GlassPanel"]
+bg_color = Color(1, 1, 1, 0.08)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.2)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 30
+shadow_offset = Vector2(0, 15)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_GlassButton"]
+bg_color = Color(1, 1, 1, 0.15)
+border_width_bottom = 8
+border_color = Color(1, 1, 1, 0.1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_GlassButtonHover"]
+bg_color = Color(1, 1, 1, 0.25)
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 0.15)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Header"]
+bg_color = Color(0.482353, 0.776471, 0, 1)
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color(0, 0, 0, 0.1)
+shadow_size = 10
+shadow_offset = Vector2(0, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_BtnDuolingo"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 10
+border_color = Color(0.8, 0.8, 0.8, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_BtnDuolingoPressed"]
+bg_color = Color(0.9, 0.9, 0.9, 1)
+border_width_bottom = 2
+border_color = Color(0.7, 0.7, 0.7, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+expand_margin_top = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_PathNode"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 12
+border_color = Color(0.85, 0.85, 0.85, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+shadow_color = Color(0, 0, 0, 0.1)
+shadow_size = 15
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_NavDark"]
+bg_color = Color(0.1, 0.1, 0.1, 1)
+border_width_top = 2
+border_color = Color(1, 1, 1, 0.1)
+
 [resource]
-Button/styles/normal = SubResource("StyleBoxFlat_BtnNormal")
+Button/colors/font_color = Color(0.2, 0.2, 0.2, 1)
+Button/colors/font_hover_color = Color(0.1, 0.1, 0.1, 1)
+Button/colors/font_pressed_color = Color(0.2, 0.2, 0.2, 1)
+Button/styles/normal = SubResource("StyleBoxFlat_BtnDuolingo")
+Button/styles/pressed = SubResource("StyleBoxFlat_BtnDuolingoPressed")
+Header/base_type = &"Panel"
+Header/styles/panel = SubResource("StyleBoxFlat_Header")
+PathNode/base_type = &"Button"
+PathNode/styles/disabled = SubResource("StyleBoxFlat_PathNode")
+PathNode/styles/hover = SubResource("StyleBoxFlat_PathNode")
+PathNode/styles/normal = SubResource("StyleBoxFlat_PathNode")
+PathNode/styles/pressed = SubResource("StyleBoxFlat_PathNode")
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.1)
+Label/font_sizes/font_size = 32
 Panel/styles/panel = SubResource("StyleBoxFlat_HUD")
-IslandShadow/base_type = &"Panel"
-IslandShadow/styles/panel = SubResource("StyleBoxFlat_IslandShadow")
-IslandSurface/base_type = &"Panel"
-IslandSurface/styles/panel = SubResource("StyleBoxFlat_IslandSurface")
-NodeBase/base_type = &"Panel"
-NodeBase/styles/panel = SubResource("StyleBoxFlat_NodeBase")
-NodeTop/base_type = &"Button"
-NodeTop/styles/hover = SubResource("StyleBoxFlat_NodeTop")
-NodeTop/styles/normal = SubResource("StyleBoxFlat_NodeTop")
-NodeTop/styles/pressed = SubResource("StyleBoxFlat_NodeTop")
-Label/colors/font_shadow_color = Color(0, 0, 0, 0.3)
-Label/constants/shadow_offset_x = 2
-Label/constants/shadow_offset_y = 2
-Label/constants/shadow_outline_size = 4
+BottomNav/base_type = &"Panel"
+BottomNav/styles/panel = SubResource("StyleBoxFlat_NavDark")

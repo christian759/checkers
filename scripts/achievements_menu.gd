@@ -77,4 +77,4 @@ func _update_list():
 		list_container.add_child(item)
 
 func _on_back_pressed():
-	SceneTransition.change_scene("res://scenes/map_menu.tscn")
+	SceneTransition.change_scene("res://scenes/level_select.tscn")
