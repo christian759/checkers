@@ -11,7 +11,6 @@ func _ready():
 	center_board()
 
 func setup_ui():
-	main_ui.get_node("GameOverPopup/Center/VBox/RestartButton").pressed.connect(_on_restart_pressed)
 	main_ui.get_node("TopBar/HBox/HomeButton").pressed.connect(_on_home_pressed)
 	main_ui.get_node("TopBar/HBox/UndoButton").pressed.connect(_on_undo_pressed)
 
@@ -53,9 +52,6 @@ func _on_game_over(winner, next_level_possible):
 	
 	if winner == GameManager.Side.PLAYER:
 		GameManager.win_streak += 1
-		popup.get_node("Confetti").emitting = true # Try to find confetti in new screen or add it?
-		# Actually, let's add confetti to the new screen dynamically or assume it's there?
-		# For now, just play sound.
 		AudioManager.play_sound("win")
 	else:
 		GameManager.win_streak = 0

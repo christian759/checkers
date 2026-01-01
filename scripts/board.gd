@@ -245,22 +245,23 @@ func get_legal_moves(piece: Piece):
 			if GameManager.is_on_board(dest_r, dest_c):
 				var dest_p = GameManager.get_piece_at(dest_r, dest_c)
 				var mid_p = GameManager.get_piece_at(mid_r, mid_c)
-			if mid_p and mid_p.side != piece.side and dest_p == null:
-				# Capture found
-				# Rule: Men move/capture forward normally
-				# EXCEPTION: If it is a "second kill" (multi-jump), they can capture backward
 				
-				var is_forward = false
-				if piece.side == GameManager.Side.PLAYER:
-					is_forward = (d.x < 0) # Moving UP (-1)
-				else:
-					is_forward = (d.x > 0) # Moving DOWN (+1)
-				
-				if is_forward:
-					moves.append({"to": Vector2i(dest_r, dest_c), "is_capture": true})
-				elif GameManager.must_jump:
-					# Backward capture allowed ONLY if it's a multi-jump sequence
-					moves.append({"to": Vector2i(dest_r, dest_c), "is_capture": true})
+				if mid_p and mid_p.side != piece.side and dest_p == null:
+					# Capture found
+					# Rule: Men move/capture forward normally
+					# EXCEPTION: If it is a "second kill" (multi-jump), they can capture backward
+					
+					var is_forward = false
+					if piece.side == GameManager.Side.PLAYER:
+						is_forward = (d.x < 0) # Moving UP (-1)
+					else:
+						is_forward = (d.x > 0) # Moving DOWN (+1)
+					
+					if is_forward:
+						moves.append({"to": Vector2i(dest_r, dest_c), "is_capture": true})
+					elif GameManager.must_jump:
+						# Backward capture allowed ONLY if it's a multi-jump sequence
+						moves.append({"to": Vector2i(dest_r, dest_c), "is_capture": true})
 
 		# Check normal move (distance 1) - ONLY forward directions
 		# Men can NEVER just move (non-capture) backward, even in multi-jump steps
