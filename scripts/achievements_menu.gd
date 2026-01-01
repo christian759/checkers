@@ -51,7 +51,9 @@ func _update_list():
 			
 		vbox.add_child(title)
 		vbox.add_child(desc)
-		item.add_child(vbox)
+		vbox.add_child(title)
+		vbox.add_child(desc)
+		# Don't add vbox to item yet, we will put it in main_hbox
 		
 		# Status Icon
 		var status = Label.new()
@@ -70,7 +72,6 @@ func _update_list():
 		vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		main_hbox.add_child(status)
 		
-		item.remove_child(vbox)
 		item.add_child(main_hbox)
 		
 		list_container.add_child(item)
