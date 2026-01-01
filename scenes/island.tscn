@@ -11,17 +11,17 @@ theme = ExtResource("2_theme")
 script = ExtResource("1_island_script")
 
 [node name="Container" type="Control" parent="."]
-custom_minimum_size = Vector2(500, 800)
+custom_minimum_size = Vector2(540, 840)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -250.0
-offset_top = -400.0
-offset_right = 250.0
-offset_bottom = 400.0
+offset_left = -270.0
+offset_top = -420.0
+offset_right = 270.0
+offset_bottom = 420.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -30,32 +30,39 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 15.0
-offset_top = 15.0
-offset_right = 15.0
-offset_bottom = 15.0
+offset_left = 10.0
+offset_top = 30.0
+offset_right = 10.0
+offset_bottom = 30.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"IslandShadow"
+
+[node name="Base" type="Panel" parent="Container"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"IslandBase"
 
 [node name="Surface" type="Panel" parent="Container"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -22.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"IslandSurface"
 
-[node name="PathLine" type="Line2D" parent="Container"]
-width = 10.0
-default_color = Color(0.145098, 0.45098, 0.054902, 0.3)
-texture_mode = 2
-joint_mode = 2
-begin_cap_mode = 2
-end_cap_mode = 2
-
-[node name="Nodes" type="Control" parent="Container"]
+[node name="Nodes" type="Control" parent="Container/Surface"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

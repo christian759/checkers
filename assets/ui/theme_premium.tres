@@ -1,4 +1,98 @@
-[gd_resource type="Theme" load_steps=12 format=3]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://0f20i3po1rpm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_NavPremium"]
+bg_color = Color(0.08, 0.08, 0.08, 1)
+border_width_top = 4
+border_color = Color(1, 1, 1, 0.1)
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 50
+shadow_offset = Vector2(0, 20)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_BtnDuolingo"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 12
+border_color = Color(0.85, 0.85, 0.85, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color(0, 0, 0, 0.05)
+shadow_size = 10
+shadow_offset = Vector2(0, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_BtnDuolingoPressed"]
+bg_color = Color(0.95, 0.95, 0.95, 1)
+border_width_bottom = 2
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+expand_margin_top = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_HeaderModern"]
+bg_color = Color(1, 1, 1, 0.1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.2)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+shadow_color = Color(0, 0, 0, 0.15)
+shadow_size = 20
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_IslandShadow"]
+bg_color = Color(0, 0, 0, 0.2)
+corner_radius_top_left = 140
+corner_radius_top_right = 140
+corner_radius_bottom_right = 140
+corner_radius_bottom_left = 140
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 30
+shadow_offset = Vector2(0, 20)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_IslandBase"]
+bg_color = Color(0.329412, 0.501961, 0.105882, 1)
+border_width_bottom = 30
+border_color = Color(0.2, 0.35, 0.05, 1)
+corner_radius_top_left = 130
+corner_radius_top_right = 130
+corner_radius_bottom_right = 130
+corner_radius_bottom_left = 130
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_IslandSurface"]
+bg_color = Color(0.482353, 0.776471, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 0.1)
+corner_radius_top_left = 120
+corner_radius_top_right = 120
+corner_radius_bottom_right = 120
+corner_radius_bottom_left = 120
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_NodePremiumBase"]
+bg_color = Color(0.2, 0.35, 0.05, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_NodePremiumTop"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 16
+border_color = Color(0.8, 0.8, 0.8, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+shadow_color = Color(0, 0, 0, 0.1)
+shadow_size = 15
+shadow_offset = Vector2(0, 8)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_HUD"]
 bg_color = Color(0.105882, 0.301961, 0.0392157, 0.85)
@@ -15,154 +109,30 @@ shadow_color = Color(0, 0, 0, 0.3)
 shadow_size = 15
 shadow_offset = Vector2(0, 8)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_BtnNormal"]
-bg_color = Color(0.556863, 0.768627, 0.258824, 1)
-border_width_bottom = 12
-border_color = Color(0.329412, 0.607843, 0.0705882, 1)
-corner_radius_top_left = 40
-corner_radius_top_right = 40
-corner_radius_bottom_right = 40
-corner_radius_bottom_left = 40
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_NavBase"]
-bg_color = Color(0.0862745, 0.239216, 0.0313726, 0.95)
-border_width_top = 4
-border_color = Color(1, 1, 1, 0.15)
-corner_radius_top_left = 60
-corner_radius_top_right = 60
-corner_radius_bottom_right = 60
-corner_radius_bottom_left = 60
-shadow_color = Color(0, 0, 0, 0.4)
-shadow_size = 40
-shadow_offset = Vector2(0, 15)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_IslandShadow"]
-bg_color = Color(0, 0, 0, 0.2)
-corner_radius_top_left = 130
-corner_radius_top_right = 130
-corner_radius_bottom_right = 130
-corner_radius_bottom_left = 130
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_IslandSurface"]
-bg_color = Color(0.556863, 0.768627, 0.258824, 1)
-border_width_bottom = 20
-border_color = Color(0.329412, 0.607843, 0.0705882, 1)
-corner_radius_top_left = 120
-corner_radius_top_right = 120
-corner_radius_bottom_right = 120
-corner_radius_bottom_left = 120
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_NodeBase"]
-bg_color = Color(0.329412, 0.607843, 0.0705882, 1)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_NodeTop"]
-bg_color = Color(0.556863, 0.768627, 0.258824, 1)
-border_width_top = 4
-border_color = Color(1, 1, 1, 0.2)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_GlassPanel"]
-bg_color = Color(1, 1, 1, 0.08)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.2)
-corner_radius_top_left = 50
-corner_radius_top_right = 50
-corner_radius_bottom_right = 50
-corner_radius_bottom_left = 50
-shadow_color = Color(0, 0, 0, 0.3)
-shadow_size = 30
-shadow_offset = Vector2(0, 15)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_GlassButton"]
-bg_color = Color(1, 1, 1, 0.15)
-border_width_bottom = 8
-border_color = Color(1, 1, 1, 0.1)
-corner_radius_top_left = 40
-corner_radius_top_right = 40
-corner_radius_bottom_right = 40
-corner_radius_bottom_left = 40
-expand_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_GlassButtonHover"]
-bg_color = Color(1, 1, 1, 0.25)
-border_width_bottom = 4
-border_color = Color(1, 1, 1, 0.15)
-corner_radius_top_left = 40
-corner_radius_top_right = 40
-corner_radius_bottom_right = 40
-corner_radius_bottom_left = 40
-expand_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Header"]
-bg_color = Color(0.482353, 0.776471, 0, 1)
-corner_radius_bottom_right = 40
-corner_radius_bottom_left = 40
-shadow_color = Color(0, 0, 0, 0.1)
-shadow_size = 10
-shadow_offset = Vector2(0, 5)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_BtnDuolingo"]
-bg_color = Color(1, 1, 1, 1)
-border_width_bottom = 10
-border_color = Color(0.8, 0.8, 0.8, 1)
-corner_radius_top_left = 40
-corner_radius_top_right = 40
-corner_radius_bottom_right = 40
-corner_radius_bottom_left = 40
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_BtnDuolingoPressed"]
-bg_color = Color(0.9, 0.9, 0.9, 1)
-border_width_bottom = 2
-border_color = Color(0.7, 0.7, 0.7, 1)
-corner_radius_top_left = 40
-corner_radius_top_right = 40
-corner_radius_bottom_right = 40
-corner_radius_bottom_left = 40
-expand_margin_top = 8.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_PathNode"]
-bg_color = Color(1, 1, 1, 1)
-border_width_bottom = 12
-border_color = Color(0.85, 0.85, 0.85, 1)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
-shadow_color = Color(0, 0, 0, 0.1)
-shadow_size = 15
-shadow_offset = Vector2(0, 8)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_NavDark"]
-bg_color = Color(0.1, 0.1, 0.1, 1)
-border_width_top = 2
-border_color = Color(1, 1, 1, 0.1)
-
 [resource]
 Button/colors/font_color = Color(0.2, 0.2, 0.2, 1)
 Button/colors/font_hover_color = Color(0.1, 0.1, 0.1, 1)
 Button/colors/font_pressed_color = Color(0.2, 0.2, 0.2, 1)
 Button/styles/normal = SubResource("StyleBoxFlat_BtnDuolingo")
 Button/styles/pressed = SubResource("StyleBoxFlat_BtnDuolingoPressed")
-Header/base_type = &"Panel"
-Header/styles/panel = SubResource("StyleBoxFlat_Header")
-PathNode/base_type = &"Button"
-PathNode/styles/disabled = SubResource("StyleBoxFlat_PathNode")
-PathNode/styles/hover = SubResource("StyleBoxFlat_PathNode")
-PathNode/styles/normal = SubResource("StyleBoxFlat_PathNode")
-PathNode/styles/pressed = SubResource("StyleBoxFlat_PathNode")
+HeaderModern/base_type = &"Panel"
+HeaderModern/styles/panel = SubResource("StyleBoxFlat_HeaderModern")
+IslandShadow/base_type = &"Panel"
+IslandShadow/styles/panel = SubResource("StyleBoxFlat_IslandShadow")
+IslandBase/base_type = &"Panel"
+IslandBase/styles/panel = SubResource("StyleBoxFlat_IslandBase")
+IslandSurface/base_type = &"Panel"
+IslandSurface/styles/panel = SubResource("StyleBoxFlat_IslandSurface")
 Label/colors/font_color = Color(1, 1, 1, 1)
-Label/colors/font_shadow_color = Color(0, 0, 0, 0.1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.15)
+Label/constants/shadow_offset_x = 2
+Label/constants/shadow_offset_y = 2
 Label/font_sizes/font_size = 32
+NodePremiumBase/base_type = &"Panel"
+NodePremiumBase/styles/panel = SubResource("StyleBoxFlat_NodePremiumBase")
+NodePremiumTop/base_type = &"Button"
+NodePremiumTop/styles/disabled = SubResource("StyleBoxFlat_NodePremiumTop")
+NodePremiumTop/styles/hover = SubResource("StyleBoxFlat_NodePremiumTop")
+NodePremiumTop/styles/normal = SubResource("StyleBoxFlat_NodePremiumTop")
+NodePremiumTop/styles/pressed = SubResource("StyleBoxFlat_NodePremiumTop")
 Panel/styles/panel = SubResource("StyleBoxFlat_HUD")
-BottomNav/base_type = &"Panel"
-BottomNav/styles/panel = SubResource("StyleBoxFlat_NavDark")

@@ -66,13 +66,23 @@ shadow_size = 40
 shadow_offset = Vector2(0, 20)
 
 [sub_resource type="Gradient" id="Gradient_Sky"]
-offsets = PackedFloat32Array(0, 1)
-colors = PackedColorArray(0.11, 0.65, 0.95, 1, 0.2, 0.7, 1, 1)
+offsets = PackedFloat32Array(0, 0.3, 0.7, 1)
+colors = PackedColorArray(0.1, 0.6, 0.9, 1, 0.2, 0.7, 1, 1, 0.4, 0.8, 1, 1, 0.6, 0.9, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_Sky"]
 gradient = SubResource("Gradient_Sky")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_PeakCore"]
+bg_color = Color(0.482353, 0.776471, 0, 1)
+border_width_top = 8
+border_color = Color(1, 1, 1, 0.2)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 15
+shadow_offset = Vector2(0, -10)
 
 [node name="LevelSelect" type="Control"]
 layout_mode = 3
@@ -93,15 +103,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_Sky")
 
-[node name="World" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="World"]
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -113,22 +115,25 @@ grow_vertical = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 3
 
-[node name="Journey" type="VBoxContainer" parent="World/ScrollContainer"]
+[node name="Journey" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 0
+theme_override_constants/separation = 450
 alignment = 1
 
-[node name="ForegroundUI" type="CanvasLayer" parent="."]
-
-[node name="Header" type="Panel" parent="ForegroundUI"]
-custom_minimum_size = Vector2(0, 100)
+[node name="Header" type="Panel" parent="."]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
+offset_left = 40.0
+offset_top = 20.0
+offset_right = -40.0
+offset_bottom = 100.0
 grow_horizontal = 2
-theme_type_variation = &"Header"
+theme_type_variation = &"HeaderModern"
 
-[node name="HBox" type="HBoxContainer" parent="ForegroundUI/Header"]
+[node name="HBox" type="HBoxContainer" parent="Header"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -139,52 +144,24 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 40
 
-[node name="Hearts" type="Label" parent="ForegroundUI/Header/HBox"]
+[node name="Hearts" type="Label" parent="Header/HBox"]
 layout_mode = 2
-text = "❤ FULL 5"
+theme_override_font_sizes/font_size = 28
+text = "❤ 5"
 vertical_alignment = 1
 
-[node name="Spacer" type="Control" parent="ForegroundUI/Header/HBox"]
+[node name="Spacer" type="Control" parent="Header/HBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Currency" type="Label" parent="ForegroundUI/Header/HBox"]
+[node name="Currency" type="Label" parent="Header/HBox"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 28
 text = "💎 2,100"
 vertical_alignment = 1
 
-[node name="Gems" type="Label" parent="ForegroundUI/Header/HBox"]
+[node name="Gems" type="Label" parent="Header/HBox"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 28
 text = "⭐ 60"
 vertical_alignment = 1
-
-[node name="BottomNav" type="Panel" parent="ForegroundUI"]
-custom_minimum_size = Vector2(0, 120)
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_type_variation = &"BottomNav"
-
-[node name="HBox" type="HBoxContainer" parent="ForegroundUI/BottomNav"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-
-[node name="Tour" type="Button" parent="ForegroundUI/BottomNav/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-flat = true
-text = "TOUR"
-
-[node name="Shop" type="Button" parent="ForegroundUI/BottomNav/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-flat = true
-text = "SHOP"
