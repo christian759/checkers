@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=10 format=3]
+[gd_resource type="Theme" load_steps=12 format=3]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_HUD"]
 bg_color = Color(0.105882, 0.301961, 0.0392157, 0.85)
@@ -7,20 +7,13 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 0.1)
-corner_radius_top_left = 50
-corner_radius_top_right = 50
-corner_radius_bottom_right = 50
-corner_radius_bottom_left = 50
-shadow_color = Color(0, 0, 0, 0.2)
-shadow_size = 10
-shadow_offset = Vector2(0, 5)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Pill"]
-bg_color = Color(0.0509804, 0.14902, 0.0196078, 0.6)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
+corner_radius_top_left = 60
+corner_radius_top_right = 60
+corner_radius_bottom_right = 60
+corner_radius_bottom_left = 60
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 15
+shadow_offset = Vector2(0, 8)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_BtnNormal"]
 bg_color = Color(0.556863, 0.768627, 0.258824, 1)
@@ -31,67 +24,64 @@ corner_radius_top_right = 40
 corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_BtnHover"]
-bg_color = Color(0.619608, 0.831373, 0.321569, 1)
-border_width_bottom = 12
-border_color = Color(0.329412, 0.607843, 0.0705882, 1)
-corner_radius_top_left = 40
-corner_radius_top_right = 40
-corner_radius_bottom_right = 40
-corner_radius_bottom_left = 40
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_BtnPressed"]
-bg_color = Color(0.486275, 0.701961, 0.207843, 1)
-border_width_top = 8
-border_width_bottom = 2
-border_color = Color(0.329412, 0.607843, 0.0705882, 1)
-corner_radius_top_left = 40
-corner_radius_top_right = 40
-corner_radius_bottom_right = 40
-corner_radius_bottom_left = 40
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Island"]
-bg_color = Color(0.556863, 0.768627, 0.258824, 1)
-border_width_left = 4
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_NavBase"]
+bg_color = Color(0.0862745, 0.239216, 0.0313726, 0.95)
 border_width_top = 4
-border_width_right = 4
-border_width_bottom = 25
-border_color = Color(0.15, 0.15, 0.15, 0.2)
+border_color = Color(1, 1, 1, 0.15)
+corner_radius_top_left = 60
+corner_radius_top_right = 60
+corner_radius_bottom_right = 60
+corner_radius_bottom_left = 60
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 40
+shadow_offset = Vector2(0, 15)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_IslandShadow"]
+bg_color = Color(0, 0, 0, 0.2)
+corner_radius_top_left = 130
+corner_radius_top_right = 130
+corner_radius_bottom_right = 130
+corner_radius_bottom_left = 130
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_IslandSurface"]
+bg_color = Color(0.556863, 0.768627, 0.258824, 1)
+border_width_bottom = 20
+border_color = Color(0.329412, 0.607843, 0.0705882, 1)
 corner_radius_top_left = 120
 corner_radius_top_right = 120
 corner_radius_bottom_right = 120
 corner_radius_bottom_left = 120
-shadow_color = Color(0, 0, 0, 0.15)
-shadow_size = 20
-shadow_offset = Vector2(0, 10)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_NodeCircle"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_NodeBase"]
+bg_color = Color(0.329412, 0.607843, 0.0705882, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_NodeTop"]
 bg_color = Color(0.556863, 0.768627, 0.258824, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 16
-border_color = Color(0.329412, 0.607843, 0.0705882, 1)
+border_width_top = 4
+border_color = Color(1, 1, 1, 0.2)
 corner_radius_top_left = 100
 corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
 [resource]
-Button/styles/hover = SubResource("StyleBoxFlat_BtnHover")
 Button/styles/normal = SubResource("StyleBoxFlat_BtnNormal")
-Button/styles/pressed = SubResource("StyleBoxFlat_BtnPressed")
-LevelNodeCircle/base_type = &"Button"
-LevelNodeCircle/styles/disabled = SubResource("StyleBoxFlat_NodeCircle")
-LevelNodeCircle/styles/hover = SubResource("StyleBoxFlat_NodeCircle")
-LevelNodeCircle/styles/normal = SubResource("StyleBoxFlat_NodeCircle")
-LevelNodeCircle/styles/pressed = SubResource("StyleBoxFlat_NodeCircle")
 Panel/styles/panel = SubResource("StyleBoxFlat_HUD")
-PanelPill/base_type = &"Panel"
-PanelPill/styles/panel = SubResource("StyleBoxFlat_Pill")
-IslandPanel/base_type = &"Panel"
-IslandPanel/styles/panel = SubResource("StyleBoxFlat_Island")
-Label/colors/font_shadow_color = Color(0, 0, 0, 0.2)
+IslandShadow/base_type = &"Panel"
+IslandShadow/styles/panel = SubResource("StyleBoxFlat_IslandShadow")
+IslandSurface/base_type = &"Panel"
+IslandSurface/styles/panel = SubResource("StyleBoxFlat_IslandSurface")
+NodeBase/base_type = &"Panel"
+NodeBase/styles/panel = SubResource("StyleBoxFlat_NodeBase")
+NodeTop/base_type = &"Button"
+NodeTop/styles/hover = SubResource("StyleBoxFlat_NodeTop")
+NodeTop/styles/normal = SubResource("StyleBoxFlat_NodeTop")
+NodeTop/styles/pressed = SubResource("StyleBoxFlat_NodeTop")
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.3)
 Label/constants/shadow_offset_x = 2
 Label/constants/shadow_offset_y = 2
 Label/constants/shadow_outline_size = 4

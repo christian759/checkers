@@ -1,7 +1,9 @@
 extends Control
 
-@onready var surface = $Surface
-@onready var node_container = $Surface/Nodes
+@onready var container = $Container
+@onready var surface = $Container/Surface
+@onready var node_container = $Container/Nodes
+@onready var path_line = $Container/PathLine
 
 var _parent_scene = null
 
@@ -16,69 +18,85 @@ func setup(season_idx, levels, main_scene):
 	]
 	var island_color = colors[season_idx % colors.size()]
 	
-	# Clean native styling
-	var sb = surface.get_theme_stylebox("panel").duplicate()
+	# Depth layers
+	var sb = surface.get_theme_stylebox("panel", "IslandSurface").duplicate()
 	sb.bg_color = island_color
 	surface.add_theme_stylebox_override("panel", sb)
 	
-	# High-Rim circular nodes
+	var path_points = []
 	for i in range(levels.size()):
 		var data = levels[i]
-		var btn = Button.new()
-		btn.name = "Level" + str(data.num)
-		btn.text = str(data.num)
-		btn.custom_minimum_size = Vector2(180, 180)
-		btn.pivot_offset = Vector2(90, 90)
 		
-		# Pro "Snake" Pathing
+		# --- STACKED NODE ASSEMBLY ---
+		var node_root = Control.new()
+		node_root.custom_minimum_size = Vector2(160, 160)
+		node_root.pivot_offset = Vector2(80, 80)
+		
+		# Base (The Rim)
+		var base = Panel.new()
+		base.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		base.theme_type_variation = "NodeBase"
+		node_root.add_child(base)
+		
+		# Top (The Interaction)
+		var top = Button.new()
+		top.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		top.offset_bottom = -12 # Create the rim gap
+		top.theme_type_variation = "NodeTop"
+		top.text = str(data.num)
+		top.add_theme_font_size_override("font_size", 54)
+		top.add_theme_color_override("font_color", Color("#2d5e12", 0.9))
+		node_root.add_child(top)
+		
+		# Pathing (Sine wave)
 		var progress = float(i) / (float(levels.size()) - 1.0) if levels.size() > 1 else 0.5
-		var ox = sin(progress * PI * 1.5) * 140.0 
-		var vertical_step = 180.0
+		var ox = sin(progress * PI * 1.5) * 120.0 
+		var vertical_step = 160.0
+		# Reversed for "Ascent": Level 1 at bottom (large Y), Level 5 at top (small Y)
+		var pos = Vector2(250 + ox - 80, 700 - i * vertical_step - 80)
 		
-		btn.position = Vector2(250 + ox - 90, 750 - i * vertical_step - 90)
-		node_container.add_child(btn)
+		node_root.position = pos
+		node_container.add_child(node_root)
+		path_points.append(pos + Vector2(80, 80))
 		
-		btn.pressed.connect(func(): _parent_scene._on_level_selected(data.num))
+		top.pressed.connect(func(): _parent_scene._on_level_selected(data.num))
 		
-		_apply_node_style(btn, data.num)
+		# Progress coloring
+		if data.num > GameManager.max_unlocked_level:
+			top.disabled = true
+			node_root.modulate = Color(1, 1, 1, 0.4)
 		
 		if data.num < GameManager.max_unlocked_level:
-			_add_check_icon(btn)
+			_add_check_icon(node_root)
 		
 		if data.num == GameManager.max_unlocked_level:
-			_add_current_marker(btn)
+			_add_current_marker(node_root)
+
+	path_line.points = path_points
 	
-	# Breathe Animation for Island (Single Tween)
+	# Breathe Animation
 	var tween = create_tween().set_loops()
-	tween.tween_property(surface, "position:y", surface.position.y - 15, 3.0).set_trans(Tween.TRANS_SINE)
-	tween.tween_property(surface, "position:y", surface.position.y + 15, 3.0).set_trans(Tween.TRANS_SINE)
+	tween.tween_property(container, "scale", Vector2(1.02, 1.02), 4.0).set_trans(Tween.TRANS_SINE)
+	tween.tween_property(container, "scale", Vector2(1.0, 1.0), 4.0).set_trans(Tween.TRANS_SINE)
 
-func _apply_node_style(btn, num):
-	btn.add_theme_font_size_override("font_size", 54)
-	btn.add_theme_color_override("font_color", Color("#2d5e12", 0.9))
-	
-	if num > GameManager.max_unlocked_level:
-		btn.disabled = true
-		btn.modulate = Color(1, 1, 1, 0.4)
-
-func _add_check_icon(btn):
+func _add_check_icon(node):
 	var check = Label.new()
 	check.text = "✓"
 	check.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	check.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	check.add_theme_font_size_override("font_size", 44)
 	check.add_theme_color_override("font_color", Color("#2d5e12"))
-	check.size = Vector2(160, 160)
-	check.position = Vector2(0, 0)
-	btn.add_child(check)
+	check.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	check.offset_top = -5
+	node.add_child(check)
 
-func _add_current_marker(btn):
+func _add_current_marker(node):
 	var marker_tex = preload("res://assets/ui/marker_blue_bubble.svg")
 	var marker = TextureRect.new()
 	marker.texture = marker_tex
 	marker.size = Vector2(120, 80)
-	marker.position = Vector2(-100, 40)
-	btn.add_child(marker)
+	marker.position = Vector2(-110, 40)
+	node.add_child(marker)
 	
 	var tween = create_tween().set_loops()
 	tween.tween_property(marker, "position:y", 30, 0.8).set_trans(Tween.TRANS_SINE)
