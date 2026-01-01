@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bom8wdvye7p2f" path="res://scripts/piece.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://oe72klu37uhf" path="res://assets/textures/piece_player.svg" id="2_player_tex"]
-[ext_resource type="Texture2D" uid="uid://2ap8mlmi43ka" path="res://assets/textures/king_icon.svg" id="4_king_tex"]
+[ext_resource type="Texture2D" path="res://assets/textures/crown.svg" id="4_king_tex"]
 
 [node name="Piece" type="Node2D"]
 script = ExtResource("1_script")
@@ -20,5 +20,5 @@ texture = ExtResource("2_player_tex")
 [node name="KingIcon" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(0, -10)
-scale = Vector2(0.05, 0.05)
+scale = Vector2(1.0, 1.0)
 texture = ExtResource("4_king_tex")

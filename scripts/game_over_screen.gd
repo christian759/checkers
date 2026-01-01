@@ -31,6 +31,13 @@ func setup(winner_side, has_next_level):
 			title_label.text = "YOU LOST!"
 			title_label.modulate = Color(0.8, 0.2, 0.2)
 			next_level_btn.visible = false
+	
+	if is_win:
+		$Panel/StarContainer.visible = true
+		$Panel/ProgressBar.visible = true
+	else:
+		$Panel/StarContainer.visible = false
+		$Panel/ProgressBar.visible = false
 
 func _on_restart_pressed():
 	# Restart current scene

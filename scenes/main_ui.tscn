@@ -4,6 +4,9 @@
 [ext_resource type="Script" uid="uid://brr3k4mxr4w7h" path="res://scripts/bouncy_button.gd" id="2_script"]
 [ext_resource type="Texture2D" path="res://assets/ui/icon_home.svg" id="3_home"]
 [ext_resource type="Texture2D" path="res://assets/ui/icon_undo.svg" id="4_undo"]
+[ext_resource type="Texture2D" path="res://assets/ui/heart.svg" id="5_heart"]
+[ext_resource type="Texture2D" path="res://assets/ui/coin.svg" id="6_coin"]
+[ext_resource type="Texture2D" path="res://assets/ui/gem.svg" id="7_gem"]
 
 [node name="MainUI" type="Control"]
 layout_mode = 3
@@ -26,42 +29,93 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 20.0
-offset_right = -20.0
+offset_left = 15.0
+offset_right = -15.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 10
 
 [node name="HomeButton" type="Button" parent="TopBar/HBox"]
-custom_minimum_size = Vector2(80, 0)
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
 icon = ExtResource("3_home")
 flat = true
 icon_alignment = 1
 expand_icon = true
 
-[node name="TurnIndicator" type="Label" parent="TopBar/HBox"]
+[node name="LivesContainer" type="HBoxContainer" parent="TopBar/HBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.345098, 0.8, 0.00784314, 1)
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="TopBar/HBox/LivesContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("5_heart")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="TopBar/HBox/LivesContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.294118, 0.294118, 1)
 theme_override_font_sizes/font_size = 24
+text = "5"
+
+[node name="CoinsContainer" type="HBoxContainer" parent="TopBar/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="TopBar/HBox/CoinsContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("6_coin")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="TopBar/HBox/CoinsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "120"
+
+[node name="GemsContainer" type="HBoxContainer" parent="TopBar/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="TopBar/HBox/GemsContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("7_gem")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="TopBar/HBox/GemsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.168627, 0.439216, 0.788235, 1)
+theme_override_font_sizes/font_size = 24
+text = "450"
+
+[node name="TurnIndicator" type="Label" parent="TopBar/HBox"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
 text = "YOUR TURN"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="UndoButton" type="Button" parent="TopBar/HBox"]
-custom_minimum_size = Vector2(80, 0)
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
 icon = ExtResource("4_undo")
 flat = true
 icon_alignment = 1
 expand_icon = true
 
 [node name="StreakLabel" type="Label" parent="TopBar/HBox"]
+visible = false
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
 text = "🔥 0"
 horizontal_alignment = 2
 vertical_alignment = 1

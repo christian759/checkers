@@ -1,0 +1,9 @@
+<svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <filter id="shadow">
+    <feDropShadow dx="0" dy="2" stdDeviation="1" flood-color="#000000" flood-opacity="0.2"/>
+  </filter>
+  <path d="M12 2L4 8l3 12h10l3-12-8-6z" fill="#2B70C9" stroke="#1E4E8C" stroke-width="1" filter="url(#shadow)"/>
+  <path d="M12 2L7 8l5 12 5-12-5-6z" fill="#4fa3f7" fill-opacity="0.3"/>
+  <path d="M7 8h10" stroke="#1E4E8C" stroke-width="1"/>
+  <path d="M4 8l8 6 8-6" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="1"/>
+</svg>

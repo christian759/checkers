@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://game_over_script" path="res://scripts/game_over_screen.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://b8q7x6y504w3" path="res://resources/main_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" path="res://assets/ui/star.svg" id="3_star"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
 bg_color = Color(1, 1, 1, 0.95)
@@ -22,6 +23,21 @@ corner_radius_bottom_right = 20
 shadow_color = Color(0, 0.4, 0.6, 1)
 shadow_size = 0
 shadow_offset = Vector2(0, 6)
+
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.9, 0.9, 0.9, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fill"]
+bg_color = Color(0.345098, 0.8, 0.00784314, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 
 [node name="GameOverScreen" type="Control"]
 layout_mode = 3
@@ -70,6 +86,53 @@ text = "YOU WON!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="StarContainer" type="HBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 160.0
+offset_bottom = 240.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="Star1" type="TextureRect" parent="Panel/StarContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star2" type="TextureRect" parent="Panel/StarContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star3" type="TextureRect" parent="Panel/StarContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ProgressBar" type="ProgressBar" parent="Panel"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 50.0
+offset_top = 20.0
+offset_right = -50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fill")
+value = 75.0
+show_percentage = false
+
 [node name="HBox" type="VBoxContainer" parent="Panel"]
 layout_mode = 1
 anchors_preset = 12
@@ -77,9 +140,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 50.0
-offset_top = -300.0
+offset_top = -220.0
 offset_right = -50.0
-offset_bottom = -50.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/separation = 20

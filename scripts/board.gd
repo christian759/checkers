@@ -58,9 +58,9 @@ func generate_board():
 			sb.corner_radius_bottom_right = 12
 			
 			if is_dark:
-				sb.bg_color = Color("#7abf36") # Vibrant Green (Duolingo-ish Dark)
+				sb.bg_color = Color("#b8860b") # Darker Wood/Brown
 			else:
-				sb.bg_color = Color("#ffffff") # White/Cream
+				sb.bg_color = Color("#f5deb3") # Wheat/Creme
 				
 			tile.add_theme_stylebox_override("panel", sb)
 			tile.mouse_filter = Control.MOUSE_FILTER_IGNORE
