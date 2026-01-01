@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/game_over_screen.gd" id="1_script"]
 [ext_resource type="Script" path="res://scripts/bouncy_button.gd" id="2_bouncy"]
-[ext_resource type="Theme" uid="uid://theme_premium" path="res://assets/ui/theme_premium.tres" id="3_theme"]
+[ext_resource type="Theme" uid="uid://0f20i3po1rpm" path="res://assets/ui/theme_premium.tres" id="3_theme"]
 [ext_resource type="Texture2D" path="res://assets/ui/star.svg" id="4_star"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]

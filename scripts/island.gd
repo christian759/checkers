@@ -1,9 +1,11 @@
+extends Control
+
 @onready var container = $Container
 @onready var node_container = $Container/Surface/Nodes
 
 var _parent_scene = null
 
-func setup(season_idx, levels, main_scene):
+func setup(_season_idx, levels, main_scene):
 	_parent_scene = main_scene
 	
 	# Clear existing

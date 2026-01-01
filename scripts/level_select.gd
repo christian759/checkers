@@ -64,7 +64,7 @@ func _show_premium_modal():
 	vbox.offset_right = -60
 	vbox.offset_bottom = -80
 	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	vbox.add_theme_constants_override("separation", 50)
+	vbox.add_theme_constant_override("separation", 50)
 	panel.add_child(vbox)
 	
 	var title = Label.new()

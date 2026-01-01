@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://island_scene"]
 
 [ext_resource type="Script" path="res://scripts/island.gd" id="1_island_script"]
-[ext_resource type="Theme" uid="uid://theme_premium" path="res://assets/ui/theme_premium.tres" id="2_theme"]
+[ext_resource type="Theme" uid="uid://0f20i3po1rpm" path="res://assets/ui/theme_premium.tres" id="2_theme"]
 
 [node name="Island" type="Control"]
 custom_minimum_size = Vector2(720, 1000)

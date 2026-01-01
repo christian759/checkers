@@ -1,7 +1,7 @@
 [gd_scene load_steps=22 format=3 uid="uid://level_select_scene"]
 
 [ext_resource type="Script" path="res://scripts/level_select.gd" id="1_level_select_script"]
-[ext_resource type="Theme" uid="uid://theme_premium" path="res://assets/ui/theme_premium.tres" id="2_theme"]
+[ext_resource type="Theme" uid="uid://0f20i3po1rpm" path="res://assets/ui/theme_premium.tres" id="2_theme"]
 [ext_resource type="Texture2D" path="res://assets/ui/icon_achievements.svg" id="3_pvp"]
 [ext_resource type="Texture2D" path="res://assets/ui/icon_home.svg" id="4_ai"]
 [ext_resource type="Texture2D" path="res://assets/ui/icon_tour_map.svg" id="5_tour"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://main_ui_scene"]
 
 [ext_resource type="Script" path="res://scripts/main_ui.gd" id="1_main_ui_script"]
-[ext_resource type="Theme" uid="uid://theme_premium" path="res://assets/ui/theme_premium.tres" id="2_theme"]
+[ext_resource type="Theme" uid="uid://0f20i3po1rpm" path="res://assets/ui/theme_premium.tres" id="2_theme"]
 [ext_resource type="Texture2D" path="res://assets/ui/heart.svg" id="3_heart"]
 [ext_resource type="Texture2D" path="res://assets/ui/coin.svg" id="4_coin"]
 [ext_resource type="Texture2D" path="res://assets/ui/gem.svg" id="5_gem"]
