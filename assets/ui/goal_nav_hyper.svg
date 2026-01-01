@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="150" viewBox="0 0 720 150">
+  <!-- Bar Body -->
+  <path d="M0,50 H270 Q290,50 300,35 L330,5 Q360,-15 390,5 L420,35 Q430,50 450,50 H720 V150 H0 Z" fill="#0e3d09" />
+  <!-- Edge Highlight -->
+  <path d="M0,52 H270 Q290,52 302,37 L332,7 Q360,-13 388,7 L418,37 Q430,52 450,52 H720" fill="none" stroke="#2a6614" stroke-width="3" opacity="0.3" />
+</svg>

@@ -1,15 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://island_scene"]
+[gd_scene load_steps=5 format=3 uid="uid://island_scene"]
 
 [ext_resource type="Script" path="res://scripts/island.gd" id="1_island_script"]
-[ext_resource type="Texture2D" path="res://assets/ui/island_shoreline_hyper.svg" id="2_island_tex"]
+[ext_resource type="Theme" uid="uid://theme_premium" path="res://assets/ui/theme_premium.tres" id="2_theme"]
 
 [node name="Island" type="Control"]
-custom_minimum_size = Vector2(720, 800)
+custom_minimum_size = Vector2(720, 1000)
 layout_mode = 3
 anchors_preset = 0
+theme = ExtResource("2_theme")
 script = ExtResource("1_island_script")
 
-[node name="Surface" type="NinePatchRect" parent="."]
+[node name="Surface" type="Panel" parent="."]
+custom_minimum_size = Vector2(500, 800)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -17,16 +19,12 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -250.0
-offset_top = -300.0
+offset_top = -400.0
 offset_right = 250.0
-offset_bottom = 300.0
+offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_island_tex")
-patch_margin_left = 100
-patch_margin_top = 100
-patch_margin_right = 100
-patch_margin_bottom = 100
+theme_type_variation = &"IslandPanel"
 
 [node name="Nodes" type="Control" parent="Surface"]
 layout_mode = 1

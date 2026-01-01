@@ -26,24 +26,22 @@ func setup(season_idx, levels, main_scene):
 		btn.flat = true
 		btn.pivot_offset = Vector2(80, 80)
 		
-		# Super-Premium "Snake" Pathing Logic
-		# Uses a sine function to create a smooth, winding curve
-		var progress = float(i) / levels.size()
-		var curve_width = 180.0
-		var ox = sin(progress * PI * 1.5) * curve_width
-		var vertical_step = 160.0 # Taller spacing for premium scale
+		# Refined "Snake" Pathing - Perfectly Center-Balanced
+		var progress = float(i) / (levels.size() - 1) if levels.size() > 1 else 0.5
+		var ox = sin(progress * PI * 1.5) * 160.0 # Winding range
+		var vertical_step = 180.0
 		
-		# Offset for alternate islands to keep flow continuous
-		if int(data.num / 5) % 2 == 1: ox = -ox
-		
-		btn.position = Vector2(300 + ox - 80, 600 - i * vertical_step - 80)
+		btn.position = Vector2(360 + ox - 80, 800 - i * vertical_step - 80)
 		node_container.add_child(btn)
 		
 		# Connect signals
 		btn.pressed.connect(func(): _parent_scene._on_level_selected(data.num))
 		
-		# Custom Visuals (Circle nodes)
+		# Custom Visuals
 		_apply_node_style(btn, data.num)
+		
+		if data.num < GameManager.max_unlocked_level:
+			_add_check_icon(btn)
 		
 		# Add Markers
 		if data.has("boss"):
@@ -51,27 +49,65 @@ func setup(season_idx, levels, main_scene):
 		
 		if data.num == GameManager.max_unlocked_level:
 			_add_current_marker(btn)
+			
+	_add_foliage()
+
+func _add_foliage():
+	var tree_tex = preload("res://assets/ui/tree_premium.svg")
+	for i in range(8):
+		var tree = TextureRect.new()
+		tree.texture = tree_tex
+		var rand_pos = Vector2(randf_range(50, 450), randf_range(50, 550))
+		tree.position = rand_pos
+		var s = randf_range(0.6, 1.2)
+		tree.scale = Vector2(s, s)
+		tree.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tree.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		node_container.add_child(tree)
+		node_container.move_child(tree, 0) # Trees behind buttons
 
 func _apply_node_style(btn, num):
-	var tex_locked = preload("res://assets/ui/level_node_locked.svg")
-	var tex_unlocked = preload("res://assets/ui/level_node_unlocked.svg")
-	var tex_current = preload("res://assets/ui/level_node_current.svg")
+	btn.flat = false # We need the stylebox visible
 	
-	btn.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	btn.expand_icon = true
+	var sb_normal = StyleBoxFlat.new()
+	sb_normal.set_corner_radius_all(80) # Perfect circle
+	sb_normal.bg_color = Color("#8ec442")
+	sb_normal.border_width_bottom = 8 # Rim effect
+	sb_normal.border_color = Color("#549b0e")
+	sb_normal.content_margin_top = 10
 	
-	# Font styling
-	btn.add_theme_font_size_override("font_size", 48)
-	btn.add_theme_color_override("font_color", Color("#4a4a4a"))
+	var sb_hover = sb_normal.duplicate()
+	sb_hover.bg_color = Color("#9ed452")
 	
-	if num < GameManager.max_unlocked_level:
-		btn.icon = tex_unlocked
-	elif num == GameManager.max_unlocked_level:
-		btn.icon = tex_current
-	else:
-		btn.icon = tex_locked
+	var sb_pressed = sb_normal.duplicate()
+	sb_pressed.bg_color = Color("#7cb335")
+	sb_pressed.border_width_bottom = 2 # Pressed in look
+	
+	btn.add_theme_stylebox_override("normal", sb_normal)
+	btn.add_theme_stylebox_override("hover", sb_hover)
+	btn.add_theme_stylebox_override("pressed", sb_pressed)
+	
+	# Clean Typography matching goal
+	btn.add_theme_font_size_override("font_size", 54)
+	btn.add_theme_color_override("font_color", Color("#2d5e12", 0.8)) # Soft dark green-grey
+	
+	if num > GameManager.max_unlocked_level:
 		btn.disabled = true
-		btn.modulate = Color(0.8, 0.8, 0.8)
+		sb_normal.bg_color = Color("#cccccc")
+		sb_normal.border_color = Color("#aaaaaa")
+
+func _add_check_icon(btn):
+	# Create a native Godot icon (e.g., a simple Label with a "✓")
+	# Or a simple checkmark drawn with Line2D for that clean look
+	var check = Label.new()
+	check.text = "✓"
+	check.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	check.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	check.add_theme_font_size_override("font_size", 40)
+	check.add_theme_color_override("font_color", Color("#2d5e12"))
+	check.size = Vector2(80, 80)
+	check.position = Vector2(40, 40)
+	btn.add_child(check)
 
 func _add_boss_marker(btn, type):
 	var skull_tex = preload("res://assets/ui/boss_skull.svg")

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <!-- Water Ripples (Layered) -->
+  <path d="M40,140 Q300,40 560,140 L560,460 Q300,560 40,460 Z" fill="#67d8f5" opacity="0.4" />
+  <path d="M70,170 Q300,90 530,170 L530,430 Q300,510 70,430 Z" fill="#99e9fd" opacity="0.6" />
+  
+  <!-- Island Depth Shell -->
+  <path d="M95,200 Q300,150 505,200 L505,405 Q300,455 95,405 Z" fill="#3a3a3a" />
+  <!-- Island Surface -->
+  <path d="M95,190 Q300,140 505,190 L505,395 Q300,445 95,395 Z" fill="#8ec442" />
+  <!-- Path Interior -->
+  <path d="M140,230 Q300,200 460,230 L460,355 Q300,385 140,355 Z" fill="#7cb335" opacity="0.25" />
+</svg>

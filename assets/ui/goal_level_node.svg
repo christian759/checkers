@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
+  <circle cx="80" cy="88" r="70" fill="#2d5e12" opacity="0.3" /> <!-- Shadow -->
+  <circle cx="80" cy="80" r="72" fill="#549b0e" /> <!-- Dark Rim -->
+  <circle cx="80" cy="74" r="68" fill="#8ec442" /> <!-- Surface -->
+</svg>

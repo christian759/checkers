@@ -1,15 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://bm7uffa2h1dq6"]
+[gd_scene load_steps=12 format=3 uid="uid://main_ui_scene"]
 
-[ext_resource type="Script" path="res://scripts/main_ui.gd" id="1_script"]
-[ext_resource type="Theme" uid="uid://b8q7x6y504w3" path="res://resources/main_theme.tres" id="2_theme"]
-[ext_resource type="Texture2D" path="res://assets/ui/hud_capsule.svg" id="3_bg"]
-[ext_resource type="Texture2D" path="res://assets/ui/icon_home.svg" id="4_home"]
-[ext_resource type="Texture2D" path="res://assets/ui/heart.svg" id="5_heart"]
-[ext_resource type="Texture2D" path="res://assets/ui/coin.svg" id="6_coin"]
-[ext_resource type="Texture2D" path="res://assets/ui/gem.svg" id="7_gem"]
-[ext_resource type="Texture2D" path="res://assets/ui/hud_capsule_hyper.svg" id="hud_premium_pill_tex"]
-[ext_resource type="Texture2D" path="res://assets/ui/icon_undo.svg" id="8_undo"]
-[ext_resource type="Script" path="res://scripts/bouncy_button.gd" id="9_bouncy"]
+[ext_resource type="Script" path="res://scripts/main_ui.gd" id="1_main_ui_script"]
+[ext_resource type="Theme" uid="uid://theme_premium" path="res://assets/ui/theme_premium.tres" id="2_theme"]
+[ext_resource type="Texture2D" path="res://assets/ui/heart.svg" id="3_heart"]
+[ext_resource type="Texture2D" path="res://assets/ui/coin.svg" id="4_coin"]
+[ext_resource type="Texture2D" path="res://assets/ui/gem.svg" id="5_gem"]
 
 [node name="MainUI" type="Control"]
 layout_mode = 3
@@ -18,41 +13,39 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme = ExtResource("2_theme")
-script = ExtResource("1_script")
+script = ExtResource("1_main_ui_script")
 
-[node name="TopBar" type="NinePatchRect" parent="."]
-custom_minimum_size = Vector2(0, 100)
+[node name="TopHUD" type="Panel" parent="."]
+custom_minimum_size = Vector2(660, 100)
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 30.0
-offset_top = 30.0
-offset_right = -30.0
-offset_bottom = 130.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -330.0
+offset_top = 20.0
+offset_right = 330.0
+offset_bottom = 120.0
 grow_horizontal = 2
-texture = ExtResource("hud_premium_pill_tex")
-patch_margin_left = 40
-patch_margin_top = 40
-patch_margin_right = 40
-patch_margin_bottom = 40
 
-[node name="Layout" type="HBoxContainer" parent="TopBar"]
+[node name="HBox" type="HBoxContainer" parent="TopHUD"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 20.0
-offset_right = -20.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
+alignment = 1
 
-[node name="Hearts" type="Control" parent="TopBar/Layout"]
-custom_minimum_size = Vector2(100, 0)
+[node name="HeartsPill" type="Panel" parent="TopHUD/HBox"]
+custom_minimum_size = Vector2(140, 60)
 layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"PanelPill"
 
-[node name="HBox" type="HBoxContainer" parent="TopBar/Layout/Hearts"]
+[node name="HBox" type="HBoxContainer" parent="TopHUD/HBox/HeartsPill"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -61,25 +54,25 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="TopBar/Layout/Hearts/HBox"]
+[node name="Icon" type="TextureRect" parent="TopHUD/HBox/HeartsPill/HBox"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
-size_flags_vertical = 4
-texture = ExtResource("5_heart")
+texture = ExtResource("3_heart")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="TopBar/Layout/Hearts/HBox"]
+[node name="Value" type="Label" parent="TopHUD/HBox/HeartsPill/HBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 28
 text = "5"
 
-[node name="Coins" type="Control" parent="TopBar/Layout"]
+[node name="CoinsPill" type="Panel" parent="TopHUD/HBox"]
+custom_minimum_size = Vector2(180, 60)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_type_variation = &"PanelPill"
 
-[node name="HBox" type="HBoxContainer" parent="TopBar/Layout/Coins"]
+[node name="HBox" type="HBoxContainer" parent="TopHUD/HBox/CoinsPill"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -88,25 +81,25 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="TopBar/Layout/Coins/HBox"]
+[node name="Icon" type="TextureRect" parent="TopHUD/HBox/CoinsPill/HBox"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
-size_flags_vertical = 4
-texture = ExtResource("6_coin")
+texture = ExtResource("4_coin")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="TopBar/Layout/Coins/HBox"]
+[node name="Value" type="Label" parent="TopHUD/HBox/CoinsPill/HBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 24
-text = "2,100"
+theme_override_font_sizes/font_size = 28
+text = "1,200"
 
-[node name="Gems" type="Control" parent="TopBar/Layout"]
-custom_minimum_size = Vector2(120, 0)
+[node name="GemsPill" type="Panel" parent="TopHUD/HBox"]
+custom_minimum_size = Vector2(140, 60)
 layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"PanelPill"
 
-[node name="HBox" type="HBoxContainer" parent="TopBar/Layout/Gems"]
+[node name="HBox" type="HBoxContainer" parent="TopHUD/HBox/GemsPill"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -115,95 +108,21 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="TopBar/Layout/Gems/HBox"]
+[node name="Icon" type="TextureRect" parent="TopHUD/HBox/GemsPill/HBox"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
-size_flags_vertical = 4
-texture = ExtResource("7_gem")
+texture = ExtResource("5_gem")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="TopBar/Layout/Gems/HBox"]
+[node name="Value" type="Label" parent="TopHUD/HBox/GemsPill/HBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 28
 text = "60"
 
-[node name="Plus" type="Control" parent="TopBar/Layout"]
-custom_minimum_size = Vector2(40, 0)
-layout_mode = 2
-
-[node name="Home" type="Button" parent="TopBar/Layout"]
-custom_minimum_size = Vector2(70, 70)
+[node name="PlusBtn" type="Button" parent="TopHUD/HBox"]
+custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_vertical = 4
-icon = ExtResource("4_home")
-flat = true
-expand_icon = true
-script = ExtResource("9_bouncy")
-
-[node name="VSeparator" type="VSeparator" parent="TopBar/Layout"]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="Hearts" type="HBoxContainer" parent="TopBar/Layout"]
-layout_mode = 2
-alignment = 1
-
-[node name="Icon" type="TextureRect" parent="TopBar/Layout/Hearts"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-size_flags_vertical = 4
-texture = ExtResource("5_heart")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Label" type="Label" parent="TopBar/Layout/Hearts"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
-theme_override_font_sizes/font_size = 28
-text = "5"
-
-[node name="Coins" type="HBoxContainer" parent="TopBar/Layout"]
-layout_mode = 2
-alignment = 1
-
-[node name="Icon" type="TextureRect" parent="TopBar/Layout/Coins"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-size_flags_vertical = 4
-texture = ExtResource("6_coin")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Label" type="Label" parent="TopBar/Layout/Coins"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
-theme_override_font_sizes/font_size = 28
-text = "100"
-
-[node name="TurnIndicator" type="Label" parent="TopBar/Layout"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.345, 0.8, 0, 1)
-theme_override_font_sizes/font_size = 36
-text = "YOUR TURN"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Streak" type="HBoxContainer" parent="TopBar/Layout"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="TopBar/Layout/Streak"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "🔥 3"
-
-[node name="Undo" type="Button" parent="TopBar/Layout"]
-custom_minimum_size = Vector2(70, 70)
-layout_mode = 2
-size_flags_vertical = 4
-icon = ExtResource("8_undo")
-flat = true
-expand_icon = true
-script = ExtResource("9_bouncy")
+theme_override_font_sizes/font_size = 32
+text = "+"

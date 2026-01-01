@@ -4,28 +4,35 @@ const TOTAL_LEVELS = 80
 const LEVELS_PER_SEASON = 20
 var selected_node_num = 1
 
+@onready var mastery_card_scene = preload("res://scenes/mastery_card.tscn")
 
+
+
+@onready var journey = $ScrollContainer/Journey
+@onready var scroll_container = $ScrollContainer
 
 func _ready():
-	# Connect UI elements
-	$UI/SettingsButton.pressed.connect(_on_settings_pressed)
-	$VBoxContainer/ScrollContainer.get_v_scroll_bar().value_changed.connect(_on_scroll)
-	
-	# Connect Bottom Bar signals
-	$BottomBar/HBox/Social/Btn.pressed.connect(_on_pvp_pressed)
-	$BottomBar/HBox/Daily/Btn.pressed.connect(_on_daily_pressed)
-	$BottomBar/HBox/TourTab/VBox/Tour.pressed.connect(func(): $VBoxContainer/ScrollContainer.scroll_vertical = 0)
-	$BottomBar/HBox/Shop/Btn.pressed.connect(func(): pass) # Link to shop later
-	
-	# Connect Side Buttons
-	$SideButtons/Settings.pressed.connect(_on_settings_pressed)
-	
-	# Initial Setup
+	_setup_navigation()
 	generate_levels()
 	update_season_display(0)
 
+func _setup_navigation():
+	$BottomNav/HBox/Achievements.pressed.connect(func(): SceneTransition.change_scene("res://scenes/achievements_menu.tscn"))
+	$BottomNav/HBox/Daily.pressed.connect(_on_daily_pressed)
+	$BottomNav/HBox/Mastery.pressed.connect(_on_pvp_pressed)
+	$BottomNav/HBox/Settings.pressed.connect(_on_settings_pressed)
+	
+	# Peak button logic
+	var peak_btn = $BottomNav/HBox/PeakShift/Peak
+	var hidden_btn = Button.new()
+	hidden_btn.flat = true
+	hidden_btn.layout_mode = 1
+	hidden_btn.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	peak_btn.add_child(hidden_btn)
+	hidden_btn.pressed.connect(func(): scroll_container.scroll_vertical = 0)
+
 func generate_levels():
-	var journey = $VBoxContainer/ScrollContainer/Journey
+	# journey already defined via @onready
 	for child in journey.get_children():
 		if child.name != "Padding":
 			child.queue_free()
