@@ -200,9 +200,9 @@ func show_valid_moves(piece):
 		marker.set_script(marker_script)
 		marker.position = grid_to_world(move.to.x, move.to.y)
 		if move.is_capture:
-			marker.modulate = Color(1, 0.3, 0.3) # Red for capture
+			marker.modulate = Color(1.0, 0.5, 0.0) # ORANGE for capture (Visible on Green/White)
 		else:
-			marker.modulate = Color(0.3, 1, 0.3) # Green for normal
+			marker.modulate = Color(0.0, 0.5, 1.0) # BLUE for normal (Visible on Green/White)
 		highlights.add_child(marker)
 
 func clear_highlights():

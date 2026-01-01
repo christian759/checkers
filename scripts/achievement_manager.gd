@@ -22,6 +22,7 @@ var achievements = {
 	"speed_demon": { "title": "Speed Demon", "desc": "Win in under 30 seconds", "unlocked": false },
 	"slow_poke": { "title": "Thoughtful", "desc": "Take 2 minutes on a single move", "unlocked": false },
 	"undoer": { "title": "Time Traveler", "desc": "Use the Undo button", "unlocked": false },
+	"first_capture": { "title": "First Blood", "desc": "Capture an enemy piece", "unlocked": false },
 	"capture_100": { "title": "Hunter", "desc": "Capture 100 pieces total", "unlocked": false },
 	"capture_500": { "title": "Predator", "desc": "Capture 500 pieces total", "unlocked": false },
 	"capture_1000": { "title": "Apex Predator", "desc": "Capture 1000 pieces total", "unlocked": false },

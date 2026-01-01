@@ -1,29 +1,26 @@
 extends Control
 
-@onready var forced_jumps_btn = $VBox/ForcedJumps/Button
-@onready var movement_btn = $VBox/Movement/Button
-
 func _ready():
 	_update_ui()
-	
-	$TopBar/Back.pressed.connect(_on_back_pressed)
-	forced_jumps_btn.pressed.connect(_on_forced_jumps_toggled)
-	movement_btn.pressed.connect(_on_movement_toggled)
 
 func _update_ui():
-	forced_jumps_btn.text = "ON" if GameManager.forced_jumps else "OFF"
-	movement_btn.text = GameManager.movement_mode.to_upper()
+	# Update button states based on GameManager settings
+	$Panel/VBoxContainer/ForcedJumps/Button.text = "ON" if GameManager.forced_jumps else "OFF"
+	$Panel/VBoxContainer/MovementMode/Button.text = "DIAGONAL" if GameManager.movement_mode == "diagonal" else "STRAIGHT"
 
-func _on_forced_jumps_toggled():
+func _on_back_pressed():
+	# Go back to Main Menu
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
+func _on_forced_jumps_pressed():
 	GameManager.forced_jumps = !GameManager.forced_jumps
 	_update_ui()
+	GameManager.save_game()
 
-func _on_movement_toggled():
+func _on_movement_mode_pressed():
 	if GameManager.movement_mode == "diagonal":
 		GameManager.movement_mode = "straight"
 	else:
 		GameManager.movement_mode = "diagonal"
 	_update_ui()
-
-func _on_back_pressed():
-	SceneTransition.change_scene("res://scenes/map_menu.tscn")
+	GameManager.save_game()

@@ -1,9 +1,36 @@
-[gd_scene load_steps=3 format=3 uid="uid://s5t6r7q8p9o1"]
+[gd_scene load_steps=7 format=3 uid="uid://settings_menu_scene"]
 
 [ext_resource type="Script" uid="uid://settings_script" path="res://scripts/settings_menu.gd" id="1_script"]
+[ext_resource type="Theme" uid="uid://b8q7x6y504w3" path="res://resources/main_theme.tres" id="2_theme"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
-bg_color = Color(0.1, 0.1, 0.1, 1)
+[sub_resource type="Gradient" id="Gradient_bg"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.1, 0.6, 0.8, 1, 0.05, 0.3, 0.5, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]
+gradient = SubResource("Gradient_bg")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(1, 1, 1, 0.9)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_left = 30
+corner_radius_bottom_right = 30
+shadow_color = Color(0, 0, 0, 0.2)
+shadow_size = 20
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
+bg_color = Color(0.2, 0.8, 0.2, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_left = 15
+corner_radius_bottom_right = 15
+shadow_color = Color(0.1, 0.5, 0.1, 1)
+shadow_size = 0
+shadow_offset = Vector2(0, 5)
 
 [node name="SettingsMenu" type="Control"]
 layout_mode = 3
@@ -12,92 +39,118 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_theme")
 script = ExtResource("1_script")
 
-[node name="BG" type="Panel" parent="."]
+[node name="BG" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+texture = SubResource("GradientTexture2D_bg")
 
-[node name="TopBar" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 80)
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(500, 600)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -300.0
+offset_right = 250.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Title" type="Label" parent="Panel"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
+offset_top = 40.0
+offset_bottom = 100.0
 grow_horizontal = 2
-
-[node name="Back" type="Button" parent="TopBar"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 20.0
-offset_top = -20.0
-offset_right = 100.0
-offset_bottom = 20.0
-grow_vertical = 2
-text = "BACK"
-
-[node name="Label" type="Label" parent="TopBar"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -22.5
-offset_right = 100.0
-offset_bottom = 22.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 48
 text = "SETTINGS"
 horizontal_alignment = 1
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
+anchors_preset = 14
 anchor_top = 0.5
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -100.0
-offset_right = 200.0
-offset_bottom = 100.0
+offset_left = 40.0
+offset_top = -150.0
+offset_right = -40.0
+offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 30
 
-[node name="ForcedJumps" type="HBoxContainer" parent="VBox"]
+[node name="ForcedJumps" type="HBoxContainer" parent="Panel/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBox/ForcedJumps"]
+[node name="Label" type="Label" parent="Panel/VBoxContainer/ForcedJumps"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 24
-text = "FORCED JUMPS"
+theme_override_colors/font_color = Color(0.3, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 28
+text = "Forced Jumps"
 
-[node name="Button" type="Button" parent="VBox/ForcedJumps"]
-custom_minimum_size = Vector2(100, 50)
+[node name="Button" type="Button" parent="Panel/VBoxContainer/ForcedJumps"]
+custom_minimum_size = Vector2(160, 60)
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn")
 text = "ON"
 
-[node name="Movement" type="HBoxContainer" parent="VBox"]
+[node name="MovementMode" type="HBoxContainer" parent="Panel/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBox/Movement"]
+[node name="Label" type="Label" parent="Panel/VBoxContainer/MovementMode"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 24
-text = "RULES"
+theme_override_colors/font_color = Color(0.3, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 28
+text = "Move Rules"
 
-[node name="Button" type="Button" parent="VBox/Movement"]
-custom_minimum_size = Vector2(150, 50)
+[node name="Button" type="Button" parent="Panel/VBoxContainer/MovementMode"]
+custom_minimum_size = Vector2(160, 60)
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn")
 text = "DIAGONAL"
+
+[node name="Back" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(200, 70)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn")
+text = "BACK"
+
+[connection signal="pressed" from="Panel/VBoxContainer/ForcedJumps/Button" to="." method="_on_forced_jumps_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/MovementMode/Button" to="." method="_on_movement_mode_pressed"]
+[connection signal="pressed" from="Panel/Back" to="." method="_on_back_pressed"]
