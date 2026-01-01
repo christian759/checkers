@@ -33,3 +33,4 @@ window/handheld/orientation=1
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+input_devices/pointing/emulate_touch_from_mouse=true

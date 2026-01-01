@@ -15,6 +15,7 @@ func _update_list():
 		var data = AchievementManager.achievements[id]
 		var item = PanelContainer.new()
 		item.custom_minimum_size = Vector2(0, 100)
+		item.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		
 		# Style
 		var sb = StyleBoxFlat.new()
@@ -68,6 +69,7 @@ func _update_list():
 		# Simple layout hack: put status in a physics-process agnostic overlay or just margin container
 		# Actually let's use an HBox inside the item
 		var main_hbox = HBoxContainer.new()
+		main_hbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		main_hbox.add_child(vbox)
 		vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		main_hbox.add_child(status)
