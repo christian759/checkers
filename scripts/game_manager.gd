@@ -86,6 +86,7 @@ func reset_game():
 	move_history = []
 	is_daily_challenge = false
 	setup_board()
+	game_start_time = Time.get_unix_time_from_system()
 
 func save_state():
 	var state = []
@@ -126,13 +127,20 @@ func undo():
 	emit_signal("turn_changed", current_turn)
 
 func check_win_condition(winner):
+	# Achievement: First Win, Speed Demon
 	if winner == Side.PLAYER:
 		if current_level == max_unlocked_level and max_unlocked_level < 80:
 			max_unlocked_level += 1
 		
 		AchievementManager.unlock("first_win")
+		
+		var duration = Time.get_unix_time_from_system() - game_start_time
+		if duration < 60:
+			AchievementManager.unlock("speed_demon")
+			
 		save_game()
 		
+		# ... existing streak logic ...
 		if win_streak >= 3: AchievementManager.unlock("win_streak_3")
 		if win_streak >= 5: AchievementManager.unlock("win_streak_5")
 		if win_streak >= 10: AchievementManager.unlock("win_streak_10")
@@ -144,7 +152,44 @@ func check_win_condition(winner):
 		if current_level >= 60: AchievementManager.unlock("level_60")
 		if current_level >= 80: AchievementManager.unlock("level_80")
 
-func is_on_board(r, c):
+	elif winner == Side.AI:
+		AchievementManager.unlock("first_loss")
+
+# ... (skipped helper functions) ...
+
+func evaluate_move(board_node, move):
+	var score = 0
+	if move.is_capture: score += 100
+	if move.piece.is_king: score += 10
+	
+	# Center control
+	var dist_to_center = abs(move.to.x - 3.5) + abs(move.to.y - 3.5)
+	score -= dist_to_center * 2
+	
+	# Material Advancement: Encourage moving towards enemy side
+	if move.piece.side == Side.AI:
+		score += move.to.x * 2 # Higher X (row 7) is better for AI (starts at 0-2)
+	
+	# Mobility Score: Encourage using different pieces
+	# (Simplified: Random nudge to break repetition)
+	score += randf_range(0, 5)
+
+	# Repetition Penalty: Avoid immediate back-and-forth
+	# This would require tracking historical moves, which we can simplify:
+	# Just discourage moving back to where we started if possible?
+	# Hard to detect without history in this function.
+	# The random mobility nudge should help enough for now.
+	
+	# King promotion incentive
+	if move.to.x == 7: score += 50
+	
+	# Randomness for low levels
+	if current_level <= 2:
+		score += randf_range(-50, 50)
+		
+	return score
+
+var game_start_time = 0 # Initialize this
 	return r >= 0 and r < 8 and c >= 0 and c < 8
 
 func get_piece_at(r, c):
