@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8" />
+      <feOffset dx="0" dy="4" result="offsetblur" />
+      <feComponentTransfer><feFuncA type="linear" slope="0.4"/></feComponentTransfer>
+      <feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+  <!-- Outer Ripple 2 (Sky Blue) -->
+  <path d="M50,150 Q300,50 550,150 L550,450 Q300,550 50,450 Z" fill="#67d8f5" opacity="0.4" />
+  <!-- Outer Ripple 1 (Light Cyan) -->
+  <path d="M80,180 Q300,100 520,180 L520,420 Q300,500 80,420 Z" fill="#99e9fd" opacity="0.6" />
+  
+  <!-- Island Depth Shell -->
+  <path d="M100,200 Q300,150 500,200 L500,400 Q300,450 100,400 Z" fill="#3a3a3a" filter="url(#softShadow)" />
+  <!-- Island Surface (Green) -->
+  <path d="M100,190 Q300,140 500,190 L500,390 Q300,440 100,390 Z" fill="#8ec442" />
+  <!-- Inner Texture / Path Detail -->
+  <path d="M150,230 Q300,200 450,230 L450,350 Q300,380 150,350 Z" fill="#7cb335" opacity="0.3" />
+</svg>

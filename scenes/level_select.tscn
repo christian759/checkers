@@ -15,7 +15,8 @@
 [ext_resource type="Texture2D" path="res://assets/ui/icon_summer.svg" id="13_summer"]
 [ext_resource type="Texture2D" path="res://assets/ui/icon_autumn.svg" id="14_autumn"]
 [ext_resource type="Texture2D" path="res://assets/ui/icon_winter.svg" id="15_winter"]
-[ext_resource type="Texture2D" path="res://assets/ui/nav_elevated.svg" id="nav_elevated_tex"]
+[ext_resource type="Texture2D" path="res://assets/ui/nav_elevated_hyper.svg" id="nav_elevated_tex"]
+[ext_resource type="Texture2D" path="res://assets/ui/hud_capsule_hyper.svg" id="hud_hyper_tex"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bottom"]
 bg_color = Color(0.12549, 0.435294, 0.0156863, 1)

@@ -26,14 +26,17 @@ func setup(season_idx, levels, main_scene):
 		btn.flat = true
 		btn.pivot_offset = Vector2(80, 80)
 		
-		# Organic winding path logic
-		# Screenshot shows (38, 39, 40) winding UP
-		var step_y = 120
-		var ox = 0
-		if i % 4 == 1: ox = 80
-		elif i % 4 == 3: ox = -80
+		# Super-Premium "Snake" Pathing Logic
+		# Uses a sine function to create a smooth, winding curve
+		var progress = float(i) / levels.size()
+		var curve_width = 180.0
+		var ox = sin(progress * PI * 1.5) * curve_width
+		var vertical_step = 160.0 # Taller spacing for premium scale
 		
-		btn.position = Vector2(250 + ox - 80, 500 - i * step_y - 80)
+		# Offset for alternate islands to keep flow continuous
+		if int(data.num / 5) % 2 == 1: ox = -ox
+		
+		btn.position = Vector2(300 + ox - 80, 600 - i * vertical_step - 80)
 		node_container.add_child(btn)
 		
 		# Connect signals
@@ -87,7 +90,20 @@ func _add_current_marker(btn):
 	marker.position = Vector2(-100, 40) # Position bubble to the left of node
 	btn.add_child(marker)
 	
-	# Animate float
+	# Premium "Breathe & Float" Animation
 	var tween = create_tween().set_loops()
-	tween.tween_property(marker, "position:x", -110.0, 0.8).set_trans(Tween.TRANS_SINE)
-	tween.tween_property(marker, "position:x", -100.0, 0.8).set_trans(Tween.TRANS_SINE)
+	tween.tween_property(marker, "position:x", -110.0, 1.2).set_trans(Tween.TRANS_SINE)
+	tween.parallel().tween_property(marker, "scale", Vector2(1.05, 1.05), 1.2).set_trans(Tween.TRANS_SINE)
+	tween.tween_property(marker, "position:x", -100.0, 1.2).set_trans(Tween.TRANS_SINE)
+	tween.parallel().tween_property(marker, "scale", Vector2(1.0, 1.0), 1.2).set_trans(Tween.TRANS_SINE)
+	
+	# Animate the island itself for "Ocean Flow"
+	var island_tween = create_tween().set_loops()
+	island_tween.tween_property(surface, "scale", Vector2(1.02, 1.02), 3.0).set_trans(Tween.TRANS_SINE)
+	island_tween.tween_property(surface, "scale", Vector2(1.0, 1.0), 3.0).set_trans(Tween.TRANS_SINE)
+	
+	# Shoreline Ripple Pulse
+	# The SVG has ripples in it, so we pulse their visibility/modulate
+	var ripple_tween = create_tween().set_loops()
+	ripple_tween.tween_property(surface, "modulate", Color(1.1, 1.1, 1.1, 1.0), 2.0).set_trans(Tween.TRANS_SINE)
+	ripple_tween.tween_property(surface, "modulate", Color(1.0, 1.0, 1.0, 1.0), 2.0).set_trans(Tween.TRANS_SINE)

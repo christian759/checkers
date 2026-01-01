@@ -7,8 +7,7 @@
 [ext_resource type="Texture2D" path="res://assets/ui/heart.svg" id="5_heart"]
 [ext_resource type="Texture2D" path="res://assets/ui/coin.svg" id="6_coin"]
 [ext_resource type="Texture2D" path="res://assets/ui/gem.svg" id="7_gem"]
-[ext_resource type="Texture2D" path="res://assets/ui/hud_premium_pill.svg" id="hud_premium_pill_tex"]
-[ext_resource type="Texture2D" path="res://assets/ui/hud_premium_pill.svg" id="hud_premium_pill_tex"]
+[ext_resource type="Texture2D" path="res://assets/ui/hud_capsule_hyper.svg" id="hud_premium_pill_tex"]
 [ext_resource type="Texture2D" path="res://assets/ui/icon_undo.svg" id="8_undo"]
 [ext_resource type="Script" path="res://scripts/bouncy_button.gd" id="9_bouncy"]
 

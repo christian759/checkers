@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://island_scene"]
 
 [ext_resource type="Script" path="res://scripts/island.gd" id="1_island_script"]
-[ext_resource type="Texture2D" path="res://assets/ui/island_organic.svg" id="2_island_tex"]
+[ext_resource type="Texture2D" path="res://assets/ui/island_shoreline_hyper.svg" id="2_island_tex"]
 
 [node name="Island" type="Control"]
 custom_minimum_size = Vector2(720, 800)
