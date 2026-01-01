@@ -1,9 +1,7 @@
-extends Control
+var _parent_scene = null
 
-@onready var surface = $Surface
-@onready var node_container = $Surface/Nodes
-
-func setup(season_idx, levels):
+func setup(season_idx, levels, main_scene):
+	_parent_scene = main_scene
 	var colors = [
 		Color("#8ec442"), # Spring
 		Color("#f5e050"), # Summer
@@ -29,7 +27,7 @@ func setup(season_idx, levels):
 		node_container.add_child(btn)
 		
 		# Connect signals
-		btn.pressed.connect(func(): owner._on_level_selected(data.num))
+		btn.pressed.connect(func(): _parent_scene._on_level_selected(data.num))
 		
 		# Set icon based on state
 		_update_button_visual(btn, data.num)

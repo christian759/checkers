@@ -11,7 +11,16 @@ func _ready():
 	$UI/SettingsButton.pressed.connect(_on_settings_pressed)
 	$VBoxContainer/ScrollContainer.get_v_scroll_bar().value_changed.connect(_on_scroll)
 	
-func generate_levels():
+	# Connect Bottom Bar signals
+	$BottomBar/HBox/Social/Btn.pressed.connect(_on_pvp_pressed)
+	$BottomBar/HBox/Daily/Btn.pressed.connect(_on_daily_pressed)
+	$BottomBar/HBox/TourTab/VBox/Tour.pressed.connect(func(): $VBoxContainer/ScrollContainer.scroll_vertical = 0)
+	$BottomBar/HBox/Settings/Btn.pressed.connect(_on_settings_pressed)
+	
+	# Initial Setup
+	generate_levels()
+	setup_islands()
+	update_season_display(0)
 	var journey = $VBoxContainer/ScrollContainer/Journey
 	for child in journey.get_children():
 		if child.name != "Padding":
@@ -33,7 +42,7 @@ func generate_levels():
 			levels_data.append(data)
 		
 		var season_idx = clamp(int((i * 5) / LEVELS_PER_SEASON), 0, 3)
-		island.setup(season_idx, levels_data)
+		island.setup(season_idx, levels_data, self)
 
 func update_level_buttons():
 	# Now handled via the Island component's setup, 
