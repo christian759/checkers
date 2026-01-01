@@ -1,24 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://level_select_scene"]
+[sub_resource type="Gradient" id="Gradient_Ocean"]
+colors = PackedColorArray(0.141176, 0.811765, 0.945098, 1, 0.054902, 0.501961, 0.8, 1)
 
-[ext_resource type="Script" path="res://scripts/level_select.gd" id="1_level_select_script"]
-[ext_resource type="Theme" uid="uid://theme_premium" path="res://assets/ui/theme_premium.tres" id="2_theme"]
-[ext_resource type="Texture2D" path="res://assets/ui/icon_achievements.svg" id="3_badge"]
-[ext_resource type="Texture2D" path="res://assets/ui/icon_daily.svg" id="4_daily"]
-[ext_resource type="Texture2D" path="res://assets/ui/icon_tour_map.svg" id="5_tour"]
-[ext_resource type="Texture2D" path="res://assets/ui/icon_mastery.svg" id="6_mastery"]
-[ext_resource type="Texture2D" path="res://assets/ui/icon_settings.svg" id="7_settings"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Nav"]
-bg_color = Color(0.105882, 0.301961, 0.0392157, 1)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Peak"]
-bg_color = Color(0.105882, 0.401961, 0.0392157, 1)
-corner_radius_top_left = 60
-corner_radius_top_right = 60
-border_width_top = 4
-border_color = Color(0.556863, 0.768627, 0.258824, 0.3)
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_Ocean"]
+gradient = SubResource("Gradient_Ocean")
+fill_to = Vector2(0, 1)
 
 [node name="LevelSelect" type="Control"]
 layout_mode = 3
@@ -30,14 +15,14 @@ grow_vertical = 2
 theme = ExtResource("2_theme")
 script = ExtResource("1_level_select_script")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.141176, 0.811765, 0.945098, 1)
+texture = SubResource("GradientTexture2D_Ocean")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1
@@ -53,7 +38,8 @@ vertical_scroll_mode = 3
 [node name="Journey" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 0
+theme_override_constants/separation = 300
+alignment = 1
 
 [node name="BottomNav" type="Panel" parent="."]
 custom_minimum_size = Vector2(0, 160)

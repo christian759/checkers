@@ -7,16 +7,27 @@ extends Control
 # Simplest: TextureRect for visual, transparent Button for click.
 
 func set_level_data(level_id, locked):
-	$Button.text = "" # Clear text from button, we use custom label
-	$TextureRect/Label.text = str(level_id)
+	# Using native StyleBoxFlat for modern, asset-free circles
+	var sb = StyleBoxFlat.new()
+	sb.set_corner_radius_all(80) # Circle shape
 	
 	if locked:
-		$TextureRect.texture = load("res://assets/ui/node_locked.svg")
-		$TextureRect/Label.visible = false
+		sb.bg_color = Color("#cccccc")
+		sb.border_width_bottom = 4
+		sb.border_color = Color("#aaaaaa")
+		$TextureRect/Label.add_theme_color_override("font_color", Color("#888888"))
 		$Button.disabled = true
 	else:
-		$TextureRect.texture = load("res://assets/ui/node_unlocked.svg")
-		$TextureRect/Label.visible = true
+		sb.bg_color = Color("#8ec442")
+		sb.border_width_bottom = 8
+		sb.border_color = Color("#549b0e")
 		$TextureRect/Label.add_theme_color_override("font_color", Color.WHITE)
-		$TextureRect/Label.add_theme_color_override("font_shadow_color", Color(0,0,0,0.3))
 		$Button.disabled = false
+	
+	# Assuming Background is a Panel, which we'll need to update in the .tscn
+	# For now, let's override the Button style itself for simplicity
+	$Button.add_theme_stylebox_override("normal", sb)
+	$Button.add_theme_stylebox_override("disabled", sb)
+	$TextureRect.visible = false # Hide old texture container
+	$Button.text = str(level_id) # Put number on button
+	$Button.add_theme_font_size_override("font_size", 40)

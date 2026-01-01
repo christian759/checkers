@@ -27,7 +27,7 @@ func setup(season_idx, levels, main_scene):
 		btn.pivot_offset = Vector2(80, 80)
 		
 		# Refined "Snake" Pathing - Perfectly Center-Balanced
-		var progress = float(i) / (levels.size() - 1) if levels.size() > 1 else 0.5
+		var progress = float(i) / (float(levels.size()) - 1.0) if levels.size() > 1 else 0.5
 		var ox = sin(progress * PI * 1.5) * 160.0 # Winding range
 		var vertical_step = 180.0
 		

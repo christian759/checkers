@@ -52,34 +52,19 @@ func generate_levels():
 			if level_num % 20 == 0: data["boss"] = "crown"
 			levels_data.append(data)
 		
-		var season_idx = clamp(int((i * 5) / LEVELS_PER_SEASON), 0, 3)
+		var season_idx = clamp(int(float(i * 5) / LEVELS_PER_SEASON), 0, 3)
 		island.setup(season_idx, levels_data, self)
 
 func update_level_buttons():
 	# Refresh all islands to reflect progress
 	generate_levels() 
 
-func _on_scroll(value):
-	var max_scroll = $VBoxContainer/ScrollContainer.get_v_scroll_bar().max_value
-	if max_scroll > 0:
-		var progress = value / max_scroll
-		var season_index = clamp(int(progress * 4), 0, 3)
-		update_season_display(season_index)
+func _on_scroll(_value):
+	pass # Progress-based season updates disabled for now
 
-func update_season_display(idx):
-	var seasons = [
-		{"name": "SPRING", "color": Color("#3fd15b"), "icon": preload("res://assets/ui/icon_spring.svg")},
-		{"name": "SUMMER", "color": Color("#f5e050"), "icon": preload("res://assets/ui/icon_summer.svg")},
-		{"name": "AUTUMN", "color": Color("#e08031"), "icon": preload("res://assets/ui/icon_autumn.svg")},
-		{"name": "WINTER", "color": Color("#7ec9f5"), "icon": preload("res://assets/ui/icon_winter.svg")}
-	]
-	var s = seasons[idx]
-	$VBoxContainer/SeasonHeader/HBox/Title.text = "SEASON " + str(idx + 1) + ": " + s.name
-	$VBoxContainer/SeasonHeader/HBox/Icon.texture = s.icon
-	
-	var water = $Background/Water
-	var tween = create_tween()
-	tween.tween_property(water, "color", s.color.lerp(Color.WHITE, 0.2), 0.5)
+func update_season_display(_idx):
+	# Season header removed in new UI layout
+	pass
 
 
 

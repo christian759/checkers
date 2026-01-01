@@ -62,7 +62,7 @@ func generate_map():
 		# Current level indicator (Coffee icon)
 		if i == GameManager.current_level:
 			var indicator = TextureRect.new()
-			indicator.texture = load("res://assets/ui/current_level_marker.svg")
+			indicator.texture = load("res://assets/ui/marker_blue_bubble.svg")
 			indicator.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			indicator.custom_minimum_size = Vector2(80, 80)
 			indicator.size = Vector2(80, 80)
