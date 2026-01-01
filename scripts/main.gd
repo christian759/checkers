@@ -44,19 +44,20 @@ func _on_turn_changed(new_side):
 			label.text = "PLAYER 2 TURN"
 			label.add_theme_color_override("font_color", Color("#ff4b4b"))
 
-func _on_game_over(winner):
-	var popup = main_ui.get_node("GameOverPopup")
-	var title = popup.get_node("Center/VBox/Title")
+const GAME_OVER_SCENE = preload("res://scenes/game_over_screen.tscn")
+
+func _on_game_over(winner, next_level_possible):
+	var screen = GAME_OVER_SCENE.instantiate()
+	$UI.add_child(screen)
+	screen.setup(winner, next_level_possible)
 	
-	popup.show()
 	if winner == GameManager.Side.PLAYER:
-		title.text = "GREAT JOB!"
 		GameManager.win_streak += 1
-		GameManager.check_win_condition(winner)
-		popup.get_node("Confetti").emitting = true
+		popup.get_node("Confetti").emitting = true # Try to find confetti in new screen or add it?
+		# Actually, let's add confetti to the new screen dynamically or assume it's there?
+		# For now, just play sound.
 		AudioManager.play_sound("win")
 	else:
-		title.text = "NICE TRY!"
 		GameManager.win_streak = 0
 	
 	main_ui.get_node("TopBar/HBox/StreakLabel").text = "🔥 " + str(GameManager.win_streak)

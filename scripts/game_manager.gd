@@ -22,7 +22,7 @@ var forced_jumps = false
 var movement_mode = "diagonal" # "diagonal" or "straight"
 
 signal turn_changed(new_side)
-signal game_over(winner)
+signal game_over(winner, next_level_possible)
 signal piece_moved(from, to)
 signal piece_captured(pos)
 
@@ -36,7 +36,43 @@ func _ready():
 	
 	AchievementManager.achievement_unlocked.connect(func(id, title): save_game())
 
-func save_game():
+# ... (skip to check_win_condition)
+
+func check_win_condition(winner):
+	var next_level_possible = false
+	
+	# Achievement: First Win, Speed Demon
+	if winner == Side.PLAYER:
+		if current_level == max_unlocked_level and max_unlocked_level < 80:
+			max_unlocked_level += 1
+		
+		if current_level < 80:
+			next_level_possible = true
+		
+		AchievementManager.unlock("first_win")
+		
+		var duration = Time.get_unix_time_from_system() - game_start_time
+		if duration < 60:
+			AchievementManager.unlock("speed_demon")
+			
+		save_game()
+		
+		# ... existing streak logic ...
+		if win_streak >= 3: AchievementManager.unlock("win_streak_3")
+		if win_streak >= 5: AchievementManager.unlock("win_streak_5")
+		if win_streak >= 10: AchievementManager.unlock("win_streak_10")
+		
+		if current_level >= 5: AchievementManager.unlock("level_5")
+		if current_level >= 10: AchievementManager.unlock("level_10")
+		if current_level >= 20: AchievementManager.unlock("level_20")
+		if current_level >= 40: AchievementManager.unlock("level_40")
+		if current_level >= 60: AchievementManager.unlock("level_60")
+		if current_level >= 80: AchievementManager.unlock("level_80")
+
+	elif winner == Side.AI:
+		AchievementManager.unlock("first_loss")
+	
+	emit_signal("game_over", winner, next_level_possible)
 	var save_data = {
 		"current_level": current_level,
 		"max_unlocked_level": max_unlocked_level,
@@ -231,7 +267,8 @@ func play_ai_turn():
 			await get_tree().create_timer(0.8).timeout
 			play_ai_turn()
 	else:
-		emit_signal("game_over", Side.PLAYER)
+		# AI cannot move -> Player wins
+		check_win_condition(Side.PLAYER)
 
 func get_best_move(board_node, side, depth):
 	var all_moves = []
