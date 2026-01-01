@@ -11,11 +11,9 @@ func _ready():
 	GameManager.turn_changed.connect(_on_turn_changed)
 	GameManager.game_over.connect(_on_game_over)
 	GameManager.coins_changed.connect(_on_coins_changed)
-	GameManager.hearts_changed.connect(_on_hearts_changed)
 	
 	setup_ui()
 	_on_coins_changed(GameManager.coins)
-	_on_hearts_changed(GameManager.hearts)
 
 func _on_resize():
 	# Board is 640x640 (8 * 80)
@@ -35,14 +33,12 @@ func setup_ui():
 func _on_coins_changed(amount):
 	main_ui.get_node("TopBar/HBox/CoinsContainer/Label").text = str(amount)
 
-func _on_hearts_changed(amount):
-	main_ui.get_node("TopBar/HBox/LivesContainer/Label").text = str(amount)
 
 func _on_undo_pressed():
 	GameManager.undo()
 
 func _on_home_pressed():
-	SceneTransition.change_scene("res://scenes/main_menu.tscn")
+	SceneTransition.change_scene("res://scenes/level_select.tscn")
 
 func _on_turn_changed(new_side):
 	var label = main_ui.get_node("TopBar/HBox/TurnIndicator")

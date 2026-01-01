@@ -27,11 +27,9 @@ signal game_over(winner, next_level_possible)
 signal piece_moved(from, to)
 signal piece_captured(pos)
 signal coins_changed(new_amount)
-signal hearts_changed(new_amount)
 signal board_theme_changed(theme_data)
 
 const WIN_REWARD = 50
-const MAX_HEARTS = 5
 
 const BOARD_THEMES = [
 	{"name": "CLASSIC", "light": Color("#f5deb3"), "dark": Color("#b8860b")},
@@ -42,7 +40,6 @@ const BOARD_THEMES = [
 ]
 
 var coins = 0
-var hearts = 5
 var board_theme_index = 0
 
 func _ready():
@@ -61,7 +58,6 @@ func save_game():
 		"max_unlocked_level": max_unlocked_level,
 		"win_streak": win_streak,
 		"coins": coins,
-		"hearts": hearts,
 		"board_theme_index": board_theme_index,
 		"stats": {},
 		"achievements": AchievementManager.achievements
@@ -81,7 +77,6 @@ func load_game():
 			max_unlocked_level = data.get("max_unlocked_level", 1)
 			win_streak = data.get("win_streak", 0)
 			coins = data.get("coins", 0)
-			hearts = data.get("hearts", 5)
 			board_theme_index = data.get("board_theme_index", 0)
 			
 			var saved_achievements = data.get("achievements", {})
@@ -320,9 +315,3 @@ func add_coins(amount: int):
 	coins += amount
 	emit_signal("coins_changed", coins)
 	save_game()
-
-func lose_heart():
-	if hearts > 0:
-		hearts -= 1
-		emit_signal("hearts_changed", hearts)
-		save_game()

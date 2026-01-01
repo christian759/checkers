@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" path="res://assets/ui/level_node_locked.svg" id="3_locked"]
 [ext_resource type="Texture2D" path="res://assets/ui/level_node_unlocked.svg" id="4_unlocked"]
 [ext_resource type="Texture2D" path="res://assets/ui/level_node_current.svg" id="5_current"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_settings.svg" id="6_settings"]
 
 [sub_resource type="Gradient" id="Gradient_bg"]
 colors = PackedColorArray(0.960784, 0.960784, 0.960784, 1, 0.8, 0.85, 0.95, 1)
@@ -75,6 +76,23 @@ theme_override_colors/font_color = Color(0.345098, 0.8, 0.00784314, 1)
 theme_override_font_sizes/font_size = 32
 text = "JOURNEY"
 horizontal_alignment = 1
+
+[node name="SettingsButton" type="TextureButton" parent="VBoxContainer/TopBar"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -25.0
+offset_right = -30.0
+offset_bottom = 25.0
+grow_horizontal = 0
+grow_vertical = 2
+texture_normal = ExtResource("6_settings")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
 layout_mode = 2

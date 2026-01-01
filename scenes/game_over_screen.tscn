@@ -179,9 +179,8 @@ flat = true
 [node name="Menu" type="Button" parent="Panel/HBox"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
 theme_override_font_sizes/font_size = 28
-text = "MAIN MENU"
+text = "RETURN TO MAP"
 flat = true
 
 [connection signal="pressed" from="Panel/HBox/NextLevel" to="." method="_on_next_level_pressed"]

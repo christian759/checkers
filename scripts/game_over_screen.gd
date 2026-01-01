@@ -38,11 +38,7 @@ func setup(winner_side, has_next_level):
 			title_label.text = "YOU LOST!"
 			title_label.modulate = Color(0.8, 0.2, 0.2)
 			
-			# Economy Penalty
-			GameManager.lose_heart()
-			$Panel/RewardLabel.text = "-1 HEART"
-			$Panel/RewardLabel.add_theme_color_override("font_color", Color(1, 0.3, 0.3)) # Red
-			$Panel/RewardLabel.visible = true
+			$Panel/RewardLabel.visible = false
 			
 			next_level_btn.visible = false
 	

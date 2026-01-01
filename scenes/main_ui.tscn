@@ -45,23 +45,6 @@ flat = true
 icon_alignment = 1
 expand_icon = true
 
-[node name="LivesContainer" type="HBoxContainer" parent="TopBar/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 1
-
-[node name="Icon" type="TextureRect" parent="TopBar/HBox/LivesContainer"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-texture = ExtResource("5_heart")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Label" type="Label" parent="TopBar/HBox/LivesContainer"]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.294118, 0.294118, 1)
-theme_override_font_sizes/font_size = 24
-text = "5"
 
 [node name="CoinsContainer" type="HBoxContainer" parent="TopBar/HBox"]
 layout_mode = 2

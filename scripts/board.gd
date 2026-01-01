@@ -14,9 +14,32 @@ var forced_pieces = [] # Pieces that MUST move (due to jump)
 
 func _ready():
 	GameManager.board_theme_changed.connect(_on_board_theme_changed)
+	GameManager.turn_changed.connect(_on_turn_changed)
 	generate_board()
 	spawn_pieces()
 	GameManager.save_state() # Initial state
+	
+	# Check initial state for loss (rare but possible in puzzles)
+	if GameManager.current_turn == GameManager.Side.PLAYER:
+		call_deferred("check_game_over_condition")
+
+func _on_turn_changed(_side):
+	call_deferred("check_game_over_condition")
+
+func check_game_over_condition():
+	if GameManager.current_mode == GameManager.Mode.PV_P:
+		return # handled elsewhere or same logic? PvP check usually separate
+		
+	if GameManager.current_turn == GameManager.Side.PLAYER:
+		if not has_valid_moves(GameManager.Side.PLAYER):
+			GameManager.trigger_game_over(GameManager.Side.AI)
+	
+func has_valid_moves(side):
+	for p in piece_container.get_children():
+		if p.side == side:
+			if get_legal_moves(p).size() > 0:
+				return true
+	return false
 
 func _exit_tree():
 	clear_highlights()

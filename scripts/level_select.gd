@@ -71,7 +71,14 @@ func update_level_buttons():
 			btn.text = "" # Hide number on locked? Or keep it.
 
 func _on_back_pressed():
-	SceneTransition.change_scene("res://scenes/main_menu.tscn")
+	# Back button on map can exit game or go to a simplified menu? 
+	# User wants Map as Home, so maybe just quit?
+	# Or do nothing. For now, let's just make it quit or print.
+	# Actually, usually "Back" on main screen quits app on mobile.
+	get_tree().quit()
+
+func _on_settings_pressed():
+	get_tree().change_scene_to_file("res://scenes/settings_menu.tscn")
 
 func _on_level_selected(level):
 	# Set difficulty or load specific map
