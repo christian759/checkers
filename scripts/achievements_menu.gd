@@ -52,8 +52,6 @@ func _update_list():
 			
 		vbox.add_child(title)
 		vbox.add_child(desc)
-		vbox.add_child(title)
-		vbox.add_child(desc)
 		# Don't add vbox to item yet, we will put it in main_hbox
 		
 		# Status Icon

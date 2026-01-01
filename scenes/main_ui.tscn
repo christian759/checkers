@@ -7,8 +7,10 @@
 [ext_resource type="Texture2D" path="res://assets/ui/heart.svg" id="5_heart"]
 [ext_resource type="Texture2D" path="res://assets/ui/coin.svg" id="6_coin"]
 [ext_resource type="Texture2D" path="res://assets/ui/gem.svg" id="7_gem"]
+[ext_resource type="Theme" uid="uid://b8q7x6y504w3" path="res://resources/main_theme.tres" id="8_theme"]
 
 [node name="MainUI" type="Control"]
+theme = ExtResource("8_theme")
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
