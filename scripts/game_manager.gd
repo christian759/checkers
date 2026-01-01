@@ -26,6 +26,14 @@ signal turn_changed(new_side)
 signal game_over(winner, next_level_possible)
 signal piece_moved(from, to)
 signal piece_captured(pos)
+signal coins_changed(new_amount)
+signal hearts_changed(new_amount)
+
+const WIN_REWARD = 50
+const MAX_HEARTS = 5
+
+var coins = 0
+var hearts = 5
 
 func _ready():
 	load_game()
@@ -42,9 +50,9 @@ func save_game():
 		"current_level": current_level,
 		"max_unlocked_level": max_unlocked_level,
 		"win_streak": win_streak,
-		"stats": { 
-			# Add other stats if needed
-		},
+		"coins": coins,
+		"hearts": hearts,
+		"stats": {},
 		"achievements": AchievementManager.achievements
 	}
 	var file = FileAccess.open("user://savegame.json", FileAccess.WRITE)
@@ -61,6 +69,8 @@ func load_game():
 			current_level = data.get("current_level", 1)
 			max_unlocked_level = data.get("max_unlocked_level", 1)
 			win_streak = data.get("win_streak", 0)
+			coins = data.get("coins", 0)
+			hearts = data.get("hearts", 5)
 			
 			var saved_achievements = data.get("achievements", {})
 			# Merge saved achievement state
@@ -278,3 +288,14 @@ func evaluate_move(_board_node, move):
 		score += randf_range(-50, 50)
 		
 	return score
+
+func add_coins(amount: int):
+	coins += amount
+	emit_signal("coins_changed", coins)
+	save_game()
+
+func lose_heart():
+	if hearts > 0:
+		hearts -= 1
+		emit_signal("hearts_changed", hearts)
+		save_game()

@@ -10,8 +10,12 @@ func _ready():
 	
 	GameManager.turn_changed.connect(_on_turn_changed)
 	GameManager.game_over.connect(_on_game_over)
+	GameManager.coins_changed.connect(_on_coins_changed)
+	GameManager.hearts_changed.connect(_on_hearts_changed)
 	
 	setup_ui()
+	_on_coins_changed(GameManager.coins)
+	_on_hearts_changed(GameManager.hearts)
 
 func _on_resize():
 	# Board is 640x640 (8 * 80)
@@ -24,6 +28,15 @@ func _on_resize():
 func setup_ui():
 	main_ui.get_node("TopBar/HBox/HomeButton").pressed.connect(_on_home_pressed)
 	main_ui.get_node("TopBar/HBox/UndoButton").pressed.connect(_on_undo_pressed)
+	
+	# Update gems (static for now, or use same signal pattern)
+	main_ui.get_node("TopBar/HBox/GemsContainer/Label").text = "0"
+
+func _on_coins_changed(amount):
+	main_ui.get_node("TopBar/HBox/CoinsContainer/Label").text = str(amount)
+
+func _on_hearts_changed(amount):
+	main_ui.get_node("TopBar/HBox/LivesContainer/Label").text = str(amount)
 
 func _on_undo_pressed():
 	GameManager.undo()

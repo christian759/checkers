@@ -23,6 +23,13 @@ func setup(winner_side, has_next_level):
 		if is_win:
 			title_label.text = "YOU WON!"
 			title_label.modulate = Color(0.2, 0.8, 0.2)
+			
+			# Economy Reward
+			GameManager.add_coins(GameManager.WIN_REWARD)
+			$Panel/RewardLabel.text = "+%d COINS" % GameManager.WIN_REWARD
+			$Panel/RewardLabel.add_theme_color_override("font_color", Color(1, 0.84, 0)) # Gold
+			$Panel/RewardLabel.visible = true
+			
 			if next_level_available:
 				next_level_btn.visible = true
 			else:
@@ -30,11 +37,20 @@ func setup(winner_side, has_next_level):
 		else:
 			title_label.text = "YOU LOST!"
 			title_label.modulate = Color(0.8, 0.2, 0.2)
+			
+			# Economy Penalty
+			GameManager.lose_heart()
+			$Panel/RewardLabel.text = "-1 HEART"
+			$Panel/RewardLabel.add_theme_color_override("font_color", Color(1, 0.3, 0.3)) # Red
+			$Panel/RewardLabel.visible = true
+			
 			next_level_btn.visible = false
 	
 	if is_win:
 		$Panel/StarContainer.visible = true
 		$Panel/ProgressBar.visible = true
+		if GameManager.current_mode == GameManager.Mode.PV_P:
+			$Panel/RewardLabel.visible = false # No rewards for PvP
 	else:
 		$Panel/StarContainer.visible = false
 		$Panel/ProgressBar.visible = false
