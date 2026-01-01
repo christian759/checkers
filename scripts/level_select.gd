@@ -4,7 +4,7 @@ const TOTAL_LEVELS = 80
 const LEVELS_PER_SEASON = 20
 var selected_node_num = 1
 
-@onready var mastery_card_scene = preload("res://scenes/mastery_card.tscn")
+
 
 func _ready():
 	# Connect UI elements
@@ -22,7 +22,6 @@ func _ready():
 	
 	# Initial Setup
 	generate_levels()
-	setup_islands()
 	update_season_display(0)
 
 func generate_levels():
@@ -75,16 +74,7 @@ func update_season_display(idx):
 	var tween = create_tween()
 	tween.tween_property(water, "color", s.color.lerp(Color.WHITE, 0.2), 0.5)
 
-func setup_islands():
-	var island_tex = preload("res://assets/ui/tree_soft.svg")
-	for i in range(15):
-		var tree = TextureRect.new()
-		tree.texture = island_tex
-		tree.position = Vector2(randf_range(0, 500), randf_range(0, 2000))
-		tree.size = Vector2(80, 80)
-		tree.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		tree.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		$Background/Islands.add_child(tree)
+
 
 # --- Mode & AI Journey ---
 
