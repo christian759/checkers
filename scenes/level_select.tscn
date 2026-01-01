@@ -11,6 +11,10 @@
 [ext_resource type="Texture2D" path="res://assets/ui/icon_tour.svg" id="9_tour"]
 [ext_resource type="Texture2D" path="res://assets/ui/icon_shop.svg" id="10_shop"]
 [ext_resource type="PackedScene" path="res://scenes/main_ui.tscn" id="11_main_ui"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_spring.svg" id="12_spring"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_summer.svg" id="13_summer"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_autumn.svg" id="14_autumn"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_winter.svg" id="15_winter"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bottom"]
 bg_color = Color(0.12549, 0.435294, 0.0156863, 1)
@@ -67,6 +71,42 @@ theme_override_constants/separation = 0
 custom_minimum_size = Vector2(0, 140)
 layout_mode = 2
 
+[node name="SeasonHeader" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/SeasonHeader"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.1)
+
+[node name="HBox" type="HBoxContainer" parent="VBoxContainer/SeasonHeader"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="VBoxContainer/SeasonHeader/HBox"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("12_spring")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="VBoxContainer/SeasonHeader/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "SEASON 1: SPRING"
+
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -76,30 +116,26 @@ vertical_scroll_mode = 3
 [node name="Journey" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 60
+theme_override_constants/separation = 80
 alignment = 1
 
 [node name="Padding" type="Control" parent="VBoxContainer/ScrollContainer/Journey"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-mouse_filter = 2
+
+# Levels will be generated procedurally in script for 80 levels
+# But we need a reference node for the first few
 
 [node name="Level1" type="Button" parent="VBoxContainer/ScrollContainer/Journey"]
-custom_minimum_size = Vector2(120, 120)
+custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
 text = "1"
-
-[node name="Level2" type="Button" parent="VBoxContainer/ScrollContainer/Journey"]
-custom_minimum_size = Vector2(120, 120)
-layout_mode = 2
-size_flags_horizontal = 4
-text = "2"
-
-# ... (I'll keep the other levels but following this style)
+flat = true
 
 [node name="BottomBar" type="Panel" parent="."]
-custom_minimum_size = Vector2(0, 120)
+custom_minimum_size = Vector2(0, 110)
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0

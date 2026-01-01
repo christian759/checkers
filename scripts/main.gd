@@ -27,8 +27,10 @@ func setup_ui():
 	main_ui.get_node("TopBar/HBox/HomeButton").pressed.connect(_on_home_pressed)
 	main_ui.get_node("TopBar/HBox/UndoButton").pressed.connect(_on_undo_pressed)
 	
-	# Update gems (static for now, or use same signal pattern)
+	# Initially update labels
+	_on_coins_changed(GameManager.coins)
 	main_ui.get_node("TopBar/HBox/GemsContainer/Label").text = "0"
+	main_ui.get_node("TopBar/HBox/LivesContainer/Label").text = str(GameManager.hearts)
 
 func _on_coins_changed(amount):
 	main_ui.get_node("TopBar/HBox/CoinsContainer/Label").text = str(amount)

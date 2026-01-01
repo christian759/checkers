@@ -3,38 +3,34 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
 bg_color = Color(0.345098, 0.8, 0.00784314, 1)
 border_width_bottom = 4
-border_color = Color(0.24, 0.55, 0.0, 1)
+border_color = Color(0.24, 0.55, 0, 1)
 corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
-shadow_color = Color(0.24, 0.55, 0.0, 0.4)
-shadow_size = 0
+shadow_color = Color(0.24, 0.55, 0, 0.4)
 shadow_offset = Vector2(0, 4)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_normal"]
 bg_color = Color(0.345098, 0.8, 0.00784314, 1)
 border_width_bottom = 4
-border_color = Color(0.24, 0.55, 0.0, 1)
+border_color = Color(0.24, 0.55, 0, 1)
 corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
-shadow_color = Color(0.24, 0.55, 0.0, 0.4)
-shadow_size = 0
+shadow_color = Color(0.24, 0.55, 0, 0.4)
 shadow_offset = Vector2(0, 4)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_pressed"]
 bg_color = Color(0.345098, 0.8, 0.00784314, 1)
-border_width_bottom = 0
-border_color = Color(0.24, 0.55, 0.0, 1)
+border_color = Color(0.24, 0.55, 0, 1)
 corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
 expand_margin_top = 4.0
 shadow_color = Color(0, 0, 0, 0)
-shadow_size = 0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
 bg_color = Color(1, 1, 1, 1)

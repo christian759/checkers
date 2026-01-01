@@ -57,7 +57,8 @@ func _on_restart_pressed():
 	GameManager.reset_game()
 
 func _on_menu_pressed():
-	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+	get_tree().change_scene_to_file("res://scenes/level_select.tscn")
+	GameManager.reset_game()
 
 func _on_next_level_pressed():
 	if next_level_available:
