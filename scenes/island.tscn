@@ -1,22 +1,28 @@
 [gd_scene load_steps=3 format=3 uid="uid://island_scene"]
 
-[ext_resource type="Script" path="res://scripts/island.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/ui/island_premium.svg" id="2_tex"]
+[ext_resource type="Script" path="res://scripts/island.gd" id="1_island_script"]
+[ext_resource type="Texture2D" path="res://assets/ui/island_organic.svg" id="2_island_tex"]
 
 [node name="Island" type="Control"]
-custom_minimum_size = Vector2(400, 1100)
+custom_minimum_size = Vector2(720, 800)
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_script")
+script = ExtResource("1_island_script")
 
 [node name="Surface" type="NinePatchRect" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -300.0
+offset_right = 250.0
+offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_tex")
+texture = ExtResource("2_island_tex")
 patch_margin_left = 100
 patch_margin_top = 100
 patch_margin_right = 100

@@ -1,8 +1,8 @@
 extends Control
 
-@onready var coins_label = $TopBar/Layout/Coins/Label
-@onready var gems_label = $TopBar/Layout/Gems/Label
-@onready var hearts_label = $TopBar/Layout/Hearts/Label
+@onready var coins_label = $TopBar/Layout/Coins/HBox/Label
+@onready var gems_label = $TopBar/Layout/Gems/HBox/Label
+@onready var hearts_label = $TopBar/Layout/Hearts/HBox/Label
 @onready var turn_label = $TopBar/Layout/TurnIndicator
 @onready var streak_label = $TopBar/Layout/Streak/Label
 

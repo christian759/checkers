@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="150" viewBox="0 0 720 150">
+  <!-- Bar Background -->
+  <path d="M0,40 H260 Q270,40 280,30 L310,0 Q360,-20 410,0 L440,30 Q450,40 460,40 H720 V150 H0 Z" fill="#0e3d09" />
+  <!-- Tour Section Shadow/Edge -->
+  <path d="M280,35 L310,5 Q360,-15 410,5 L440,35" fill="none" stroke="#1b4d0a" stroke-width="10" />
+</svg>

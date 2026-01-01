@@ -32,7 +32,7 @@ func check_game_over_condition():
 		
 	if GameManager.current_turn == GameManager.Side.PLAYER:
 		if not has_valid_moves(GameManager.Side.PLAYER):
-			GameManager.trigger_game_over(GameManager.Side.AI)
+			GameManager.check_win_condition(GameManager.Side.AI)
 	
 func has_valid_moves(side):
 	for p in piece_container.get_children():

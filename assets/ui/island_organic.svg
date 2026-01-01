@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="600" viewBox="0 0 500 600">
+  <defs>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="5" />
+      <feOffset dx="0" dy="5" result="offsetblur" />
+      <feComponentTransfer><feFuncA type="linear" slope="0.3"/></feComponentTransfer>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Background Ocean Glow -->
+  <path d="M50,100 Q250,50 450,100 L450,500 Q250,550 50,500 Z" fill="#44c9f1" opacity="0.3" filter="url(#shadow)" />
+  <!-- Depth Layer -->
+  <path d="M60,110 Q250,70 440,110 L440,510 Q250,570 60,510 Z" fill="#3a3a3a" />
+  <!-- Surface Layer (Green) -->
+  <path d="M60,100 Q250,60 440,100 L440,500 Q250,560 60,500 Z" fill="#8ec442" />
+  <!-- Inner Texture / Path -->
+  <path d="M100,150 L400,150 L400,450 L100,450 Z" fill="#7cb335" opacity="0.2" rx="20" />
+</svg>

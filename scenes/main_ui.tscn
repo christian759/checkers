@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" path="res://assets/ui/heart.svg" id="5_heart"]
 [ext_resource type="Texture2D" path="res://assets/ui/coin.svg" id="6_coin"]
 [ext_resource type="Texture2D" path="res://assets/ui/gem.svg" id="7_gem"]
+[ext_resource type="Texture2D" path="res://assets/ui/hud_premium_pill.svg" id="hud_premium_pill_tex"]
+[ext_resource type="Texture2D" path="res://assets/ui/hud_premium_pill.svg" id="hud_premium_pill_tex"]
 [ext_resource type="Texture2D" path="res://assets/ui/icon_undo.svg" id="8_undo"]
 [ext_resource type="Script" path="res://scripts/bouncy_button.gd" id="9_bouncy"]
 
@@ -21,31 +23,116 @@ theme = ExtResource("2_theme")
 script = ExtResource("1_script")
 
 [node name="TopBar" type="NinePatchRect" parent="."]
-custom_minimum_size = Vector2(0, 110)
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_left = 30.0
 offset_top = 30.0
 offset_right = -30.0
-offset_bottom = 140.0
+offset_bottom = 130.0
 grow_horizontal = 2
-texture = ExtResource("3_bg")
-patch_margin_left = 50
-patch_margin_top = 50
-patch_margin_right = 50
-patch_margin_bottom = 50
+texture = ExtResource("hud_premium_pill_tex")
+patch_margin_left = 40
+patch_margin_top = 40
+patch_margin_right = 40
+patch_margin_bottom = 40
 
 [node name="Layout" type="HBoxContainer" parent="TopBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 40.0
-offset_right = -40.0
+offset_left = 20.0
+offset_right = -20.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 15
+theme_override_constants/separation = 10
+
+[node name="Hearts" type="Control" parent="TopBar/Layout"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="TopBar/Layout/Hearts"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="TopBar/Layout/Hearts/HBox"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("5_heart")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="TopBar/Layout/Hearts/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "5"
+
+[node name="Coins" type="Control" parent="TopBar/Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBox" type="HBoxContainer" parent="TopBar/Layout/Coins"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="TopBar/Layout/Coins/HBox"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("6_coin")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="TopBar/Layout/Coins/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "2,100"
+
+[node name="Gems" type="Control" parent="TopBar/Layout"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="TopBar/Layout/Gems"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="TopBar/Layout/Gems/HBox"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("7_gem")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="TopBar/Layout/Gems/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "60"
+
+[node name="Plus" type="Control" parent="TopBar/Layout"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
 
 [node name="Home" type="Button" parent="TopBar/Layout"]
 custom_minimum_size = Vector2(70, 70)

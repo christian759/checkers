@@ -15,12 +15,17 @@ func _ready():
 	$BottomBar/HBox/Social/Btn.pressed.connect(_on_pvp_pressed)
 	$BottomBar/HBox/Daily/Btn.pressed.connect(_on_daily_pressed)
 	$BottomBar/HBox/TourTab/VBox/Tour.pressed.connect(func(): $VBoxContainer/ScrollContainer.scroll_vertical = 0)
-	$BottomBar/HBox/Settings/Btn.pressed.connect(_on_settings_pressed)
+	$BottomBar/HBox/Shop/Btn.pressed.connect(func(): pass) # Link to shop later
+	
+	# Connect Side Buttons
+	$SideButtons/Settings.pressed.connect(_on_settings_pressed)
 	
 	# Initial Setup
 	generate_levels()
 	setup_islands()
 	update_season_display(0)
+
+func generate_levels():
 	var journey = $VBoxContainer/ScrollContainer/Journey
 	for child in journey.get_children():
 		if child.name != "Padding":
@@ -37,16 +42,15 @@ func _ready():
 		for j in range(5):
 			var level_num = i * 5 + j + 1
 			var data = {"num": level_num}
+			if level_num % 10 == 0: data["boss"] = "skull"
 			if level_num % 20 == 0: data["boss"] = "crown"
-			elif level_num % 10 == 0: data["boss"] = "skull"
 			levels_data.append(data)
 		
 		var season_idx = clamp(int((i * 5) / LEVELS_PER_SEASON), 0, 3)
 		island.setup(season_idx, levels_data, self)
 
 func update_level_buttons():
-	# Now handled via the Island component's setup, 
-	# but we can refresh all islands if needed
+	# Refresh all islands to reflect progress
 	generate_levels() 
 
 func _on_scroll(value):
