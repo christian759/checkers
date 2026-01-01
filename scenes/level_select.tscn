@@ -160,7 +160,6 @@ size_flags_horizontal = 3
 flat = true
 icon = ExtResource("7_ribbon")
 icon_alignment = 1
-vertical_icon_alignment = 0
 
 [node name="Calendar" type="Button" parent="BottomBar/HBox"]
 layout_mode = 2
@@ -178,7 +177,6 @@ text = "TOUR"
 icon = ExtResource("9_tour")
 flat = true
 icon_alignment = 1
-vertical_icon_alignment = 0
 
 [node name="Shop" type="Button" parent="BottomBar/HBox"]
 layout_mode = 2
@@ -186,6 +184,87 @@ size_flags_horizontal = 3
 flat = true
 icon = ExtResource("10_shop")
 icon_alignment = 1
+
+[node name="Ribbon" type="Button" parent="BottomBar/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+flat = true
+icon = ExtResource("7_ribbon")
+icon_alignment = 1
+
+[node name="ModeSelect" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="ModeSelect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="Panel" type="Panel" parent="ModeSelect"]
+custom_minimum_size = Vector2(500, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -200.0
+offset_right = 250.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="ModeSelect/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 40.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="ModeSelect/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 36
+text = "LEVEL 1"
+horizontal_alignment = 1
+
+[node name="PlayAI" type="Button" parent="ModeSelect/Panel/VBox"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+text = "PLAY VS AI"
+
+[node name="PlayPVP" type="Button" parent="ModeSelect/Panel/VBox"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+text = "PLAY WITH FRIEND"
+
+[node name="Close" type="Button" parent="ModeSelect/Panel/VBox"]
+layout_mode = 2
+text = "CLOSE"
+flat = true
+
+[connection signal="pressed" from="BottomBar/HBox/Calendar" to="." method="_on_daily_pressed"]
+[connection signal="pressed" from="BottomBar/HBox/Ribbon" to="." method="_on_pvp_pressed"]
+[connection signal="pressed" from="ModeSelect/Panel/VBox/PlayAI" to="." method="_on_mode_selected" binds= [0]]
+[connection signal="pressed" from="ModeSelect/Panel/VBox/PlayPVP" to="." method="_on_mode_selected" binds= [1]]
+[connection signal="pressed" from="ModeSelect/Panel/VBox/Close" to="." method="_on_close_mode_select"]
 
 [node name="UI" type="CanvasLayer" parent="."]
 
