@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btj6dbdy5rubx"
-path="res://.godot/imported/island_premium.svg-0771207e32b5d392420569271657263d.ctex"
+uid="uid://de7qe42dgvlqv"
+path="res://.godot/imported/nav_elevated_hyper.svg-1013e4c6308e46dc17ba2b689193eee2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/island_premium.svg"
-dest_files=["res://.godot/imported/island_premium.svg-0771207e32b5d392420569271657263d.ctex"]
+source_file="res://assets/ui/nav_elevated_hyper.svg"
+dest_files=["res://.godot/imported/nav_elevated_hyper.svg-1013e4c6308e46dc17ba2b689193eee2.ctex"]
 
 [params]
 

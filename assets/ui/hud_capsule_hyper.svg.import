@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cc241e56wpt67"
-path="res://.godot/imported/path_curve.svg-b584f5236e2c8f0acb2dbbe2ebc2c6b9.ctex"
+uid="uid://b8u5y2ib3dbs1"
+path="res://.godot/imported/hud_capsule_hyper.svg-0c78c2826dbb520ce234832fa01b4603.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/path_curve.svg"
-dest_files=["res://.godot/imported/path_curve.svg-b584f5236e2c8f0acb2dbbe2ebc2c6b9.ctex"]
+source_file="res://assets/ui/hud_capsule_hyper.svg"
+dest_files=["res://.godot/imported/hud_capsule_hyper.svg-0c78c2826dbb520ce234832fa01b4603.ctex"]
 
 [params]
 

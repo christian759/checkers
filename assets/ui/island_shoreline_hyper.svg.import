@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://2ap8mlmi43ka"
-path="res://.godot/imported/king_icon.svg-76d2fd808467fbf7cb3db577734c8562.ctex"
+uid="uid://di2wyk2vkq8y3"
+path="res://.godot/imported/island_shoreline_hyper.svg-6585a2c8210456a338708271b0c284f8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/king_icon.svg"
-dest_files=["res://.godot/imported/king_icon.svg-76d2fd808467fbf7cb3db577734c8562.ctex"]
+source_file="res://assets/ui/island_shoreline_hyper.svg"
+dest_files=["res://.godot/imported/island_shoreline_hyper.svg-6585a2c8210456a338708271b0c284f8.ctex"]
 
 [params]
 
