@@ -46,49 +46,7 @@ var hearts = 5
 var board_theme_index = 0
 
 func _ready():
-	load_game()
 	setup_board()
-	
-	if not AchievementManager.is_unlocked("first_win"):
-		# Just a check to ensure persistence works
-		pass
-	
-	AchievementManager.achievement_unlocked.connect(func(id, title): save_game())
-
-func save_game():
-	var save_data = {
-		"current_level": current_level,
-		"max_unlocked_level": max_unlocked_level,
-		"win_streak": win_streak,
-		"coins": coins,
-		"hearts": hearts,
-		"board_theme_index": board_theme_index,
-		"stats": {},
-		"achievements": AchievementManager.achievements
-	}
-	var file = FileAccess.open("user://savegame.json", FileAccess.WRITE)
-	file.store_string(JSON.stringify(save_data))
-
-func load_game():
-	if FileAccess.file_exists("user://savegame.json"):
-		var file = FileAccess.open("user://savegame.json", FileAccess.READ)
-		var json_str = file.get_as_text()
-		var json = JSON.new()
-		var parse_result = json.parse(json_str)
-		if parse_result == OK:
-			var data = json.get_data()
-			current_level = data.get("current_level", 1)
-			max_unlocked_level = data.get("max_unlocked_level", 1)
-			win_streak = data.get("win_streak", 0)
-			coins = data.get("coins", 0)
-			hearts = data.get("hearts", 5)
-			board_theme_index = data.get("board_theme_index", 0)
-			
-			var saved_achievements = data.get("achievements", {})
-			# Merge saved achievement state
-			for id in saved_achievements:
-				if AchievementManager.achievements.has(id):
-					AchievementManager.achievements[id].unlocked = saved_achievements[id].unlocked
 
 func setup_board():
 	board = []
@@ -98,101 +56,16 @@ func setup_board():
 			row.append(null)
 		board.append(row)
 
-func get_daily_seed() -> int:
-	var t = Time.get_date_dict_from_system()
-	return t.year * 10000 + t.month * 100 + t.day
-
-func cycle_board_theme():
-	board_theme_index = (board_theme_index + 1) % BOARD_THEMES.size()
-	emit_signal("board_theme_changed", BOARD_THEMES[board_theme_index])
-	save_game()
-
-func get_current_board_theme():
-	return BOARD_THEMES[board_theme_index]
-
 func reset_game():
 	current_turn = Side.PLAYER
 	selected_piece = null
 	must_jump = false
-	move_history = []
-	is_daily_challenge = false
 	setup_board()
-	game_start_time = Time.get_unix_time_from_system()
 
-func save_state():
-	var state = []
-	for r in range(8):
-		var row = []
-		for c in range(8):
-			var p = get_piece_at(r, c)
-			if p:
-				row.append({"side": p.side, "is_king": p.is_king, "grid_pos": p.grid_pos})
-			else:
-				row.append(null)
-		state.append(row)
-	
-	move_history.append({
-		"board": state,
-		"turn": current_turn,
-		"must_jump": must_jump
-	})
-	
-	if move_history.size() > 50:
-		move_history.pop_front()
 
-func undo():
-	if move_history.size() <= 1: return
-	
-	# Current state is the last one, so pop it
-	move_history.pop_back()
-	var prev_state = move_history.back()
-	
-	current_turn = prev_state.turn
-	must_jump = prev_state.must_jump
-	
-	# We need to tell the board to rebuild from state
-	var board_node = get_tree().root.find_child("Board", true, false)
-	if board_node:
-		board_node.rebuild_from_state(prev_state.board)
-	
-	emit_signal("turn_changed", current_turn)
 
 func check_win_condition(winner):
-	var next_level_possible = false
-	
-	# Achievement: First Win, Speed Demon
-	if winner == Side.PLAYER:
-		if current_level == max_unlocked_level and max_unlocked_level < 80:
-			max_unlocked_level += 1
-		
-		# Only check for next level button if we aren't at the absolute max
-		if current_level < 80:
-			next_level_possible = true
-		
-		AchievementManager.unlock("first_win")
-		
-		var duration = Time.get_unix_time_from_system() - game_start_time
-		if duration < 60:
-			AchievementManager.unlock("speed_demon")
-			
-		save_game()
-		
-		# ... existing streak logic ...
-		if win_streak >= 3: AchievementManager.unlock("win_streak_3")
-		if win_streak >= 5: AchievementManager.unlock("win_streak_5")
-		if win_streak >= 10: AchievementManager.unlock("win_streak_10")
-		
-		if current_level >= 5: AchievementManager.unlock("level_5")
-		if current_level >= 10: AchievementManager.unlock("level_10")
-		if current_level >= 20: AchievementManager.unlock("level_20")
-		if current_level >= 40: AchievementManager.unlock("level_40")
-		if current_level >= 60: AchievementManager.unlock("level_60")
-		if current_level >= 80: AchievementManager.unlock("level_80")
-
-	elif winner == Side.AI:
-		AchievementManager.unlock("first_loss")
-	
-	emit_signal("game_over", winner, next_level_possible)
+	emit_signal("game_over", winner)
 
 func is_on_board(r, c):
 	return r >= 0 and r < 8 and c >= 0 and c < 8
@@ -316,13 +189,3 @@ func evaluate_move(_board_node, move):
 		
 	return score
 
-func add_coins(amount: int):
-	coins += amount
-	emit_signal("coins_changed", coins)
-	save_game()
-
-func lose_heart():
-	if hearts > 0:
-		hearts -= 1
-		emit_signal("hearts_changed", hearts)
-		save_game()

@@ -13,15 +13,9 @@ var marker_script = preload("res://scripts/move_marker.gd")
 var forced_pieces = [] # Pieces that MUST move (due to jump)
 
 func _ready():
-	GameManager.board_theme_changed.connect(_on_board_theme_changed)
 	GameManager.turn_changed.connect(_on_turn_changed)
 	generate_board()
 	spawn_pieces()
-	GameManager.save_state() # Initial state
-	
-	# Check initial state for loss (rare but possible in puzzles)
-	if GameManager.current_turn == GameManager.Side.PLAYER:
-		call_deferred("check_game_over_condition")
 
 func _on_turn_changed(_side):
 	call_deferred("check_game_over_condition")
@@ -67,15 +61,8 @@ func rebuild_from_state(state):
 	
 	deselect_piece()
 
-func _on_board_theme_changed(theme_data):
-	# Simple redraw: clear tiles and regen
-	for c in tile_container.get_children():
-		c.queue_free()
-	generate_board()
 
 func generate_board():
-	var theme = GameManager.get_current_board_theme()
-	
 	for r in range(8):
 		for c in range(8):
 			var is_dark = (r + c) % 2 == 1
@@ -90,41 +77,24 @@ func generate_board():
 			sb.corner_radius_bottom_right = 12
 			
 			if is_dark:
-				sb.bg_color = theme.dark
+				sb.bg_color = Color("#b8860b") # Classic dark
 			else:
-				sb.bg_color = theme.light
+				sb.bg_color = Color("#f5deb3") # Classic light
 				
 			tile.add_theme_stylebox_override("panel", sb)
 			tile.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			tile_container.add_child(tile)
 
 func spawn_pieces():
-	if GameManager.is_daily_challenge:
-		seed(GameManager.get_daily_seed())
-		# Generate a "Challenge" layout - e.g. mid-game scenario
-		var pieces_placed = 0
-		while pieces_placed < 10:
-			var r = randi() % 8
-			var c = randi() % 8
+	# Standard layout
+	for r in range(8):
+		for c in range(8):
 			var is_dark = (r + c) % 2 == 1
-			if is_dark and GameManager.get_piece_at(r, c) == null:
-				var side = GameManager.Side.PLAYER if pieces_placed < 5 else GameManager.Side.AI
-				create_piece(r, c, side)
-				pieces_placed += 1
-		# Ensure at least one king for excitement
-		var player_pieces = piece_container.get_children().filter(func(p): return p.side == GameManager.Side.PLAYER)
-		if player_pieces.size() > 0:
-			player_pieces.pick_random().promote_to_king()
-	else:
-		# Standard layout
-		for r in range(8):
-			for c in range(8):
-				var is_dark = (r + c) % 2 == 1
-				if is_dark:
-					if r < 3:
-						create_piece(r, c, GameManager.Side.AI)
-					elif r > 4:
-						create_piece(r, c, GameManager.Side.PLAYER)
+			if is_dark:
+				if r < 3:
+					create_piece(r, c, GameManager.Side.AI)
+				elif r > 4:
+					create_piece(r, c, GameManager.Side.PLAYER)
 
 func create_piece(r, c, side):
 	var p = piece_scene.instantiate()
@@ -439,15 +409,11 @@ func execute_move(piece, destination_row, destination_col):
 		var capture_col = captured_piece.grid_pos.y
 		GameManager.set_piece_at(capture_row, capture_col, null)
 		captured_piece.queue_free()
-		AudioManager.play_sound("capture")
-		if piece.side == GameManager.Side.PLAYER:
-			AchievementManager.unlock("first_capture")
 	
 	# Move logic
 	GameManager.set_piece_at(from_row, from_col, null)
 	GameManager.set_piece_at(destination_row, destination_col, piece)
 	piece.move_to(Vector2i(destination_row, destination_col), grid_to_world(destination_row, destination_col))
-	AudioManager.play_sound("move")
 	
 	# King promotion
 	var promoted = false
@@ -473,7 +439,6 @@ func execute_move(piece, destination_row, destination_col):
 	GameManager.must_jump = false
 	deselect_piece()
 	GameManager.switch_turn()
-	GameManager.save_state()
 
 func has_any_captures(piece):
 	var r = piece.grid_pos.x
