@@ -1,6 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://08gms38xbpc1"]
+[gd_scene load_steps=10 format=3 uid="uid://08gms38xbpc1"]
 
-[ext_resource type="Script" path="res://scripts/pvp_lobby.gd" id="1_v4m3r"]
+[ext_resource type="Script" uid="uid://d18pnitiikjje" path="res://scripts/pvp_lobby.gd" id="1_v4m3r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
 bg_color = Color(1, 1, 1, 1)
@@ -37,6 +37,20 @@ corner_radius_bottom_left = 14
 shadow_color = Color(0.18, 0.8, 0.44, 0.3)
 shadow_size = 8
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_bg"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.9, 0.95, 0.9, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="Theme" id="Theme_premium"]
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_bubble")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_bubble")
+HSlider/styles/slider = SubResource("StyleBoxFlat_slider_bg")
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_match"]
 bg_color = Color(0.180392, 0.8, 0.443137, 1)
 corner_radius_top_left = 20
@@ -55,45 +69,6 @@ corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 shadow_color = Color(0.14, 0.64, 0.35, 0.5)
 shadow_size = 18
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_theme_circle"]
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(1, 1, 1, 0)
-corner_radius_top_left = 40
-corner_radius_top_right = 40
-corner_radius_bottom_right = 40
-corner_radius_bottom_left = 40
-shadow_color = Color(0, 0, 0, 0.1)
-shadow_size = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_bg"]
-content_margin_top = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.9, 0.95, 0.9, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_grab"]
-bg_color = Color(0.18, 0.8, 0.44, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-expand_margin_left = 4.0
-expand_margin_top = 4.0
-expand_margin_right = 4.0
-expand_margin_bottom = 4.0
-
-[sub_resource type="Theme" id="Theme_premium"]
-HSlider/styles/grabber_area = SubResource("StyleBoxFlat_bubble")
-HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_bubble")
-HSlider/styles/slider = SubResource("StyleBoxFlat_slider_bg")
 
 [node name="PvPLobby" type="Control"]
 layout_mode = 3
@@ -172,10 +147,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
 [node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/Content/ModeSection/Card"]
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
 theme_override_constants/separation = 15
 
 [node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Content/ModeSection/Card/VBox"]
@@ -216,16 +187,16 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 18
-flat = true
 text = "vs COMPUTER"
+flat = true
 
 [node name="FriendBtn" type="Button" parent="ScrollContainer/VBoxContainer/Content/ModeSection/Card/VBox/SegmentedControl/Buttons"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.4, 0.5, 0.4, 1)
 theme_override_font_sizes/font_size = 18
-flat = true
 text = "vs FRIEND"
+flat = true
 
 [node name="AiSettings" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/Content"]
 layout_mode = 2
@@ -242,10 +213,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
 [node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/Card"]
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
 theme_override_constants/separation = 15
 
 [node name="HBox" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/Card/VBox"]
@@ -268,7 +235,6 @@ text = "Lv 1"
 layout_mode = 2
 theme = SubResource("Theme_premium")
 min_value = 1.0
-max_value = 50.0
 value = 1.0
 
 [node name="StartSection" type="MarginContainer" parent="ScrollContainer/VBoxContainer/Content/AiSettings"]
@@ -282,10 +248,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
 [node name="HBox" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/Content/AiSettings/StartSection/Card"]
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
 
 [node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Content/AiSettings/StartSection/Card/HBox"]
 layout_mode = 2
@@ -310,10 +272,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
 [node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/Content/ThemeSection/Card"]
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
 theme_override_constants/separation = 20
 
 [node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Content/ThemeSection/Card/VBox"]
@@ -340,6 +298,6 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_match")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_match_h")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_match_h")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_match_h")
 text = "START MATCH"

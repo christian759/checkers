@@ -46,6 +46,37 @@ func _update_hud():
 	
 	_update_turn_label(GameManager.current_turn)
 
+func _on_turn_changed(side):
+	_update_turn_label(side)
+
+func _update_turn_label(side):
+	if side == GameManager.Side.PLAYER:
+		%TurnLabel.text = "YOUR TURN"
+		%TurnLabel.add_theme_color_override("font_color", Color("#2ecc71"))
+	else:
+		%TurnLabel.text = "AI THINKING..."
+		%TurnLabel.add_theme_color_override("font_color", Color("#e67e22"))
+
+func _on_game_over(winner):
+	var results = results_scene.instantiate()
+	$UI.add_child(results)
+	results.setup(winner)
+
+func _setup_responsive_size():
+	var view_size = get_viewport_rect().size
+	var target_width = view_size.x * 0.92
+	tile_size = target_width / 8.0
+	
+	var board_total_size = tile_size * 8.0
+	var margin_x = (view_size.x - board_total_size) / 2.0
+	var margin_y = (view_size.y - board_total_size) / 2.0
+	
+	gameplay.position = Vector2(margin_x, margin_y)
+	
+	var frame_padding = 20.0
+	board_frame.size = Vector2(board_total_size + frame_padding * 2, board_total_size + frame_padding * 2)
+	board_frame.position = Vector2(-frame_padding, -frame_padding)
+
 func load_puzzle(id):
 	# Clear board logic
 	GameManager.setup_board()
@@ -63,31 +94,17 @@ func load_puzzle(id):
 				var p = GameManager.get_piece_at(s.r, s.c)
 				if p: p.promote_to_king()
 
-func check_game_over_condition():
-	if GameManager.current_mode == GameManager.Mode.PV_P:
-		return
-		
-	if GameManager.current_turn == GameManager.Side.PLAYER:
-		if not has_valid_moves(GameManager.Side.PLAYER):
-			GameManager.check_win_condition(GameManager.Side.AI)
-	else: # AI turn
-		if not has_valid_moves(GameManager.Side.AI):
-			if GameManager.is_daily_challenge:
-				GameManager.complete_daily()
-				# Show custom victory for daily
-				GameManager.check_win_condition(GameManager.Side.PLAYER)
-			else:
-				GameManager.check_win_condition(GameManager.Side.PLAYER)
-	
-func has_valid_moves(side):
-	for p in piece_container.get_children():
-		if p.side == side:
-			if get_legal_moves(p).size() > 0:
-				return true
-	return false
 
 func _exit_tree():
 	clear_highlights()
+
+func has_valid_moves(side):
+	for p in piece_container.get_children():
+		if p.side == side:
+			var moves = get_legal_moves(p)
+			if moves and moves.size() > 0:
+				return true
+	return false
 
 func rebuild_from_state(state):
 	# Clear existing pieces
@@ -110,18 +127,7 @@ func rebuild_from_state(state):
 				if s.is_king:
 					p.promote_to_king()
 	
-func _on_game_over(winner):
-	var results = results_scene.instantiate()
-	$UI.add_child(results)
-	results.setup(winner)
 
-func _setup_responsive_size():
-	var screen_width = get_viewport_rect().size.x
-	# Target 90% of screen width
-	var target_width = screen_width * 0.95
-	tile_size = target_width / 8.0
-	board_scale = 1.0 # We'll use the calculated tile_size directly
-	
 func generate_board():
 	for r in range(8):
 		for c in range(8):
@@ -169,7 +175,7 @@ func grid_to_world(r, c):
 	return Vector2(c * tile_size, r * tile_size) + Vector2(tile_size / 2.0, tile_size / 2.0)
 
 func world_to_grid(pos):
-	var local_pos = pos - global_position
+	var local_pos = pos - gameplay.global_position
 	return Vector2i(floor(local_pos.y / tile_size), floor(local_pos.x / tile_size))
 
 func _input(event):
@@ -263,9 +269,9 @@ func show_valid_moves(piece):
 		marker.set_script(marker_script)
 		marker.position = grid_to_world(move.to.x, move.to.y)
 		if move.is_capture:
-			marker.modulate = Color(1.0, 0.5, 0.0) # ORANGE for capture (Visible on Green/White)
+			marker.modulate = Color(1.0, 0.4, 0.2) # VIBRANT ORANGE for captures
 		else:
-			marker.modulate = Color(0.0, 0.5, 1.0) # BLUE for normal (Visible on Green/White)
+			marker.modulate = Color.WHITE # WHITE for normal moves (Highest contrast on all themes)
 		highlights.add_child(marker)
 
 func clear_highlights():

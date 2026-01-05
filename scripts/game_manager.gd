@@ -60,10 +60,7 @@ var forced_jumps = false
 var movement_mode = "diagonal" # "diagonal" or "straight"
 
 signal turn_changed(new_side)
-signal game_over(winner, next_level_possible)
-signal piece_moved(from, to)
-signal piece_captured(pos)
-signal board_theme_changed(theme_data)
+signal game_over(winner) # Simplified signature for consistency
 
 
 const BOARD_THEMES = [
@@ -159,11 +156,11 @@ func reset_game():
 
 
 func check_win_condition(winner):
+	print("[DEBUG] Win condition triggered for: ", "PLAYER" if winner == Side.PLAYER else "AI")
 	if winner == Side.PLAYER:
 		if not current_level in completed_levels:
 			completed_levels.append(current_level)
 		
-		# Auto-unlock next level if this was the highest unlocked
 		if current_level == max_unlocked_level:
 			max_unlocked_level = min(max_unlocked_level + 1, 200)
 			
@@ -197,6 +194,12 @@ func switch_turn():
 	current_turn = Side.AI if current_turn == Side.PLAYER else Side.PLAYER
 	emit_signal("turn_changed", current_turn)
 	
+	# Check if the player who just inherited the turn has any moves
+	var board_node = get_tree().root.find_child("Board", true, false)
+	if board_node and not board_node.has_valid_moves(current_turn):
+		check_win_condition(Side.AI if current_turn == Side.PLAYER else Side.PLAYER)
+		return
+
 	if current_mode == Mode.PV_AI and current_turn == Side.AI:
 		# Trigger AI logic after a short delay for "thinking"
 		await get_tree().create_timer(1.0).timeout
@@ -251,7 +254,11 @@ func _minimax(state, depth, alpha, beta, is_max, m_jump, m_piece):
 	var moves = _get_all_sim_moves(state, Side.AI if is_max else Side.PLAYER, m_jump, m_piece)
 	
 	if moves.size() == 0:
-		# End of game for this branch
+		if m_jump:
+			# If we were in a multi-jump but have no more jumps, it's just a turn switch
+			return _minimax(state, depth, alpha, beta, not is_max, false, null)
+		
+		# True end of game for this branch
 		return {"score": - 10000 if is_max else 10000, "move": null}
 	
 	var best_move = moves.pick_random()

@@ -26,7 +26,7 @@ func _ready():
 	global_progress.text = "OVERALL PROGRESS: " + str(completed_total) + "/200"
 	global_progress.add_theme_color_override("font_color", Color("#2c3e50")) # Dark Slate
 	
-	populate_cards(current_level)
+	populate_cards(GameManager.current_level)
 	
 	scroll_container.get_h_scroll_bar().changed.connect(_on_scroll_changed)
 	call_deferred("_center_initial_card", 1) # Start at first rank (Sprout)
