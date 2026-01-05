@@ -24,6 +24,9 @@ var match_ai_level = 1
 var match_theme_index = 0
 var match_start_side = Side.PLAYER
 
+# Mastery Progression Tracking
+var completed_levels = [] # Array of level IDs (integers)
+
 # Daily Challenge & Persistence
 var daily_streak = 0
 var last_daily_date = "" # Format: "2026-01-05"
@@ -85,7 +88,8 @@ func save_data():
 			"daily_streak": daily_streak,
 			"last_daily_date": last_daily_date,
 			"max_unlocked_level": max_unlocked_level,
-			"win_streak": win_streak
+			"win_streak": win_streak,
+			"completed_levels": completed_levels
 		}
 		file.store_string(JSON.stringify(data))
 
@@ -100,6 +104,7 @@ func load_data():
 			last_daily_date = data.get("last_daily_date", "")
 			max_unlocked_level = data.get("max_unlocked_level", 1)
 			win_streak = data.get("win_streak", 0)
+			completed_levels = data.get("completed_levels", [])
 
 func setup_board():
 	board = []
@@ -155,8 +160,13 @@ func reset_game():
 
 func check_win_condition(winner):
 	if winner == Side.PLAYER:
+		if not current_level in completed_levels:
+			completed_levels.append(current_level)
+		
+		# Auto-unlock next level if this was the highest unlocked
 		if current_level == max_unlocked_level:
 			max_unlocked_level = min(max_unlocked_level + 1, 200)
+			
 		win_streak += 1
 	else:
 		win_streak = 0

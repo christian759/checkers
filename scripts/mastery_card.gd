@@ -35,10 +35,10 @@ func setup(rank_name: String, start_level: int, accent_color: Color, current_glo
 		grid.add_child(icon)
 		
 		var state = 0 # LOCKED
-		if level_num < current_global_level:
+		if level_num in GameManager.completed_levels:
 			state = 2 # COMPLETED
 			completed_count += 1
-		elif level_num == current_global_level:
+		elif level_num == GameManager.max_unlocked_level:
 			state = 1 # CURRENT
 			
 		icon.setup(level_num, state, accent_color)

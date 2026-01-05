@@ -22,8 +22,8 @@ var ranks = [
 ]
 
 func _ready():
-	var current_level = GameManager.current_level if "current_level" in GameManager else 1
-	global_progress.text = "OVERALL PROGRESS: " + str(current_level) + "/200"
+	var completed_total = GameManager.completed_levels.size()
+	global_progress.text = "OVERALL PROGRESS: " + str(completed_total) + "/200"
 	global_progress.add_theme_color_override("font_color", Color("#2c3e50")) # Dark Slate
 	
 	populate_cards(current_level)

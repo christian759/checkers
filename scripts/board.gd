@@ -3,9 +3,11 @@ extends Node2D
 var tile_size = 85.0
 var board_scale = 1.0
 
-@onready var tile_container = $Tiles
-@onready var piece_container = $Pieces
-@onready var highlights = $Highlights
+@onready var tile_container = $Gameplay/Tiles
+@onready var piece_container = $Gameplay/Pieces
+@onready var highlights = $Gameplay/Highlights
+@onready var gameplay = $Gameplay
+@onready var board_frame = %BoardFrame
 
 var piece_scene = preload("res://scenes/piece.tscn")
 var marker_script = preload("res://scripts/move_marker.gd")
@@ -16,14 +18,15 @@ func _ready():
 	GameManager.game_over.connect(_on_game_over)
 	_setup_responsive_size()
 	generate_board()
+	_update_hud()
 	
 	if GameManager.is_daily_challenge:
 		load_puzzle(GameManager.current_puzzle_id)
 	else:
 		spawn_pieces()
 	
-	if has_node("UI/QuitButton"):
-		$UI/QuitButton.pressed.connect(func():
+	if has_node("UI/Header/HBox/QuitButton"):
+		$UI/Header/HBox/QuitButton.pressed.connect(func():
 			GameManager.is_daily_challenge = false
 			get_tree().change_scene_to_file("res://scenes/main.tscn")
 		)
@@ -32,6 +35,16 @@ func _ready():
 	if GameManager.current_turn == GameManager.Side.AI and GameManager.current_mode == GameManager.Mode.PV_AI:
 		await get_tree().create_timer(1.0).timeout
 		GameManager.play_ai_turn()
+
+func _update_hud():
+	if GameManager.is_daily_challenge:
+		%ModeLabel.text = "DAILY LAB"
+		%LevelLabel.text = "TRAIN YOUR TACTICS"
+	else:
+		%ModeLabel.text = "MASTERY"
+		%LevelLabel.text = "LEVEL " + str(GameManager.current_level)
+	
+	_update_turn_label(GameManager.current_turn)
 
 func load_puzzle(id):
 	# Clear board logic
@@ -49,9 +62,6 @@ func load_puzzle(id):
 			if s.get("king", false):
 				var p = GameManager.get_piece_at(s.r, s.c)
 				if p: p.promote_to_king()
-
-func _on_turn_changed(_side):
-	call_deferred("check_game_over_condition")
 
 func check_game_over_condition():
 	if GameManager.current_mode == GameManager.Mode.PV_P:
