@@ -2,8 +2,8 @@ extends Control
 
 signal tab_selected(index)
 
-var active_color = Color("#000000") # Bold Black
-var inactive_color = Color("#888888") # Solid Gray
+var active_color = Color("#ffffff") # Pure White
+var inactive_color = Color("#cfe0cf") # Soft Mint Gray
 
 @onready var tabs_container = $Tabs
 @onready var indicator = $SelectionIndicator
@@ -36,19 +36,17 @@ func select_tab(index):
 			tab.icon.modulate = active_color
 			tab.label.add_theme_color_override("font_color", active_color)
 			
-			# Animate Indicator (Classic Slide)
+			# Animate Indicator
 			if indicator:
-				var target_pos_x = tab.btn.position.x
-				var target_width = tab.btn.size.x
+				var target_pos_x = tab.btn.global_position.x + (tab.btn.size.x / 2.0) - (indicator.size.x / 2.0)
 				
 				var tween = create_tween().set_parallel(true)
-				tween.tween_property(indicator, "position:x", target_pos_x, 0.4).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
-				tween.tween_property(indicator, "size:x", target_width, 0.4).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+				tween.tween_property(indicator, "global_position:x", target_pos_x, 0.4).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 			
 			# Button Scale Pulse
 			if tab.btn:
 				var scale_tween = create_tween()
-				scale_tween.tween_property(tab.btn, "scale", Vector2(1.1, 1.1), 0.1).set_trans(Tween.TRANS_SINE)
+				scale_tween.tween_property(tab.btn, "scale", Vector2(1.05, 1.05), 0.1).set_trans(Tween.TRANS_SINE)
 				scale_tween.tween_property(tab.btn, "scale", Vector2(1.0, 1.0), 0.2).set_trans(Tween.TRANS_SINE)
 		else:
 			tab.icon.modulate = inactive_color

@@ -1,39 +1,34 @@
-[gd_scene load_steps=10 format=3 uid="uid://dpw5y5p7m2v1p"]
+[gd_scene load_steps=8 format=3 uid="uid://dg6u8v7p1k2r"]
 
-[ext_resource type="Script" path="res://scripts/bottom_nav_bar.gd" id="1_v4m3r"]
-[ext_resource type="Texture2D" path="res://assets/textures/icon_daily.svg" id="2_d1y2c"]
-[ext_resource type="Texture2D" path="res://assets/textures/icon_pvp.svg" id="3_p1v2p"]
-[ext_resource type="Texture2D" path="res://assets/textures/icon_mastery.svg" id="4_m1v3s"]
-[ext_resource type="Texture2D" path="res://assets/textures/icon_achievement.svg" id="5_a1v4t"]
+[ext_resource type="Script" path="res://scripts/bottom_nav_bar.gd" id="1_nav"]
+[ext_resource type="Texture2D" path="res://assets/textures/icon_daily.svg" id="2_s1v5u"]
+[ext_resource type="Texture2D" path="res://assets/textures/icon_pvp.svg" id="3_s1v5u"]
+[ext_resource type="Texture2D" path="res://assets/textures/icon_mastery.svg" id="4_s1v5u"]
+[ext_resource type="Texture2D" path="res://assets/textures/icon_achievement.svg" id="5_s1v5u"]
 [ext_resource type="Texture2D" path="res://assets/textures/icon_settings.svg" id="6_s1v5u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
-bg_color = Color(1, 1, 1, 1) # Solid White
-border_width_top = 6
-border_color = Color(0, 0, 0, 1)
-shadow_color = Color(0, 0, 0, 1)
-shadow_size = 0
-shadow_offset = Vector2(0, -6)
+bg_color = Color(0.180392, 0.8, 0.443137, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+shadow_color = Color(0, 0, 0, 0.08)
+shadow_size = 20
+shadow_offset = Vector2(0, -10)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bubble"]
-bg_color = Color(1, 0.843137, 0, 1) # Sunlight Yellow for active
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
-corner_radius_all = 4
+bg_color = Color(1, 1, 1, 0.15)
+corner_radius_all = 20
 
 [node name="BottomNavBar" type="Control"]
+custom_minimum_size = Vector2(0, 110)
 layout_mode = 3
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -110.0
 grow_horizontal = 2
 grow_vertical = 0
-script = ExtResource("1_v4m3r")
+script = ExtResource("1_nav")
 
 [node name="Background" type="Panel" parent="."]
 layout_mode = 1
@@ -46,10 +41,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_bar")
 
 [node name="SelectionIndicator" type="Panel" parent="."]
 layout_mode = 0
-offset_left = 12.0
+offset_left = 60.0
 offset_top = 15.0
-offset_right = 132.0
-offset_bottom = 85.0
+offset_right = 140.0
+offset_bottom = 95.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_bubble")
 
 [node name="Tabs" type="HBoxContainer" parent="."]
@@ -59,7 +54,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 0
 alignment = 1
 
 [node name="Daily" type="Button" parent="Tabs"]
@@ -74,20 +68,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 alignment = 1
 
 [node name="Icon" type="TextureRect" parent="Tabs/Daily/VBoxContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("2_d1y2c")
+texture = ExtResource("2_s1v5u")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="Tabs/Daily/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.8)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 text = "Daily"
 horizontal_alignment = 1
 
@@ -103,21 +95,19 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 alignment = 1
 
 [node name="Icon" type="TextureRect" parent="Tabs/PvP/VBoxContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("3_p1v2p")
+texture = ExtResource("3_s1v5u")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="Tabs/PvP/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.8)
-theme_override_font_sizes/font_size = 12
-text = "PvP"
+theme_override_font_sizes/font_size = 14
+text = "Play"
 horizontal_alignment = 1
 
 [node name="Mastery" type="Button" parent="Tabs"]
@@ -132,20 +122,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 alignment = 1
 
 [node name="Icon" type="TextureRect" parent="Tabs/Mastery/VBoxContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("4_m1v3s")
+texture = ExtResource("4_s1v5u")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="Tabs/Mastery/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.8)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 text = "Mastery"
 horizontal_alignment = 1
 
@@ -161,21 +149,19 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 alignment = 1
 
 [node name="Icon" type="TextureRect" parent="Tabs/Achievement/VBoxContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("5_a1v4t")
+texture = ExtResource("5_s1v5u")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="Tabs/Achievement/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.8)
-theme_override_font_sizes/font_size = 12
-text = "Trophy"
+theme_override_font_sizes/font_size = 14
+text = "Awards"
 horizontal_alignment = 1
 
 [node name="Settings" type="Button" parent="Tabs"]
@@ -190,7 +176,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 alignment = 1
 
 [node name="Icon" type="TextureRect" parent="Tabs/Settings/VBoxContainer"]
@@ -202,7 +187,6 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Tabs/Settings/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.8)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 text = "Settings"
 horizontal_alignment = 1

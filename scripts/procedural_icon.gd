@@ -6,75 +6,70 @@ func _draw():
 	
 	var color = _get_category_color(category)
 	if not is_unlocked:
-		color = color.lerp(Color.GRAY, 0.7)
+		color = Color("#DAE3DF") # Soft Grayed Mint
 	
 	var center = size / 2.0
 	var radius = min(size.x, size.y) / 2.0 - 5.0
 	
-	# Draw Shadow/Outline First (Brutal Style)
-	draw_circle(center + Vector2(4, 4), radius, Color.BLACK)
+	# Draw Base Circle
 	draw_circle(center, radius, Color.WHITE)
-	draw_circle(center, radius, Color.BLACK, false, 4.0)
+	draw_circle(center, radius, color.lightened(0.8), false, 2.0)
 	
-	# Draw Inner Shape
+	# Draw Inner Shape (No thick outlines)
 	match category:
 		"progression":
-			_draw_star(center, radius * 0.7, color)
+			_draw_star(center, radius * 0.65, color)
 		"combat":
-			_draw_sword(center, radius * 0.7, color)
+			_draw_sword(center, radius * 0.65, color)
 		"skill":
-			_draw_shield(center, radius * 0.7, color)
+			_draw_shield(center, radius * 0.65, color)
 		"style":
-			_draw_diamond(center, radius * 0.7, color)
+			_draw_diamond(center, radius * 0.65, color)
 		_:
 			draw_circle(center, radius * 0.5, color)
 
 func _get_category_color(cat):
 	match cat:
-		"progression": return Color("#f1c40f") # Gold
-		"combat": return Color("#e74c3c") # Red
-		"skill": return Color("#3498db") # Blue
-		"style": return Color("#9b59b6") # Purple
-		_: return Color("#2ecc71") # Green
+		"progression": return Color("#2ECC71") # Mint Green
+		"combat": return Color("#FF7675") # Coral Rose
+		"skill": return Color("#74B9FF") # Sky Blue
+		"style": return Color("#A29BFE") # Lavender
+		_: return Color("#55E6C1") # Teal
 
 func _draw_star(center, radius, color):
 	var points = PackedVector2Array()
 	for i in range(10):
 		var angle = deg_to_rad(i * 36 - 90)
-		var r = radius if i % 2 == 0 else radius * 0.4
+		var r = radius if i % 2 == 0 else radius * 0.45
 		points.append(center + Vector2(cos(angle), sin(angle)) * r)
 	draw_colored_polygon(points, color)
-	draw_polyline(points, Color.BLACK, 2.0)
 
 func _draw_sword(center, radius, color):
-	# Simple cross shape for sword
 	var points = PackedVector2Array([
 		center + Vector2(0, -radius),
-		center + Vector2(radius * 0.2, 0),
+		center + Vector2(radius * 0.25, 0),
 		center + Vector2(0, radius),
-		center + Vector2(-radius * 0.2, 0)
+		center + Vector2(-radius * 0.25, 0)
 	])
 	draw_colored_polygon(points, color)
-	# Guard
-	draw_line(center + Vector2(-radius * 0.4, 0), center + Vector2(radius * 0.4, 0), Color.BLACK, 4.0)
+	# Soft Guard
+	draw_rect(Rect2(center.x - radius * 0.35, center.y - 2, radius * 0.7, 4), color.darkened(0.2))
 
 func _draw_shield(center, radius, color):
 	var points = PackedVector2Array([
-		center + Vector2(-radius, -radius * 0.5),
-		center + Vector2(radius, -radius * 0.5),
-		center + Vector2(radius, radius * 0.3),
+		center + Vector2(-radius * 0.8, -radius * 0.5),
+		center + Vector2(radius * 0.8, -radius * 0.5),
+		center + Vector2(radius * 0.8, radius * 0.3),
 		center + Vector2(0, radius),
-		center + Vector2(-radius, radius * 0.3)
+		center + Vector2(-radius * 0.8, radius * 0.3)
 	])
 	draw_colored_polygon(points, color)
-	draw_polyline(points, Color.BLACK, 2.0)
 
 func _draw_diamond(center, radius, color):
 	var points = PackedVector2Array([
 		center + Vector2(0, -radius),
-		center + Vector2(radius, 0),
+		center + Vector2(radius * 0.9, 0),
 		center + Vector2(0, radius),
-		center + Vector2(-radius, 0)
+		center + Vector2(-radius * 0.9, 0)
 	])
 	draw_colored_polygon(points, color)
-	draw_polyline(points, Color.BLACK, 2.0)
