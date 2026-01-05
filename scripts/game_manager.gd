@@ -26,12 +26,8 @@ signal turn_changed(new_side)
 signal game_over(winner, next_level_possible)
 signal piece_moved(from, to)
 signal piece_captured(pos)
-signal coins_changed(new_amount)
-signal hearts_changed(new_amount)
 signal board_theme_changed(theme_data)
 
-const WIN_REWARD = 50
-const MAX_HEARTS = 5
 
 const BOARD_THEMES = [
 	{"name": "CLASSIC", "light": Color("#f9f9f9"), "dark": Color("#2ecc71")},
@@ -41,8 +37,7 @@ const BOARD_THEMES = [
 	{"name": "NIGHT", "light": Color("#cfcfcf"), "dark": Color("#202020")}
 ]
 
-var coins = 0
-var hearts = 5
+
 var board_theme_index = 0
 
 func _ready():

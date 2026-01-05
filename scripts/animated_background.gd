@@ -13,5 +13,5 @@ func _animate_bg():
 	tween.tween_property(bg1, "rotation_degrees", 360.0, 60.0)
 	tween.tween_property(bg2, "rotation_degrees", -360.0, 45.0)
 	
-	bg1.color = Color("#2ecc71") # Emerald
-	bg2.color = Color("#27ae60") # Jade
+	bg1.color = Color("#e8f8f5") # Very light Mint
+	bg2.color = Color("#f4fdfb") # Subtle Sage/White

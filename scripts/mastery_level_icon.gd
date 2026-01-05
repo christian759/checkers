@@ -19,20 +19,24 @@ func setup(level_num: int, state: State, accent_color: Color):
 	
 	match state:
 		State.LOCKED:
-			sb.bg_color = Color(0.9, 0.9, 0.9, 0.8)
-			sb.border_color = Color(0.8, 0.8, 0.8)
-			label.modulate = Color(0.6, 0.6, 0.6)
+			sb.bg_color = Color("#ecf0f1") # Light Cloud
+			sb.border_color = Color("#bdc3c7")
+			label.modulate = Color("#7f8c8d")
 		State.CURRENT:
 			sb.bg_color = Color.WHITE
-			sb.border_color = accent_color
-			sb.shadow_color = Color(accent_color, 0.4)
-			sb.shadow_size = 12
-			label.modulate = accent_color
+			sb.border_color = Color("#2ecc71") # Emerald
+			sb.border_width_left = 3
+			sb.border_width_top = 3
+			sb.border_width_right = 3
+			sb.border_width_bottom = 3
+			sb.shadow_color = Color("#2ecc71", 0.3)
+			sb.shadow_size = 10
+			label.modulate = Color("#2ecc71")
 			_start_pulse_animation(accent_color)
 		State.COMPLETED:
-			sb.bg_color = accent_color
-			sb.border_color = accent_color
-			label.modulate = Color.BLACK
+			sb.bg_color = Color("#2ecc71")
+			sb.border_color = Color("#27ae60") # Darker Green
+			label.modulate = Color.WHITE
 			
 	add_theme_stylebox_override("normal", sb)
 	add_theme_stylebox_override("hover", sb)

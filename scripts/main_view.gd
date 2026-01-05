@@ -15,7 +15,7 @@ var current_section = null
 
 func _ready():
 	nav_bar.tab_selected.connect(_on_tab_selected)
-	_on_tab_selected(0) # Default to Daily Challenge/Home
+	_on_tab_selected(2) # Default to Mastery/Home (Middle Tab)
 
 func _on_tab_selected(index):
 	if sections.has(index):
@@ -28,8 +28,11 @@ func _on_tab_selected(index):
 		
 		# Centering/Layout
 		if new_section is Node2D:
-			var board_size = Vector2(640, 640)
-			new_section.position = (content_container.size - board_size) / 2
+			# Dynamic board centering
+			var screen_size = get_viewport_rect().size
+			# Board width is 95% of screen width (as set in board.gd)
+			var board_width = screen_size.x * 0.95
+			new_section.position = Vector2((screen_size.x - board_width) / 2.0, (content_container.size.y - board_width) / 2.0)
 		elif new_section is Control:
 			new_section.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		
@@ -38,8 +41,13 @@ func _on_tab_selected(index):
 		
 		if old_section:
 			tween.tween_property(old_section, "modulate:a", 0.0, 0.25).set_trans(Tween.TRANS_SINE)
-			tween.tween_callback(old_section.queue_free).set_delay(0.25)
+			# Removing old section after fade
+			var clear_tween = create_tween()
+			clear_tween.tween_interval(0.25)
+			clear_tween.tween_callback(old_section.queue_free)
 		
-		tween.tween_property(new_section, "modulate:a", 1.0, 0.4).set_trans(Tween.TRANS_SINE).set_delay(0.1)
+		var in_tween = create_tween()
+		in_tween.tween_interval(0.1)
+		in_tween.tween_property(new_section, "modulate:a", 1.0, 0.4).set_trans(Tween.TRANS_SINE)
 		
 		current_section = new_section

@@ -42,11 +42,11 @@ theme_override_constants/margin_top = 40
 
 [node name="Title" type="Label" parent="VBoxContainer/Header/MarginContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.1, 0.2, 0.1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.1)
-theme_override_constants/shadow_offset_x = 2
-theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/font_size = 48
+theme_override_colors/font_color = Color(0.0666667, 0.2, 0.0823529, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.05)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 4
+theme_override_font_sizes/font_size = 52
 text = "MASTERY"
 horizontal_alignment = 1
 
@@ -67,8 +67,8 @@ vertical_scroll_mode = 0
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/margin_left = 100
-theme_override_constants/margin_right = 100
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer"]
 layout_mode = 2

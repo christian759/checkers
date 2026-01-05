@@ -1,19 +1,11 @@
 extends Node2D
 
-const TILE_SIZE = 80
-const OFFSET = Vector2(TILE_SIZE/2.0, TILE_SIZE/2.0)
-
-@onready var tile_container = $Tiles
-@onready var piece_container = $Pieces
-@onready var highlights = $Highlights
-
-var piece_scene = preload("res://scenes/piece.tscn")
-var marker_script = preload("res://scripts/move_marker.gd")
-
-var forced_pieces = [] # Pieces that MUST move (due to jump)
+var tile_size = 85.0
+var board_scale = 1.0
 
 func _ready():
 	GameManager.turn_changed.connect(_on_turn_changed)
+	_setup_responsive_size()
 	generate_board()
 	spawn_pieces()
 
@@ -61,25 +53,32 @@ func rebuild_from_state(state):
 	
 	deselect_piece()
 
-
+func _setup_responsive_size():
+	var screen_width = get_viewport_rect().size.x
+	# Target 90% of screen width
+	var target_width = screen_width * 0.95
+	tile_size = target_width / 8.0
+	board_scale = 1.0 # We'll use the calculated tile_size directly
+	
 func generate_board():
 	for r in range(8):
 		for c in range(8):
 			var is_dark = (r + c) % 2 == 1
 			var tile = Panel.new()
-			tile.size = Vector2(TILE_SIZE - 4, TILE_SIZE - 4) # Small gap
-			tile.position = Vector2(c * TILE_SIZE + 2, r * TILE_SIZE + 2)
+			var gap = tile_size * 0.05
+			tile.size = Vector2(tile_size - gap, tile_size - gap)
+			tile.position = Vector2(c * tile_size + gap / 2.0, r * tile_size + gap / 2.0)
 			
 			var sb = StyleBoxFlat.new()
-			sb.corner_radius_top_left = 12
-			sb.corner_radius_top_right = 12
-			sb.corner_radius_bottom_left = 12
-			sb.corner_radius_bottom_right = 12
+			sb.corner_radius_top_left = tile_size * 0.15
+			sb.corner_radius_top_right = tile_size * 0.15
+			sb.corner_radius_bottom_left = tile_size * 0.15
+			sb.corner_radius_bottom_right = tile_size * 0.15
 			
 			if is_dark:
-				sb.bg_color = Color("#b8860b") # Classic dark
+				sb.bg_color = GameManager.BOARD_THEMES[GameManager.board_theme_index].dark
 			else:
-				sb.bg_color = Color("#f5deb3") # Classic light
+				sb.bg_color = GameManager.BOARD_THEMES[GameManager.board_theme_index].light
 				
 			tile.add_theme_stylebox_override("panel", sb)
 			tile.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -105,11 +104,11 @@ func create_piece(r, c, side):
 	GameManager.set_piece_at(r, c, p)
 
 func grid_to_world(r, c):
-	return Vector2(c * TILE_SIZE, r * TILE_SIZE) + OFFSET
+	return Vector2(c * tile_size, r * tile_size) + Vector2(tile_size / 2.0, tile_size / 2.0)
 
 func world_to_grid(pos):
 	var local_pos = pos - global_position
-	return Vector2i(floor(local_pos.y / TILE_SIZE), floor(local_pos.x / TILE_SIZE))
+	return Vector2i(floor(local_pos.y / tile_size), floor(local_pos.x / tile_size))
 
 func _input(event):
 	if GameManager.current_mode == GameManager.Mode.PV_AI:
@@ -252,7 +251,6 @@ func get_legal_moves(piece: Piece):
 					# Capture found
 					# Rule: Men move/capture forward normally
 					# EXCEPTION: If it is a "second kill" (multi-jump), they can capture backward
-					
 					var is_forward = false
 					if piece.side == GameManager.Side.PLAYER:
 						is_forward = (d.x < 0) # Moving UP (-1)

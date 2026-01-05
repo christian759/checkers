@@ -1,7 +1,7 @@
 extends Control
 
 @onready var scroll_container = $VBoxContainer/ScrollContainer
-@onready var card_container = $VBoxContainer/ScrollContainer/HBoxContainer
+@onready var card_container = $VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer
 @onready var global_progress = $VBoxContainer/Header/ProgressLabel
 
 var card_scene = preload("res://scenes/mastery_card.tscn")
