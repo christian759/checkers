@@ -16,9 +16,14 @@ func setup(rank_name: String, start_level: int, accent_color: Color, current_glo
 	title_label.text = rank_name
 	
 	# Glass Header Color
-	var header_sb = header.get_theme_stylebox("panel").duplicate()
-	header_sb.border_color = accent_color.with_alpha(0.3)
-	header_sb.bg_color = accent_color.with_alpha(0.1)
+	var header_sb = header.get_theme_stylebox("panel")
+	if not header_sb is StyleBoxFlat:
+		header_sb = StyleBoxFlat.new()
+	else:
+		header_sb = header_sb.duplicate()
+		
+	header_sb.border_color = Color(accent_color, 0.3)
+	header_sb.bg_color = Color(accent_color, 0.1)
 	header.add_theme_stylebox_override("panel", header_sb)
 	
 	title_label.add_theme_color_override("font_color", accent_color)

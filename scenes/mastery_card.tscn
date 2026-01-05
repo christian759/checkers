@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/mastery_card.gd" id="1_m4v5r"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glass"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
 bg_color = Color(1, 1, 1, 0.03)
 border_width_left = 1
 border_width_top = 1
@@ -22,7 +22,7 @@ custom_minimum_size = Vector2(300, 480)
 offset_right = 300.0
 offset_bottom = 480.0
 pivot_offset = Vector2(150, 240)
-theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
 script = ExtResource("1_m4v5r")
 
 [node name="BackgroundGlow" type="ColorRect" parent="."]
@@ -38,7 +38,7 @@ theme_override_constants/separation = 0
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
 
 [node name="Title" type="Label" parent="VBoxContainer/Header"]
 layout_mode = 1
@@ -78,6 +78,6 @@ theme_override_constants/margin_bottom = 20
 custom_minimum_size = Vector2(200, 6)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_styles/background = SubResource("StyleBoxFlat_glass")
+theme_override_styles/background = SubResource("StyleBoxFlat_1")
 value = 50.0
 show_percentage = false
