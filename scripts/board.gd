@@ -485,6 +485,17 @@ func execute_move(piece, destination_row, destination_col):
 	if is_capture and captured_piece:
 		var capture_row = captured_piece.grid_pos.x
 		var capture_col = captured_piece.grid_pos.y
+		
+		# Achievement tracking
+		if GameManager.current_turn == GameManager.Side.PLAYER:
+			AchievementManager.update_stat("total_captures", 1)
+			if captured_piece.is_king:
+				AchievementManager.update_stat("king_captures", 1)
+			if GameManager.must_jump:
+				# This is at least the second jump in a chain
+				AchievementManager.trigger_manual_achievement("multi_2")
+				# You can add more complex multi-jump detection if needed
+		
 		GameManager.set_piece_at(capture_row, capture_col, null)
 		captured_piece.queue_free()
 	
@@ -499,6 +510,8 @@ func execute_move(piece, destination_row, destination_col):
 		if (piece.side == GameManager.Side.PLAYER and destination_row == 0) or (piece.side == GameManager.Side.AI and destination_row == 7):
 			piece.promote_to_king()
 			promoted = true
+			if piece.side == GameManager.Side.PLAYER:
+				AchievementManager.update_stat("total_kings", 1)
 	
 	# Multi-jump logic
 	if is_capture and not promoted:

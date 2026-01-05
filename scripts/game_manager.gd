@@ -19,6 +19,8 @@ var is_mastery = false # Track if current game is from Mastery levels
 var daily_completed = false
 var game_start_time = 0
 var is_calculating = false # Lock input while AI thinks
+var undo_used_in_match = false # Track for achievement
+var active_theme_played = false # Track for achievement per match
 
 # Match Settings (Lobby)
 var match_mode = Mode.PV_AI
@@ -119,9 +121,15 @@ func complete_daily():
 	if last_daily_date != today:
 		daily_streak += 1
 		last_daily_date = today
+		AchievementManager.update_stat("daily_count", 1)
 		save_data()
 
 func start_custom_game(mode, ai_level, theme_index, start_side):
+	undo_used_in_match = false
+	active_theme_played = false
+	game_start_time = Time.get_ticks_msec()
+	AchievementManager.add_theme_used(theme_index)
+	
 	match_mode = mode
 	match_ai_level = ai_level
 	match_theme_index = theme_index
@@ -138,6 +146,10 @@ func start_custom_game(mode, ai_level, theme_index, start_side):
 	get_tree().change_scene_to_file("res://scenes/board.tscn")
 
 func start_mastery_level(level):
+	undo_used_in_match = false
+	active_theme_played = false
+	game_start_time = Time.get_ticks_msec()
+	AchievementManager.add_theme_used(0) # Mastery always uses theme 0 (Classic)
 	match_mode = Mode.PV_AI
 	match_ai_level = level
 	match_theme_index = 0 # Classic for Mastery
@@ -189,7 +201,8 @@ func undo_move():
 	if move_history.size() == 0 or is_calculating:
 		return
 	
-	# In AI mode, we usually want to undo 2 steps (AI move + Player move)
+	undo_used_in_match = true
+	AchievementManager.update_stat("undo_count", 1)
 	# unless it's currently AI turn and we're undoing its half-finished move
 	var steps = 2 if current_mode == Mode.PV_AI else 1
 	if must_jump: steps = 1 # Only undo one jump if in middle of sequence
@@ -227,8 +240,35 @@ func check_win_condition(winner):
 			max_unlocked_level = min(max_unlocked_level + 1, 200)
 			
 		win_streak += 1
+		
+		# Achievement Tracking
+		AchievementManager.update_stat("total_wins", 1)
+		AchievementManager.update_stat("win_streak", win_streak, false)
+		if is_mastery:
+			AchievementManager.update_stat("mastery_level", current_level, false)
+		if not undo_used_in_match:
+			AchievementManager.update_stat("wins_no_undo", 1)
+			if is_mastery and current_level >= 50:
+				AchievementManager.trigger_manual_achievement("level_50_no_undo")
+		
+		if current_mode == Mode.PV_P:
+			AchievementManager.update_stat("pvp_matches", 1)
+			
+		# Theme stats
+		var theme_keys = ["classic_played", "ocean_played", "forest_played", "pink_played", "night_played"]
+		if board_theme_index < theme_keys.size():
+			AchievementManager.update_stat(theme_keys[board_theme_index], 1)
+			
+		# Speed achievements
+		var duration = (Time.get_ticks_msec() - game_start_time) / 1000.0
+		if duration < 300: # 5 minutes
+			AchievementManager.trigger_manual_achievement("fast_win")
+		if duration > 900: # 15 minutes
+			AchievementManager.trigger_manual_achievement("marathon")
+			
 	else:
 		win_streak = 0
+		AchievementManager.update_stat("win_streak", 0, false)
 		
 	save_data()
 	emit_signal("game_over", winner)
