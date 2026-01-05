@@ -2,8 +2,8 @@ extends Control
 
 signal tab_selected(index)
 
-var active_color = Color("#00ff88") # Vibrant Neon Green
-var inactive_color = Color("#888888") # Better contrast on dark bg
+var active_color = Color("#2ecc71") # Emerald Green
+var inactive_color = Color("#7f8c8d") # Grayish
 
 @onready var tabs_container = $Tabs
 @onready var indicator = $SelectionIndicator
@@ -36,13 +36,13 @@ func select_tab(index):
 			tab.icon.modulate = active_color
 			tab.label.add_theme_color_override("font_color", active_color)
 			
-			# Animate Indicator (Snappier Slide)
-			var target_pos_x = tab.btn.position.x + 8
-			var target_width = tab.btn.size.x - 16
+			# Animate Indicator (Classic Slide)
+			var target_pos_x = tab.btn.position.x
+			var target_width = tab.btn.size.x
 			
 			var tween = create_tween().set_parallel(true)
-			tween.tween_property(indicator, "position:x", target_pos_x, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-			tween.tween_property(indicator, "size:x", target_width, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+			tween.tween_property(indicator, "position:x", target_pos_x, 0.4).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+			tween.tween_property(indicator, "size:x", target_width, 0.4).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 			
 			# Button Scale Pulse
 			var scale_tween = create_tween()
