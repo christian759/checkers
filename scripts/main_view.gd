@@ -27,7 +27,11 @@ func _on_tab_selected(index):
 		if "modulate" in new_section:
 			new_section.modulate.a = 0
 		
-		content_container.add_child(new_section)
+		if content_container:
+			content_container.add_child(new_section)
+		else:
+			push_error("MainView: content_container is null!")
+			return
 		
 		# Centering/Layout
 		if new_section is Node2D:

@@ -8,16 +8,16 @@
 [ext_resource type="Texture2D" path="res://assets/textures/icon_settings.svg" id="6_s1v5u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
-bg_color = Color(0.180392, 0.8, 0.443137, 1)
-corner_radius_top_left = 32
-corner_radius_top_right = 32
+bg_color = Color(1, 1, 1, 1)
 shadow_color = Color(0, 0, 0, 0.08)
-shadow_size = 20
-shadow_offset = Vector2(0, -10)
+shadow_size = 15
+shadow_offset = Vector2(0, -8)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bubble"]
-bg_color = Color(1, 1, 1, 0.15)
-corner_radius_all = 20
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_indicator"]
+bg_color = Color(0.152941, 0.682353, 0.376471, 1)
+corner_radius_all = 100
+shadow_color = Color(0.15, 0.68, 0.37, 0.3)
+shadow_size = 12
 
 [node name="BottomNavBar" type="Control"]
 custom_minimum_size = Vector2(0, 110)
@@ -40,12 +40,13 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_bar")
 
 [node name="SelectionIndicator" type="Panel" parent="."]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 60.0
 offset_top = 15.0
-offset_right = 140.0
+offset_right = 145.0
 offset_bottom = 95.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_bubble")
+theme_override_styles/panel = SubResource("StyleBoxFlat_indicator")
 
 [node name="Tabs" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -61,7 +62,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 flat = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Daily"]
+[node name="VBox" type="VBoxContainer" parent="Tabs/Daily"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -70,17 +71,17 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="Tabs/Daily/VBoxContainer"]
-custom_minimum_size = Vector2(32, 32)
+[node name="Icon" type="TextureRect" parent="Tabs/Daily/VBox"]
+custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
 texture = ExtResource("2_s1v5u")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="Tabs/Daily/VBoxContainer"]
+[node name="Label" type="Label" parent="Tabs/Daily/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "Daily"
+theme_override_font_sizes/font_size = 13
+text = "LAB"
 horizontal_alignment = 1
 
 [node name="PvP" type="Button" parent="Tabs"]
@@ -88,7 +89,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 flat = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/PvP"]
+[node name="VBox" type="VBoxContainer" parent="Tabs/PvP"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -97,17 +98,17 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="Tabs/PvP/VBoxContainer"]
-custom_minimum_size = Vector2(32, 32)
+[node name="Icon" type="TextureRect" parent="Tabs/PvP/VBox"]
+custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
 texture = ExtResource("3_s1v5u")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="Tabs/PvP/VBoxContainer"]
+[node name="Label" type="Label" parent="Tabs/PvP/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "Play"
+theme_override_font_sizes/font_size = 13
+text = "PLAY"
 horizontal_alignment = 1
 
 [node name="Mastery" type="Button" parent="Tabs"]
@@ -115,7 +116,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 flat = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Mastery"]
+[node name="VBox" type="VBoxContainer" parent="Tabs/Mastery"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -124,17 +125,17 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="Tabs/Mastery/VBoxContainer"]
-custom_minimum_size = Vector2(32, 32)
+[node name="Icon" type="TextureRect" parent="Tabs/Mastery/VBox"]
+custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
 texture = ExtResource("4_s1v5u")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="Tabs/Mastery/VBoxContainer"]
+[node name="Label" type="Label" parent="Tabs/Mastery/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "Mastery"
+theme_override_font_sizes/font_size = 13
+text = "LEVELS"
 horizontal_alignment = 1
 
 [node name="Achievement" type="Button" parent="Tabs"]
@@ -142,7 +143,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 flat = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Achievement"]
+[node name="VBox" type="VBoxContainer" parent="Tabs/Achievement"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -151,17 +152,17 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="Tabs/Achievement/VBoxContainer"]
-custom_minimum_size = Vector2(32, 32)
+[node name="Icon" type="TextureRect" parent="Tabs/Achievement/VBox"]
+custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
 texture = ExtResource("5_s1v5u")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="Tabs/Achievement/VBoxContainer"]
+[node name="Label" type="Label" parent="Tabs/Achievement/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "Awards"
+theme_override_font_sizes/font_size = 13
+text = "AWARDS"
 horizontal_alignment = 1
 
 [node name="Settings" type="Button" parent="Tabs"]
@@ -169,7 +170,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 flat = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Settings"]
+[node name="VBox" type="VBoxContainer" parent="Tabs/Settings"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -178,15 +179,15 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="Tabs/Settings/VBoxContainer"]
-custom_minimum_size = Vector2(32, 32)
+[node name="Icon" type="TextureRect" parent="Tabs/Settings/VBox"]
+custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
 texture = ExtResource("6_s1v5u")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="Tabs/Settings/VBoxContainer"]
+[node name="Label" type="Label" parent="Tabs/Settings/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "Settings"
+theme_override_font_sizes/font_size = 13
+text = "CONFIG"
 horizontal_alignment = 1

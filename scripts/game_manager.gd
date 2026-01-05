@@ -34,6 +34,8 @@ var completed_levels = [] # Array of level IDs (integers)
 # Daily Challenge & Persistence
 var daily_streak = 0
 var last_daily_date = "" # Format: "2026-01-05"
+var completed_daily_dates = [] # Array of date strings
+var current_daily_date = "" # The specific date being played
 var current_puzzle_id = -1
 var save_path = "user://save_game.dat"
 
@@ -91,7 +93,8 @@ func save_data():
 			"last_daily_date": last_daily_date,
 			"max_unlocked_level": max_unlocked_level,
 			"win_streak": win_streak,
-			"completed_levels": completed_levels
+			"completed_levels": completed_levels,
+			"completed_daily_dates": completed_daily_dates
 		}
 		file.store_string(JSON.stringify(data))
 
@@ -107,6 +110,7 @@ func load_data():
 			max_unlocked_level = data.get("max_unlocked_level", 1)
 			win_streak = data.get("win_streak", 0)
 			completed_levels = data.get("completed_levels", [])
+			completed_daily_dates = data.get("completed_daily_dates", [])
 
 func setup_board():
 	board = []
@@ -116,13 +120,21 @@ func setup_board():
 			row.append(null)
 		board.append(row)
 
-func complete_daily():
+func complete_daily(date: String = ""):
+	var target_date = date
+	if target_date == "":
+		target_date = Time.get_date_string_from_system()
+		
 	var today = Time.get_date_string_from_system()
-	if last_daily_date != today:
+	if last_daily_date != today and target_date == today:
 		daily_streak += 1
 		last_daily_date = today
+	
+	if not target_date in completed_daily_dates:
+		completed_daily_dates.append(target_date)
 		AchievementManager.update_stat("daily_count", 1)
-		save_data()
+	
+	save_data()
 
 func start_custom_game(mode, ai_level, theme_index, start_side):
 	undo_used_in_match = false
@@ -240,6 +252,10 @@ func check_win_condition(winner):
 			max_unlocked_level = min(max_unlocked_level + 1, 200)
 			
 		win_streak += 1
+		
+		# Log Daily Completion
+		if is_daily_challenge:
+			complete_daily(current_daily_date)
 		
 		# Achievement Tracking
 		AchievementManager.update_stat("total_wins", 1)

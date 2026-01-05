@@ -2,18 +2,17 @@ extends Control
 
 signal tab_selected(index)
 
-var active_color = Color("#ffffff") # Pure White
-var inactive_color = Color("#cfe0cf") # Soft Mint Gray
+var active_color = Color("#ffffff") # White for visibility on green pill
+var inactive_color = Color("#27AE60") # Emerald for inactive
 
-@onready var tabs_container = $Tabs
-@onready var indicator = $SelectionIndicator
+@onready var indicator = %SelectionIndicator
 
 @onready var tabs = [
-	{"btn": $Tabs/Daily, "icon": $Tabs/Daily/VBoxContainer/Icon, "label": $Tabs/Daily/VBoxContainer/Label, "id": "daily"},
-	{"btn": $Tabs/PvP, "icon": $Tabs/PvP/VBoxContainer/Icon, "label": $Tabs/PvP/VBoxContainer/Label, "id": "pvp"},
-	{"btn": $Tabs/Mastery, "icon": $Tabs/Mastery/VBoxContainer/Icon, "label": $Tabs/Mastery/VBoxContainer/Label, "id": "mastery"},
-	{"btn": $Tabs/Achievement, "icon": $Tabs/Achievement/VBoxContainer/Icon, "label": $Tabs/Achievement/VBoxContainer/Label, "id": "achievement"},
-	{"btn": $Tabs/Settings, "icon": $Tabs/Settings/VBoxContainer/Icon, "label": $Tabs/Settings/VBoxContainer/Label, "id": "settings"}
+	{"btn": $Tabs/Daily, "icon": $Tabs/Daily/VBox/Icon, "label": $Tabs/Daily/VBox/Label},
+	{"btn": $Tabs/PvP, "icon": $Tabs/PvP/VBox/Icon, "label": $Tabs/PvP/VBox/Label},
+	{"btn": $Tabs/Mastery, "icon": $Tabs/Mastery/VBox/Icon, "label": $Tabs/Mastery/VBox/Label},
+	{"btn": $Tabs/Achievement, "icon": $Tabs/Achievement/VBox/Icon, "label": $Tabs/Achievement/VBox/Label},
+	{"btn": $Tabs/Settings, "icon": $Tabs/Settings/VBox/Icon, "label": $Tabs/Settings/VBox/Label}
 ]
 
 func _ready():
@@ -44,10 +43,9 @@ func select_tab(index):
 				tween.tween_property(indicator, "global_position:x", target_pos_x, 0.4).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 			
 			# Button Scale Pulse
-			if tab.btn:
-				var scale_tween = create_tween()
-				scale_tween.tween_property(tab.btn, "scale", Vector2(1.05, 1.05), 0.1).set_trans(Tween.TRANS_SINE)
-				scale_tween.tween_property(tab.btn, "scale", Vector2(1.0, 1.0), 0.2).set_trans(Tween.TRANS_SINE)
+			var scale_tween = create_tween()
+			scale_tween.tween_property(tab.btn, "scale", Vector2(1.05, 1.05), 0.1)
+			scale_tween.tween_property(tab.btn, "scale", Vector2(1.0, 1.0), 0.2)
 		else:
 			tab.icon.modulate = inactive_color
 			tab.label.add_theme_color_override("font_color", inactive_color)

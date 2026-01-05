@@ -11,11 +11,8 @@ func _add_item(title: String, desc: String, is_unlocked: bool, category: String)
 	var panel = PanelContainer.new()
 	var sb = StyleBoxFlat.new()
 	sb.bg_color = Color("#ffffff")
-	sb.corner_radius_top_left = 24
-	sb.corner_radius_top_right = 24
-	sb.corner_radius_bottom_left = 24
-	sb.corner_radius_bottom_right = 24
-	sb.shadow_color = Color(0, 0, 0, 0.03)
+	sb.corner_radius_all = 24
+	sb.shadow_color = Color(0, 0, 0, 0.04)
 	sb.shadow_size = 12
 	sb.shadow_offset = Vector2(0, 4)
 	
@@ -29,7 +26,7 @@ func _add_item(title: String, desc: String, is_unlocked: bool, category: String)
 	panel.add_child(margin)
 	
 	var hbox = HBoxContainer.new()
-	hbox.add_theme_constant_override("separation", 20)
+	hbox.add_theme_constant_override("separation", 22)
 	margin.add_child(hbox)
 	
 	# Procedural Icon Node
@@ -47,7 +44,7 @@ func _add_item(title: String, desc: String, is_unlocked: bool, category: String)
 	var title_label = Label.new()
 	title_label.text = title
 	title_label.add_theme_font_size_override("font_size", 22)
-	title_label.add_theme_color_override("font_color", Color("#122A20") if is_unlocked else Color("#95A5A6"))
+	title_label.add_theme_color_override("font_color", Color("#2C3E50") if is_unlocked else Color("#BDC3C7"))
 	label_vbox.add_child(title_label)
 	
 	var desc_label = Label.new()

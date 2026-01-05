@@ -16,6 +16,11 @@ func setup(level_num: int, state: State, accent_color: Color):
 	state_stored = state
 	text = ""
 	label.text = str(level_num)
+	if state == State.LOCKED:
+		label.text = "🔒"
+		label.add_theme_font_size_override("font_size", 12)
+	else:
+		label.add_theme_font_size_override("font_size", 20)
 	
 	var sb = StyleBoxFlat.new()
 	sb.set_corner_radius_all(100)
@@ -59,6 +64,7 @@ func _on_mouse_exited():
 	modulate.v = 1.0
 
 func _on_pressed():
+	# Allow playing if CURRENT or COMPLETED
 	if state_stored != State.LOCKED:
 		GameManager.start_mastery_level(level_num_stored)
 

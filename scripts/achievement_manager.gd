@@ -206,7 +206,11 @@ func unlock_achievement(id: String):
 func show_toast(title: String):
 	var canvas = CanvasLayer.new()
 	canvas.layer = 100
-	get_tree().root.add_child(canvas)
+	var tree = get_tree()
+	if tree and tree.root:
+		tree.root.add_child(canvas)
+	else:
+		return
 	
 	var panel = PanelContainer.new()
 	panel.custom_minimum_size = Vector2(400, 80)
