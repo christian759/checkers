@@ -138,7 +138,22 @@ func reset_game():
 
 
 func check_win_condition(winner):
+	if winner == Side.PLAYER:
+		if current_level == max_unlocked_level:
+			max_unlocked_level = min(max_unlocked_level + 1, 200)
+		win_streak += 1
+	else:
+		win_streak = 0
+		
+	save_data()
 	emit_signal("game_over", winner)
+
+func restart_match():
+	setup_board()
+	# Reset state as needed
+	current_turn = Side.PLAYER # Usually player starts
+	must_jump = false
+	selected_piece = null
 
 func is_on_board(r, c):
 	return r >= 0 and r < 8 and c >= 0 and c < 8

@@ -9,9 +9,11 @@ var board_scale = 1.0
 
 var piece_scene = preload("res://scenes/piece.tscn")
 var marker_script = preload("res://scripts/move_marker.gd")
+var results_scene = preload("res://scenes/game_results.tscn")
 
 func _ready():
 	GameManager.turn_changed.connect(_on_turn_changed)
+	GameManager.game_over.connect(_on_game_over)
 	_setup_responsive_size()
 	generate_board()
 	
@@ -98,7 +100,10 @@ func rebuild_from_state(state):
 				if s.is_king:
 					p.promote_to_king()
 	
-	deselect_piece()
+func _on_game_over(winner):
+	var results = results_scene.instantiate()
+	$UI.add_child(results)
+	results.setup(winner)
 
 func _setup_responsive_size():
 	var screen_width = get_viewport_rect().size.x
