@@ -12,7 +12,6 @@ var current_level = 1
 var selected_piece = null
 var must_jump = false # For multi-jump logic
 var win_streak = 0
-var current_level = 1
 var max_unlocked_level = 1
 var move_history = [] # Stack of {pieces_state, turn, settings}
 var is_daily_challenge = false

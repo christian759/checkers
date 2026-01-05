@@ -18,18 +18,28 @@ func _ready():
 	_on_tab_selected(1) # Default to Board/PvP
 
 func _on_tab_selected(index):
-	if current_section:
-		current_section.queue_free()
-	
 	if sections.has(index):
+		var old_section = current_section
 		var new_section = sections[index].instantiate()
-		content_container.add_child(new_section)
-		current_section = new_section
 		
-		# Center Node2D content (like the Board)
+		# Prepare new section
+		new_section.modulate.a = 0
+		content_container.add_child(new_section)
+		
+		# Centering/Layout
 		if new_section is Node2D:
-			# Board is approx 640x640
 			var board_size = Vector2(640, 640)
 			new_section.position = (content_container.size - board_size) / 2
 		elif new_section is Control:
 			new_section.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		
+		# Smooth Transition
+		var tween = create_tween().set_parallel(true)
+		
+		if old_section:
+			tween.tween_property(old_section, "modulate:a", 0.0, 0.25).set_trans(Tween.TRANS_SINE)
+			tween.tween_callback(old_section.queue_free).set_delay(0.25)
+		
+		tween.tween_property(new_section, "modulate:a", 1.0, 0.4).set_trans(Tween.TRANS_SINE).set_delay(0.1)
+		
+		current_section = new_section
