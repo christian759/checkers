@@ -1,23 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://dg6u8v7p1k2r"]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/bottom_nav_bar.gd" id="1_nav"]
-[ext_resource type="Texture2D" path="res://assets/textures/icon_daily.svg" id="2_s1v5u"]
-[ext_resource type="Texture2D" path="res://assets/textures/icon_pvp.svg" id="3_s1v5u"]
-[ext_resource type="Texture2D" path="res://assets/textures/icon_mastery.svg" id="4_s1v5u"]
-[ext_resource type="Texture2D" path="res://assets/textures/icon_achievement.svg" id="5_s1v5u"]
-[ext_resource type="Texture2D" path="res://assets/textures/icon_settings.svg" id="6_s1v5u"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
-bg_color = Color(1, 1, 1, 1)
-shadow_color = Color(0, 0, 0, 0.08)
-shadow_size = 15
-shadow_offset = Vector2(0, -8)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_indicator"]
-bg_color = Color(0.152941, 0.682353, 0.376471, 1)
-corner_radius_all = 100
-shadow_color = Color(0.15, 0.68, 0.37, 0.3)
-shadow_size = 12
+[ext_resource type="Script" path="res://scripts/tech_panel.gd" id="2_premium"]
+[ext_resource type="Texture2D" path="res://assets/textures/icon_daily.svg" id="3_s1v5u"]
+[ext_resource type="Texture2D" path="res://assets/textures/icon_pvp.svg" id="4_s1v5u"]
+[ext_resource type="Texture2D" path="res://assets/textures/icon_mastery.svg" id="5_s1v5u"]
+[ext_resource type="Texture2D" path="res://assets/textures/icon_achievement.svg" id="6_s1v5u"]
+[ext_resource type="Texture2D" path="res://assets/textures/icon_settings.svg" id="7_s1v5u"]
 
 [node name="BottomNavBar" type="Control"]
 custom_minimum_size = Vector2(0, 110)
@@ -30,25 +19,38 @@ grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("1_nav")
 
-[node name="Background" type="Panel" parent="."]
+[node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_bar")
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 16
 
-[node name="SelectionIndicator" type="Panel" parent="."]
+[node name="DockHull" type="Control" parent="Margin"]
+layout_mode = 2
+script = ExtResource("2_premium")
+bg_color = Color(1, 1, 1, 1)
+corner_radius = 32.0
+
+[node name="SelectionIndicator" type="Control" parent="Margin/DockHull"]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 60.0
-offset_top = 15.0
-offset_right = 145.0
-offset_bottom = 95.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_indicator")
+offset_left = 20.0
+offset_top = 12.0
+offset_right = 100.0
+offset_bottom = 72.0
+script = ExtResource("2_premium")
+bg_color = Color(0.105882, 0.262745, 0.196078, 0.1)
+border_width = 0.0
+corner_radius = 24.0
+show_shadow = false
 
-[node name="Tabs" type="HBoxContainer" parent="."]
+[node name="Tabs" type="HBoxContainer" parent="Margin/DockHull"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -57,12 +59,12 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Daily" type="Button" parent="Tabs"]
+[node name="Daily" type="Button" parent="Margin/DockHull/Tabs"]
 layout_mode = 2
 size_flags_horizontal = 3
 flat = true
 
-[node name="VBox" type="VBoxContainer" parent="Tabs/Daily"]
+[node name="VBox" type="VBoxContainer" parent="Margin/DockHull/Tabs/Daily"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -71,52 +73,27 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="Tabs/Daily/VBox"]
-custom_minimum_size = Vector2(34, 34)
-layout_mode = 2
-texture = ExtResource("2_s1v5u")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Label" type="Label" parent="Tabs/Daily/VBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 13
-text = "LAB"
-horizontal_alignment = 1
-
-[node name="PvP" type="Button" parent="Tabs"]
-layout_mode = 2
-size_flags_horizontal = 3
-flat = true
-
-[node name="VBox" type="VBoxContainer" parent="Tabs/PvP"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-
-[node name="Icon" type="TextureRect" parent="Tabs/PvP/VBox"]
-custom_minimum_size = Vector2(34, 34)
+[node name="Icon" type="TextureRect" parent="Margin/DockHull/Tabs/Daily/VBox"]
+modulate = Color(0.105882, 0.262745, 0.196078, 0.4)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 texture = ExtResource("3_s1v5u")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="Tabs/PvP/VBox"]
+[node name="Label" type="Label" parent="Margin/DockHull/Tabs/Daily/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 13
-text = "PLAY"
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.4)
+theme_override_font_sizes/font_size = 11
+text = "Daily"
 horizontal_alignment = 1
 
-[node name="Mastery" type="Button" parent="Tabs"]
+[node name="PvP" type="Button" parent="Margin/DockHull/Tabs"]
 layout_mode = 2
 size_flags_horizontal = 3
 flat = true
 
-[node name="VBox" type="VBoxContainer" parent="Tabs/Mastery"]
+[node name="VBox" type="VBoxContainer" parent="Margin/DockHull/Tabs/PvP"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -125,25 +102,27 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="Tabs/Mastery/VBox"]
-custom_minimum_size = Vector2(34, 34)
+[node name="Icon" type="TextureRect" parent="Margin/DockHull/Tabs/PvP/VBox"]
+modulate = Color(0.105882, 0.262745, 0.196078, 0.4)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 texture = ExtResource("4_s1v5u")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="Tabs/Mastery/VBox"]
+[node name="Label" type="Label" parent="Margin/DockHull/Tabs/PvP/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 13
-text = "LEVELS"
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.4)
+theme_override_font_sizes/font_size = 11
+text = "Versus"
 horizontal_alignment = 1
 
-[node name="Achievement" type="Button" parent="Tabs"]
+[node name="Mastery" type="Button" parent="Margin/DockHull/Tabs"]
 layout_mode = 2
 size_flags_horizontal = 3
 flat = true
 
-[node name="VBox" type="VBoxContainer" parent="Tabs/Achievement"]
+[node name="VBox" type="VBoxContainer" parent="Margin/DockHull/Tabs/Mastery"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -152,25 +131,27 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="Tabs/Achievement/VBox"]
-custom_minimum_size = Vector2(34, 34)
+[node name="Icon" type="TextureRect" parent="Margin/DockHull/Tabs/Mastery/VBox"]
+modulate = Color(0.105882, 0.262745, 0.196078, 0.4)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 texture = ExtResource("5_s1v5u")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="Tabs/Achievement/VBox"]
+[node name="Label" type="Label" parent="Margin/DockHull/Tabs/Mastery/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 13
-text = "AWARDS"
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.4)
+theme_override_font_sizes/font_size = 11
+text = "Mastery"
 horizontal_alignment = 1
 
-[node name="Settings" type="Button" parent="Tabs"]
+[node name="Achievement" type="Button" parent="Margin/DockHull/Tabs"]
 layout_mode = 2
 size_flags_horizontal = 3
 flat = true
 
-[node name="VBox" type="VBoxContainer" parent="Tabs/Settings"]
+[node name="VBox" type="VBoxContainer" parent="Margin/DockHull/Tabs/Achievement"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -179,15 +160,46 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="Tabs/Settings/VBox"]
-custom_minimum_size = Vector2(34, 34)
+[node name="Icon" type="TextureRect" parent="Margin/DockHull/Tabs/Achievement/VBox"]
+modulate = Color(0.105882, 0.262745, 0.196078, 0.4)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 texture = ExtResource("6_s1v5u")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="Tabs/Settings/VBox"]
+[node name="Label" type="Label" parent="Margin/DockHull/Tabs/Achievement/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 13
-text = "CONFIG"
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.4)
+theme_override_font_sizes/font_size = 11
+text = "Awards"
+horizontal_alignment = 1
+
+[node name="Settings" type="Button" parent="Margin/DockHull/Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+flat = true
+
+[node name="VBox" type="VBoxContainer" parent="Margin/DockHull/Tabs/Settings"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Margin/DockHull/Tabs/Settings/VBox"]
+modulate = Color(0.105882, 0.262745, 0.196078, 0.4)
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = ExtResource("7_s1v5u")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Margin/DockHull/Tabs/Settings/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.4)
+theme_override_font_sizes/font_size = 11
+text = "Help"
 horizontal_alignment = 1

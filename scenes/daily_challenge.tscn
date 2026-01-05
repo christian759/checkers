@@ -1,44 +1,17 @@
-[gd_scene load_steps=10 format=3 uid="uid://ddy9u8v7p1k2r"]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/daily_challenge.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/tech_panel.gd" id="2_premium"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
-bg_color = Color(0.956863, 0.968627, 0.964706, 1)
+bg_color = Color(0.972549, 0.984314, 0.976471, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
 bg_color = Color(1, 1, 1, 1)
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
-shadow_color = Color(0, 0, 0, 0.04)
+corner_radius_bottom_right = 48
+corner_radius_bottom_left = 48
+shadow_color = Color(0, 0, 0, 0.05)
 shadow_size = 20
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aura_card"]
-bg_color = Color(1, 1, 1, 1)
-corner_radius_all = 60
-shadow_color = Color(0, 0, 0, 0.03)
-shadow_size = 20
-shadow_offset = Vector2(0, 10)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_day_today"]
-bg_color = Color(0.152941, 0.682353, 0.376471, 1)
-corner_radius_all = 100
-shadow_color = Color(0.15, 0.68, 0.37, 0.3)
-shadow_size = 12
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_primary"]
-bg_color = Color(0.152941, 0.682353, 0.376471, 1)
-corner_radius_all = 100
-shadow_color = Color(0.15, 0.68, 0.37, 0.4)
-shadow_size = 25
-shadow_offset = Vector2(0, 10)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
-bg_color = Color(0.113725, 0.52549, 0.286275, 1)
-corner_radius_all = 100
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_disabled"]
-bg_color = Color(0.9, 0.93, 0.91, 1)
-corner_radius_all = 100
 
 [node name="DailyChallenge" type="Control"]
 layout_mode = 3
@@ -68,17 +41,17 @@ grow_vertical = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 3
 
-[node name="VBox" type="VBoxContainer" parent="Scroll"]
+[node name="Layout" type="VBoxContainer" parent="Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 60
+theme_override_constants/separation = 40
 
-[node name="Header" type="Panel" parent="Scroll/VBox"]
-custom_minimum_size = Vector2(0, 200)
+[node name="Header" type="Panel" parent="Scroll/Layout"]
+custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_header")
 
-[node name="VBox" type="VBoxContainer" parent="Scroll/VBox/Header"]
+[node name="VBox" type="VBoxContainer" parent="Scroll/Layout/Header"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -87,114 +60,123 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Title" type="Label" parent="Scroll/VBox/Header/VBox"]
+[node name="Title" type="Label" parent="Scroll/Layout/Header/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
-theme_override_font_sizes/font_size = 56
-text = "DAILY LAB"
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 1)
+theme_override_font_sizes/font_size = 48
+text = "Daily Challenge"
 horizontal_alignment = 1
 
-[node name="Subtitle" type="Label" parent="Scroll/VBox/Header/VBox"]
+[node name="CalendarContainer" type="MarginContainer" parent="Scroll/Layout"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.152941, 0.682353, 0.376471, 1)
-theme_override_font_sizes/font_size = 20
-text = "• EVOLVE YOUR MIND •"
-horizontal_alignment = 1
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_right = 24
 
-[node name="CalendarContainer" type="MarginContainer" parent="Scroll/VBox"]
+[node name="CalendarCard" type="Control" parent="Scroll/Layout/CalendarContainer"]
+custom_minimum_size = Vector2(0, 360)
 layout_mode = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_right = 30
+script = ExtResource("2_premium")
+bg_color = Color(1, 1, 1, 1)
+corner_radius = 48.0
 
-[node name="Card" type="PanelContainer" parent="Scroll/VBox/CalendarContainer"]
+[node name="Margin" type="MarginContainer" parent="Scroll/Layout/CalendarContainer/CalendarCard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="Scroll/Layout/CalendarContainer/CalendarCard/Margin"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_aura_card")
+theme_override_constants/separation = 20
 
-[node name="VBox" type="VBoxContainer" parent="Scroll/VBox/CalendarContainer/Card"]
-layout_mode = 2
-theme_override_constants/margin_left = 35
-theme_override_constants/margin_top = 35
-theme_override_constants/margin_right = 35
-theme_override_constants/margin_bottom = 35
-theme_override_constants/separation = 25
-
-[node name="MonthHBox" type="HBoxContainer" parent="Scroll/VBox/CalendarContainer/Card/VBox"]
+[node name="MonthHBox" type="HBoxContainer" parent="Scroll/Layout/CalendarContainer/CalendarCard/Margin/VBox"]
 layout_mode = 2
 
-[node name="MonthLabel" type="Label" parent="Scroll/VBox/CalendarContainer/Card/VBox/MonthHBox"]
+[node name="MonthLabel" type="Label" parent="Scroll/Layout/CalendarContainer/CalendarCard/Margin/VBox/MonthHBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
-theme_override_font_sizes/font_size = 28
-text = "JANUARY 2026"
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.8)
+theme_override_font_sizes/font_size = 20
+text = "January 2026"
 
-[node name="StreakLabel" type="Label" parent="Scroll/VBox/CalendarContainer/Card/VBox/MonthHBox"]
+[node name="StreakLabel" type="Label" parent="Scroll/Layout/CalendarContainer/CalendarCard/Margin/VBox/MonthHBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.15, 0.68, 0.37, 1)
-theme_override_font_sizes/font_size = 22
-text = "🔥 7 STREAK"
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 1)
+text = "7 Day Streak"
 
-[node name="Grid" type="GridContainer" parent="Scroll/VBox/CalendarContainer/Card/VBox"]
+[node name="Grid" type="GridContainer" parent="Scroll/Layout/CalendarContainer/CalendarCard/Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/h_separation = 15
-theme_override_constants/v_separation = 15
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
 columns = 7
 
-[node name="SelectedPuzzleContainer" type="MarginContainer" parent="Scroll/VBox"]
+[node name="SelectedPuzzleContainer" type="MarginContainer" parent="Scroll/Layout"]
 layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 120
+
+[node name="PuzzleCard" type="Control" parent="Scroll/Layout/SelectedPuzzleContainer"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+script = ExtResource("2_premium")
+bg_color = Color(1, 1, 1, 1)
+corner_radius = 48.0
+
+[node name="VBox" type="VBoxContainer" parent="Scroll/Layout/SelectedPuzzleContainer/PuzzleCard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 140
+theme_override_constants/margin_bottom = 32
+theme_override_constants/separation = 24
+alignment = 1
 
-[node name="Card" type="PanelContainer" parent="Scroll/VBox/SelectedPuzzleContainer"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_aura_card")
-
-[node name="VBox" type="VBoxContainer" parent="Scroll/VBox/SelectedPuzzleContainer/Card"]
-layout_mode = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_top = 40
-theme_override_constants/margin_right = 40
-theme_override_constants/margin_bottom = 40
-theme_override_constants/separation = 30
-
-[node name="TaskDate" type="Label" parent="Scroll/VBox/SelectedPuzzleContainer/Card/VBox"]
+[node name="TaskDate" type="Label" parent="Scroll/Layout/SelectedPuzzleContainer/PuzzleCard/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.6, 0.65, 0.65, 1)
-theme_override_font_sizes/font_size = 20
-text = "JANUARY 5, 2026"
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.4)
+theme_override_font_sizes/font_size = 14
+text = "January 5"
 horizontal_alignment = 1
 
-[node name="TaskTitle" type="Label" parent="Scroll/VBox/SelectedPuzzleContainer/Card/VBox"]
+[node name="TaskTitle" type="Label" parent="Scroll/Layout/SelectedPuzzleContainer/PuzzleCard/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
-theme_override_font_sizes/font_size = 36
-text = "TODAY'S TASK"
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 1)
+theme_override_font_sizes/font_size = 28
+text = "Capture Challenge"
 horizontal_alignment = 1
 
-[node name="TaskDesc" type="Label" parent="Scroll/VBox/SelectedPuzzleContainer/Card/VBox"]
+[node name="TaskDesc" type="Label" parent="Scroll/Layout/SelectedPuzzleContainer/PuzzleCard/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.5, 0.6, 0.58, 1)
-theme_override_font_sizes/font_size = 22
-text = "Complete the capture challenge to earn your daily stars."
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.6)
+theme_override_font_sizes/font_size = 16
+text = "Complete the tactical sequence to improve your strategy."
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="SolveButton" type="Button" parent="Scroll/VBox/SelectedPuzzleContainer/Card/VBox"]
+[node name="SolveButton" type="Button" parent="Scroll/Layout/SelectedPuzzleContainer/PuzzleCard/VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(360, 90)
+custom_minimum_size = Vector2(280, 64)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_primary")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_primary")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_btn_disabled")
-text = "START PUZZLE"
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_header") # Reusing the green pill style
+text = "Start Puzzle"

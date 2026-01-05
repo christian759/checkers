@@ -12,143 +12,90 @@ extends Control
 @onready var theme_grid = %ThemeGrid
 @onready var start_button = %StartMatchBtn
 
-var selected_mode = 0 # 0: AI, 1: Friend
-var selected_start_side = 0 # 0: Player (White), 1: AI (Black)
+var selected_mode = 0
+var selected_start_side = 0
 var selected_theme_index = 0
 
 func _ready():
-	# Mode Toggles
 	ai_btn.pressed.connect(_on_mode_toggled.bind(0))
 	friend_btn.pressed.connect(_on_mode_toggled.bind(1))
-	
-	# Start Side Toggles
 	you_btn.pressed.connect(_on_start_side_toggled.bind(0))
 	ai_start_btn.pressed.connect(_on_start_side_toggled.bind(1))
 	
-	# AI Level Slider
 	level_slider.value_changed.connect(_on_level_changed)
 	_on_level_changed(level_slider.value)
 	
-	# Initialize Themes
 	_setup_theme_grid()
-	
-	# Start Button
 	start_button.pressed.connect(_on_start_pressed)
-	_animate_start_button()
-
-func _animate_start_button():
-	var tween = create_tween().set_loops()
-	tween.tween_property(start_button, "scale", Vector2(1.05, 1.05), 0.8).set_trans(Tween.TRANS_SINE)
-	tween.tween_property(start_button, "scale", Vector2(1.0, 1.0), 0.8).set_trans(Tween.TRANS_SINE)
 
 func _on_mode_toggled(index):
 	if selected_mode == index: return
 	selected_mode = index
 	
-	if not bubble: return
+	var target_x = 6.0 if index == 0 else bubble.get_parent().size.x / 2.0 + 3.0
+	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+	tween.tween_property(bubble, "position:x", target_x, 0.4)
 	
-	# Animate the mode pill bubble
-	var pill_width = bubble.get_parent().size.x
-	var target_x = 8.0 if index == 0 else pill_width / 2.0 + 4.0
-	var target_width = pill_width / 2.0 - 12.0
-	
-	var tween = create_tween().set_parallel(true)
-	tween.tween_property(bubble, "position:x", target_x, 0.4).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
-	tween.tween_property(bubble, "size:x", target_width, 0.4).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
-	
-	# Color labels
 	var active_color = Color.WHITE
-	var inactive_color = Color("#7f8c8d")
+	var inactive_color = Color("#1B4332", 0.6)
 	tween.tween_property(ai_btn, "theme_override_colors/font_color", active_color if index == 0 else inactive_color, 0.2)
 	tween.tween_property(friend_btn, "theme_override_colors/font_color", active_color if index == 1 else inactive_color, 0.2)
 	
-	# Show/Hide AI Settings
 	if index == 0:
 		ai_settings.visible = true
-		ai_settings.modulate.a = 0
-		var s_tween = create_tween().set_parallel(true)
-		s_tween.tween_property(ai_settings, "modulate:a", 1.0, 0.3)
+		create_tween().tween_property(ai_settings, "modulate:a", 1.0, 0.3)
 	else:
-		var h_tween = create_tween()
-		h_tween.tween_property(ai_settings, "modulate:a", 0.0, 0.2)
-		h_tween.finished.connect(func(): ai_settings.visible = false)
+		var h = create_tween()
+		h.tween_property(ai_settings, "modulate:a", 0.0, 0.2)
+		h.finished.connect(func(): ai_settings.visible = false)
 
 func _on_start_side_toggled(index):
 	if selected_start_side == index: return
 	selected_start_side = index
 	
-	if not start_bubble: return
+	var target_x = 6.0 if index == 0 else start_bubble.get_parent().size.x / 2.0 + 3.0
+	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+	tween.tween_property(start_bubble, "position:x", target_x, 0.4)
 	
-	# Animate the start side pill bubble
-	var pill_width = start_bubble.get_parent().size.x
-	var target_x = 8.0 if index == 0 else pill_width / 2.0 + 4.0
-	var target_width = pill_width / 2.0 - 12.0
-	
-	var tween = create_tween().set_parallel(true)
-	tween.tween_property(start_bubble, "position:x", target_x, 0.4).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
-	tween.tween_property(start_bubble, "size:x", target_width, 0.4).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
-	
-	# Color labels
 	var active_color = Color.WHITE
-	var inactive_color = Color("#7f8c8d")
+	var inactive_color = Color("#1B4332", 0.6)
 	tween.tween_property(you_btn, "theme_override_colors/font_color", active_color if index == 0 else inactive_color, 0.2)
 	tween.tween_property(ai_start_btn, "theme_override_colors/font_color", active_color if index == 1 else inactive_color, 0.2)
 
 func _on_level_changed(value):
-	level_label.text = "Lv " + str(int(value))
-	var tween = create_tween()
-	tween.tween_property(level_label, "scale", Vector2(1.2, 1.2), 0.05)
-	tween.tween_property(level_label, "scale", Vector2(1.0, 1.0), 0.1)
+	level_label.text = str(int(value))
 
 func _setup_theme_grid():
 	for i in range(GameManager.BOARD_THEMES.size()):
 		var theme = GameManager.BOARD_THEMES[i]
 		var btn = Button.new()
-		btn.custom_minimum_size = Vector2(90, 90)
+		btn.custom_minimum_size = Vector2(80, 80)
 		btn.flat = true
 		
 		var circle = Panel.new()
-		circle.name = "Circle"
 		circle.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		circle.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		
 		var sb = StyleBoxFlat.new()
 		sb.bg_color = theme.dark
-		sb.set_corner_radius_all(45)
-		sb.set_border_width_all(6)
-		sb.border_color = Color("#2ecc71") if i == selected_theme_index else Color.TRANSPARENT
-		sb.shadow_color = Color(0, 0, 0, 0.1)
-		sb.shadow_size = 12
+		sb.set_corner_radius_all(40)
+		sb.set_border_width_all(4)
+		sb.border_color = Color("#1B4332") if i == selected_theme_index else Color.WHITE
 		
 		circle.add_theme_stylebox_override("panel", sb)
 		btn.add_child(circle)
 		btn.pressed.connect(_on_theme_selected.bind(i, btn))
-		if theme_grid:
-			theme_grid.add_child(btn)
+		theme_grid.add_child(btn)
 
 func _on_theme_selected(index, btn):
 	if selected_theme_index == index: return
 	selected_theme_index = index
-	
 	for child in theme_grid.get_children():
-		var c = child.get_node("Circle")
-		var sb = c.get_theme_stylebox("panel")
-		var tween = create_tween().set_parallel(true)
-		if child == btn:
-			tween.tween_property(sb, "border_color", Color("#2ecc71"), 0.2)
-			tween.tween_property(child, "scale", Vector2(1.15, 1.15), 0.2).set_trans(Tween.TRANS_BACK)
-		else:
-			tween.tween_property(sb, "border_color", Color.TRANSPARENT, 0.2)
-			tween.tween_property(child, "scale", Vector2(1.0, 1.0), 0.2)
+		var sb = child.get_child(0).get_theme_stylebox("panel")
+		sb.border_color = Color("#1B4332") if child == btn else Color.WHITE
+		child.scale = Vector2(1.1, 1.1) if child == btn else Vector2(1.0, 1.0)
 
 func _on_start_pressed():
 	var mode = GameManager.Mode.PV_AI if selected_mode == 0 else GameManager.Mode.PV_P
-	var ai_val = int(level_slider.value)
 	var start_side = GameManager.Side.PLAYER if selected_start_side == 0 else GameManager.Side.AI
-	
-	# UI feedback
-	var tween = create_tween()
-	tween.tween_property(start_button, "scale", Vector2(0.92, 0.92), 0.1)
-	tween.tween_callback(func():
-		GameManager.start_custom_game(mode, ai_val, selected_theme_index, start_side)
-	)
+	GameManager.start_custom_game(mode, int(level_slider.value), selected_theme_index, start_side)

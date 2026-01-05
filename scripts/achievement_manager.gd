@@ -219,14 +219,15 @@ func show_toast(title: String):
 	canvas.add_child(panel)
 	
 	var sb = StyleBoxFlat.new()
-	sb.bg_color = Color(0.1, 0.1, 0.1, 0.9)
-	sb.corner_radius_bottom_left = 20
-	sb.corner_radius_bottom_right = 20
+	sb.bg_color = Color.WHITE
+	sb.set_corner_radius_all(32)
+	sb.shadow_color = Color(0, 0, 0, 0.05)
+	sb.shadow_size = 20
 	panel.add_theme_stylebox_override("panel", sb)
 	
 	var margin = MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 20)
-	margin.add_theme_constant_override("margin_right", 20)
+	margin.add_theme_constant_override("margin_left", 24)
+	margin.add_theme_constant_override("margin_right", 24)
 	panel.add_child(margin)
 	
 	var vbox = VBoxContainer.new()
@@ -234,23 +235,24 @@ func show_toast(title: String):
 	margin.add_child(vbox)
 	
 	var label1 = Label.new()
-	label1.text = "ACHIEVEMENT UNLOCKED!"
+	label1.text = "Award Unlocked"
 	label1.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label1.add_theme_font_size_override("font_size", 12)
-	label1.add_theme_color_override("font_color", Color("#2ecc71"))
+	label1.add_theme_color_override("font_color", Color("#1B4332", 0.6))
 	vbox.add_child(label1)
 	
 	var label2 = Label.new()
 	label2.text = title
 	label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label2.add_theme_font_size_override("font_size", 24)
+	label2.add_theme_color_override("font_color", Color("#1B4332"))
 	vbox.add_child(label2)
 	
 	# Animate in and out
 	var tween = canvas.create_tween()
-	tween.tween_property(panel, "position:y", 20, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(panel, "position:y", 32, 0.6).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 	tween.tween_interval(3.0)
-	tween.tween_property(panel, "position:y", -100, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	tween.tween_property(panel, "position:y", -100, 0.6).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN)
 	tween.tween_callback(canvas.queue_free)
 
 # Helper for one-off achievements (not based on cumulative stats)

@@ -2,23 +2,23 @@ extends Control
 
 @onready var scroll_container = $VBoxContainer/ScrollContainer
 @onready var card_container = $VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer
-@onready var global_progress = $VBoxContainer/Header/ProgressLabel
+@onready var global_progress = %ProgressLabel
 
 var card_scene = preload("res://scenes/mastery_card.tscn")
 var is_scrolling = false
 var snap_speed = 10.0
 
 var ranks = [
-	{"name": "SPROUT", "color": Color("#d5f5e3")},
-	{"name": "LEAF", "color": Color("#abebc6")},
-	{"name": "SEEDLING", "color": Color("#82e0aa")},
-	{"name": "VINE", "color": Color("#58d68d")},
-	{"name": "EMERALD", "color": Color("#2ecc71")},
-	{"name": "JADE", "color": Color("#28b463")},
-	{"name": "FOREST", "color": Color("#239b56")},
-	{"name": "ANCIENT", "color": Color("#1d8348")},
-	{"name": "MYTHIC", "color": Color("#186a3e")},
-	{"name": "IMMORTAL", "color": Color("#0e311f")}
+	{"name": "MIST", "color": Color("#E0F7FA")},
+	{"name": "DEEP", "color": Color("#80DEEA")},
+	{"name": "AZURE", "color": Color("#4DD0E1")},
+	{"name": "SAPPHIRE", "color": Color("#00ACC1")},
+	{"name": "COBALT", "color": Color("#0097A7")},
+	{"name": "CYBER", "color": Color("#00F2FF")},
+	{"name": "VOID", "color": Color("#006064")},
+	{"name": "OBSIDIAN", "color": Color("#004D40")},
+	{"name": "SILK", "color": Color("#002621")},
+	{"name": "ZENITH", "color": Color("#000000")}
 ]
 
 func _ready():

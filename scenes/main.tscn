@@ -1,17 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://b8y9u8v7p1k2r"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="PackedScene" uid="uid://dpw5y5p7m2v1p" path="res://scenes/bottom_nav_bar.tscn" id="1_n4v5r"]
+[ext_resource type="PackedScene" path="res://scenes/bottom_nav_bar.tscn" id="1_nav"]
 [ext_resource type="Script" path="res://scripts/main_view.gd" id="2_m3v4r"]
 [ext_resource type="Script" path="res://scripts/animated_background.gd" id="3_bgscript"]
-
-[sub_resource type="Gradient" id="Gradient_premium"]
-offsets = PackedFloat32Array(0, 1)
-colors = PackedColorArray(0.95, 0.98, 0.96, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]
-gradient = SubResource("Gradient_premium")
-fill_from = Vector2(0.5, 0)
-fill_to = Vector2(0.5, 1)
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -22,14 +13,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_m3v4r")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("GradientTexture2D_bg")
+color = Color(0.972549, 0.984314, 0.976471, 1)
 
 [node name="AnimatedBG" type="Control" parent="."]
 layout_mode = 1
@@ -41,7 +32,7 @@ grow_vertical = 2
 script = ExtResource("3_bgscript")
 
 [node name="BG1" type="ColorRect" parent="AnimatedBG"]
-modulate = Color(1, 1, 1, 0.03)
+modulate = Color(1, 1, 1, 0.05)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -55,10 +46,10 @@ offset_bottom = 600.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(600, 600)
-color = Color(0.184314, 0.333333, 0.592157, 1)
+color = Color(0.105882, 0.262745, 0.196078, 1)
 
 [node name="BG2" type="ColorRect" parent="AnimatedBG"]
-modulate = Color(1, 1, 1, 0.02)
+modulate = Color(1, 1, 1, 0.03)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -72,16 +63,16 @@ offset_bottom = 500.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(500, 500)
-color = Color(0.431373, 0.180392, 0.596078, 1)
+color = Color(0.105882, 0.262745, 0.196078, 1)
 
 [node name="Content" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -100.0
+offset_bottom = -110.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BottomNavBar" parent="." instance=ExtResource("1_n4v5r")]
+[node name="BottomNavBar" parent="." instance=ExtResource("1_nav")]
 layout_mode = 1

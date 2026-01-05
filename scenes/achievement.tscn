@@ -1,6 +1,16 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/achievement_page.gd" id="1_achieve"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.972549, 0.984314, 0.976471, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_bottom_right = 48
+corner_radius_bottom_left = 48
+shadow_color = Color(0, 0, 0, 0.05)
+shadow_size = 20
 
 [node name="Achievement" type="Control"]
 layout_mode = 3
@@ -11,14 +21,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_achieve")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.956863, 0.968627, 0.964706, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
 
 [node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -29,44 +39,50 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="Header" type="MarginContainer" parent="VBox"]
+[node name="Header" type="Panel" parent="VBox"]
+custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
-theme_override_constants/margin_top = 45
-theme_override_constants/margin_bottom = 25
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
 
 [node name="VBox" type="VBoxContainer" parent="VBox/Header"]
-layout_mode = 2
-theme_override_constants/separation = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
 
 [node name="Title" type="Label" parent="VBox/Header/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
-theme_override_font_sizes/font_size = 46
-text = "ACHIEVEMENTS"
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 1)
+theme_override_font_sizes/font_size = 48
+text = "Awards"
 horizontal_alignment = 1
 
 [node name="ProgressLabel" type="Label" parent="VBox/Header/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.152941, 0.682353, 0.376471, 1)
-theme_override_font_sizes/font_size = 20
-text = "0/60 UNLOCKED"
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.4)
+theme_override_font_sizes/font_size = 16
+text = "0 of 60 Unlocked"
 horizontal_alignment = 1
 
 [node name="Scroll" type="ScrollContainer" parent="VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
 
 [node name="Margin" type="MarginContainer" parent="VBox/Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 32
-theme_override_constants/margin_top = 20
+theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 120
 
 [node name="List" type="VBoxContainer" parent="VBox/Scroll/Margin"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 22
+theme_override_constants/separation = 24

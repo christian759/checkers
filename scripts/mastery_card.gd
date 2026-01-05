@@ -1,9 +1,8 @@
-extends PanelContainer
+extends Control
 
-@onready var title_label = $VBoxContainer/Header/Title
-@onready var grid = $VBoxContainer/MarginContainer/GridContainer
-@onready var header = $VBoxContainer/Header
-@onready var progress_bar = $VBoxContainer/Footer/ProgressBar
+@onready var title_label = $Margin/VBox/Title
+@onready var grid = $Margin/VBox/GridContainer
+@onready var progress_bar = $Margin/VBox/Footer/ProgressBar
 
 var level_icon_scene = preload("res://scenes/mastery_level_icon.tscn")
 
@@ -14,18 +13,6 @@ func _ready():
 
 func setup(rank_name: String, start_level: int, accent_color: Color, current_global_level: int):
 	title_label.text = rank_name
-	
-	# Glass Header Color
-	var header_sb = header.get_theme_stylebox("panel")
-	if not header_sb is StyleBoxFlat:
-		header_sb = StyleBoxFlat.new()
-	else:
-		header_sb = header_sb.duplicate()
-		
-	header_sb.border_color = Color(accent_color, 0.3)
-	header_sb.bg_color = Color(accent_color, 0.1)
-	header.add_theme_stylebox_override("panel", header_sb)
-	
 	title_label.add_theme_color_override("font_color", accent_color)
 
 	var completed_count = 0
@@ -35,7 +22,7 @@ func setup(rank_name: String, start_level: int, accent_color: Color, current_glo
 		grid.add_child(icon)
 		
 		var state = 0 # LOCKED
-		if level_num in GameManager.completed_levels:
+		if level_num < GameManager.max_unlocked_level:
 			state = 2 # COMPLETED
 			completed_count += 1
 		elif level_num == GameManager.max_unlocked_level:
@@ -52,10 +39,10 @@ func setup(rank_name: String, start_level: int, accent_color: Color, current_glo
 
 func _on_mouse_entered():
 	var tween = create_tween().set_parallel(true)
-	tween.tween_property(self, "scale", Vector2(1.05, 1.05), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tween.tween_property($BackgroundGlow, "color", Color(0.18, 0.8, 0.44, 0.1), 0.3)
+	tween.tween_property(self, "scale", Vector2(1.03, 1.03), 0.3).set_trans(Tween.TRANS_SINE)
+	modulate.a = 0.9
 
 func _on_mouse_exited():
 	var tween = create_tween().set_parallel(true)
 	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.3).set_trans(Tween.TRANS_SINE)
-	tween.tween_property($BackgroundGlow, "color", Color(1, 1, 1, 0.02), 0.3)
+	modulate.a = 1.0

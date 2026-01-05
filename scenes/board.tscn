@@ -1,48 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://du26l0vuu7ljf"]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource type="Script" uid="uid://cis7b1wifchja" path="res://scripts/board.gd" id="1_script"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_frame"]
-bg_color = Color(0.95, 0.98, 0.95, 1)
-border_width_left = 12
-border_width_top = 12
-border_width_right = 12
-border_width_bottom = 12
-border_color = Color(0.18, 0.8, 0.44, 0.2)
-corner_radius_top_left = 24
-corner_radius_top_right = 24
-corner_radius_bottom_right = 24
-corner_radius_bottom_left = 24
-shadow_color = Color(0, 0, 0, 0.1)
-shadow_size = 30
-shadow_offset = Vector2(0, 15)
+[ext_resource type="Script" path="res://scripts/board.gd" id="1_script"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
-bg_color = Color(0.180392, 0.8, 0.443137, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-shadow_color = Color(0.18, 0.8, 0.44, 0.3)
-shadow_size = 10
-shadow_offset = Vector2(0, 4)
+bg_color = Color(0.105882, 0.262745, 0.196078, 1)
+corner_radius_all = 24
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_turn_bg"]
-bg_color = Color(1, 1, 1, 0.9)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
-corner_radius_bottom_left = 25
+bg_color = Color(1, 1, 1, 1)
+corner_radius_all = 32
 shadow_color = Color(0, 0, 0, 0.05)
-shadow_size = 10
+shadow_size = 15
 
-[sub_resource type="Gradient" id="Gradient_bg"]
-colors = PackedColorArray(0.98, 1, 0.98, 1, 0.92, 0.96, 0.93, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]
-gradient = SubResource("Gradient_bg")
-fill_from = Vector2(0.5, 0)
-fill_to = Vector2(0.5, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(1, 1, 1, 1)
 
 [node name="Board" type="Node2D"]
 script = ExtResource("1_script")
@@ -50,13 +21,13 @@ script = ExtResource("1_script")
 [node name="BackgroundLayer" type="CanvasLayer" parent="."]
 layer = -1
 
-[node name="TextureRect" type="TextureRect" parent="BackgroundLayer"]
+[node name="Rect" type="ColorRect" parent="BackgroundLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("GradientTexture2D_bg")
+color = Color(0.972549, 0.984314, 0.976471, 1)
 
 [node name="Gameplay" type="Node2D" parent="."]
 
@@ -66,7 +37,7 @@ offset_left = -20.0
 offset_top = -20.0
 offset_right = 700.0
 offset_bottom = 700.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_frame")
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
 
 [node name="Tiles" type="Node2D" parent="Gameplay"]
 
@@ -79,33 +50,32 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_frame")
 [node name="Header" type="MarginContainer" parent="UI"]
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 120.0
+offset_bottom = 140.0
 grow_horizontal = 2
-theme_override_constants/margin_left = 30
+theme_override_constants/margin_left = 24
 theme_override_constants/margin_top = 40
-theme_override_constants/margin_right = 30
+theme_override_constants/margin_right = 24
 
 [node name="HBox" type="HBoxContainer" parent="UI/Header"]
 layout_mode = 2
+theme_override_constants/separation = 16
 
 [node name="QuitButton" type="Button" parent="UI/Header/HBox"]
-custom_minimum_size = Vector2(120, 50)
+custom_minimum_size = Vector2(100, 56)
 layout_mode = 2
-size_flags_vertical = 4
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.6)
 theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
-text = "QUIT"
+flat = true
+text = "Back"
 
 [node name="UndoButton" type="Button" parent="UI/Header/HBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 50)
+custom_minimum_size = Vector2(120, 56)
 layout_mode = 2
-size_flags_vertical = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
-text = "UNDO"
+text = "Undo"
 
 [node name="Spacer" type="Control" parent="UI/Header/HBox"]
 layout_mode = 2
@@ -113,22 +83,22 @@ size_flags_horizontal = 3
 
 [node name="MatchInfo" type="VBoxContainer" parent="UI/Header/HBox"]
 layout_mode = 2
-alignment = 2
+alignment = 1
 
 [node name="ModeLabel" type="Label" parent="UI/Header/HBox/MatchInfo"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.1, 0.4, 0.1, 1)
-theme_override_font_sizes/font_size = 24
-text = "MASTERY"
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "Mastery"
 horizontal_alignment = 2
 
 [node name="LevelLabel" type="Label" parent="UI/Header/HBox/MatchInfo"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.5, 0.4, 1)
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.4)
 theme_override_font_sizes/font_size = 14
-text = "LEVEL 1. SPROUT"
+text = "Level 1"
 horizontal_alignment = 2
 
 [node name="Footer" type="MarginContainer" parent="UI"]
@@ -141,10 +111,10 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_right = 40
-theme_override_constants/margin_bottom = 50
+theme_override_constants/margin_bottom = 40
 
 [node name="TurnCard" type="Panel" parent="UI/Footer"]
-custom_minimum_size = Vector2(0, 60)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_turn_bg")
 
@@ -156,8 +126,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0.18, 0.8, 0.44, 1)
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 1)
 theme_override_font_sizes/font_size = 20
-text = "YOUR TURN"
+text = "Your Turn"
 horizontal_alignment = 1
 vertical_alignment = 1

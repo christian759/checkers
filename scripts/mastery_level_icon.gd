@@ -21,53 +21,51 @@ func setup(level_num: int, state: State, accent_color: Color):
 	label.visible = (state != State.LOCKED)
 	lock_icon.visible = (state == State.LOCKED)
 	
-	var sb = StyleBoxFlat.new()
-	sb.set_corner_radius_all(100) # Pure Circle
-	sb.anti_aliasing = true
-	
-	match state:
-		State.LOCKED:
-			sb.bg_color = Color("#EAECEE")
-			sb.set_border_width_all(1)
-			sb.border_color = Color("#D5D8DC")
-			lock_icon.modulate = Color("#ABB2B9")
-		State.CURRENT:
-			sb.bg_color = Color.WHITE
-			sb.set_border_width_all(3)
-			sb.border_color = Color("#2ECC71")
-			sb.shadow_color = Color("#2ECC71", 0.4)
-			sb.shadow_size = 12
-			label.add_theme_color_override("font_color", Color("#2ECC71"))
-			_start_pulse_animation()
-		State.COMPLETED:
-			sb.bg_color = Color("#2ECC71")
-			sb.set_border_width_all(0)
-			sb.shadow_color = Color("#27AE60", 0.3)
-			sb.shadow_size = 8
-			label.add_theme_color_override("font_color", Color.WHITE)
-			
-	add_theme_stylebox_override("normal", sb)
-	add_theme_stylebox_override("hover", sb)
-	add_theme_stylebox_override("pressed", sb)
+	# Clear styles for custom drawing
+	add_theme_stylebox_override("normal", StyleBoxEmpty.new())
+	add_theme_stylebox_override("hover", StyleBoxEmpty.new())
+	add_theme_stylebox_override("pressed", StyleBoxEmpty.new())
 	add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	
+	_update_style(accent_color)
+
+func _update_style(accent_color: Color):
+	if label:
+		if state_stored == State.LOCKED:
+			label.add_theme_color_override("font_color", Color("#1B4332", 0.1))
+		elif state_stored == State.COMPLETED:
+			label.add_theme_color_override("font_color", Color.WHITE)
+		else:
+			label.add_theme_color_override("font_color", accent_color)
+	
+	if lock_icon:
+		lock_icon.modulate = Color("#1B4332", 0.1)
+	
+	queue_redraw()
+
+func _draw():
+	var center = size / 2
+	var radius = min(size.x, size.y) * 0.4
+	
+	match state_stored:
+		State.LOCKED:
+			draw_arc(center, radius, 0, TAU, 32, Color("#1B4332", 0.1), 2.0)
+		State.CURRENT:
+			# Bold ring for active
+			draw_arc(center, radius, 0, TAU, 32, Color("#1B4332"), 4.0)
+			draw_circle(center, radius * 0.4, Color("#1B4332", 0.1))
+		State.COMPLETED:
+			# Solid bold circle
+			draw_circle(center, radius, Color("#1B4332"))
 
 func _on_mouse_entered():
-	var tween = create_tween().set_parallel(true)
-	tween.tween_property(self, "scale", Vector2(1.15, 1.15), 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	if state_stored == State.COMPLETED:
-		modulate = Color(1.2, 1.2, 1.2)
+	var tween = create_tween()
+	tween.tween_property(self, "scale", Vector2(1.1, 1.1), 0.2).set_trans(Tween.TRANS_SINE)
 
 func _on_mouse_exited():
-	var tween = create_tween().set_parallel(true)
+	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.2).set_trans(Tween.TRANS_SINE)
-	modulate = Color.WHITE
 
 func _on_pressed():
-	# Allow playing if CURRENT or COMPLETED
 	if state_stored != State.LOCKED:
 		GameManager.start_mastery_level(level_num_stored)
-
-func _start_pulse_animation():
-	var tween = create_tween().set_loops()
-	tween.tween_property(self, "scale", Vector2(1.1, 1.1), 0.8).set_trans(Tween.TRANS_SINE)
-	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.8).set_trans(Tween.TRANS_SINE)
