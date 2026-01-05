@@ -69,8 +69,9 @@ func promote_to_king():
 	tween.tween_property(self, "scale", Vector2(1.6, 1.6), 0.3).set_trans(Tween.TRANS_BACK)
 	
 	# Animate the crown appearing
-	king_crown.scale = Vector2.ZERO
-	tween.tween_property(king_crown, "scale", Vector2(0.8, 0.8), 0.5).set_trans(Tween.TRANS_ELASTIC)
+	if king_crown:
+		king_crown.scale = Vector2.ZERO
+		tween.tween_property(king_crown, "scale", Vector2(0.8, 0.8), 0.5).set_trans(Tween.TRANS_ELASTIC)
 	
 	# Animate the aura fade in
 	aura.modulate.a = 0

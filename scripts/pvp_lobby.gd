@@ -87,7 +87,7 @@ func _setup_theme_grid():
 		var sb = StyleBoxFlat.new()
 		sb.bg_color = theme.dark
 		sb.set_corner_radius_all(40)
-		sb.border_width_all = 6
+		sb.set_border_width_all(6)
 		sb.border_color = Color("#2ecc71") if i == selected_theme_index else Color.TRANSPARENT
 		sb.shadow_color = Color(0, 0, 0, 0.1)
 		sb.shadow_size = 10

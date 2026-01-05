@@ -8,19 +8,21 @@
 [ext_resource type="Texture2D" path="res://assets/textures/icon_settings.svg" id="6_s1v5u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
-bg_color = Color(0.180392, 0.8, 0.443137, 1) # Emerald Green
-corner_radius_top_left = 32
-corner_radius_top_right = 32
-shadow_color = Color(0, 0, 0, 0.05)
-shadow_size = 15
-shadow_offset = Vector2(0, -5)
+bg_color = Color(1, 1, 1, 1) # Solid White
+border_width_top = 6
+border_color = Color(0, 0, 0, 1)
+shadow_color = Color(0, 0, 0, 1)
+shadow_size = 0
+shadow_offset = Vector2(0, -6)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bubble"]
-bg_color = Color(1, 1, 1, 0.2) # Soft contrast bubble
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
+bg_color = Color(1, 0.843137, 0, 1) # Sunlight Yellow for active
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+corner_radius_all = 4
 
 [node name="BottomNavBar" type="Control"]
 layout_mode = 3
