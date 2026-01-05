@@ -15,6 +15,7 @@ var win_streak = 0
 var max_unlocked_level = 1
 var move_history = [] # Stack of {pieces_state, turn, settings}
 var is_daily_challenge = false
+var is_mastery = false # Track if current game is from Mastery levels
 var daily_completed = false
 var game_start_time = 0
 
@@ -129,6 +130,7 @@ func start_custom_game(mode, ai_level, theme_index, start_side):
 	board_theme_index = theme_index
 	current_turn = start_side
 	is_daily_challenge = false
+	is_mastery = false
 	
 	setup_board()
 	get_tree().change_scene_to_file("res://scenes/board.tscn")
@@ -144,6 +146,7 @@ func start_mastery_level(level):
 	board_theme_index = 0
 	current_turn = Side.PLAYER
 	is_daily_challenge = false
+	is_mastery = true
 	
 	setup_board()
 	get_tree().change_scene_to_file("res://scenes/board.tscn")
@@ -190,15 +193,21 @@ func set_piece_at(r, c, piece):
 	if is_on_board(r, c):
 		board[r][c] = piece
 
+func has_moves(side):
+	var state = _get_board_state()
+	var moves = _get_all_sim_moves(state, side, must_jump, selected_piece)
+	return moves.size() > 0
+
 func switch_turn():
 	current_turn = Side.AI if current_turn == Side.PLAYER else Side.PLAYER
-	emit_signal("turn_changed", current_turn)
 	
-	# Check if the player who just inherited the turn has any moves
-	var board_node = get_tree().root.find_child("Board", true, false)
-	if board_node and not board_node.has_valid_moves(current_turn):
+	# Robust internal move check (No longer relies on Board node)
+	if not has_moves(current_turn):
+		# The player who just lost their turn's opponent wins
 		check_win_condition(Side.AI if current_turn == Side.PLAYER else Side.PLAYER)
 		return
+
+	emit_signal("turn_changed", current_turn)
 
 	if current_mode == Mode.PV_AI and current_turn == Side.AI:
 		# Trigger AI logic after a short delay for "thinking"
@@ -209,20 +218,33 @@ func play_ai_turn():
 	var board_node = get_tree().root.find_child("Board", true, false)
 	if not board_node: return
 
-	# Advanced depth mapping for 1-200 range
+	# Refined depth mapping for smooth progression
 	var depth = 2
-	if match_ai_level > 10: depth = 3
-	if match_ai_level > 30: depth = 4
-	if match_ai_level > 70: depth = 5
-	if match_ai_level > 120: depth = 6
-	if match_ai_level > 170: depth = 8 # Grandmaster
+	if match_ai_level > 60: depth = 3
+	if match_ai_level > 110: depth = 4
+	if match_ai_level > 160: depth = 5
+	if match_ai_level > 190: depth = 7
 	
-	# Initial state
+	# Tiers of "Stupidity" (Blunders) for low levels
+	var rand_val = randf()
+	var use_random = false
+	if match_ai_level <= 10: # Very Dumb
+		if rand_val < 0.85: use_random = true
+	elif match_ai_level <= 30: # Novice
+		if rand_val < 0.5: use_random = true
+	elif match_ai_level <= 50: # Apprentice
+		if rand_val < 0.2: use_random = true
+	
 	var current_state = _get_board_state()
+	var best_move = null
 	
-	# Start Minimax
-	var result = _minimax(current_state, depth, -INF, INF, true, must_jump, selected_piece)
-	var best_move = result.move
+	if use_random:
+		var moves = _get_all_sim_moves(current_state, Side.AI, must_jump, selected_piece)
+		if moves.size() > 0:
+			best_move = moves.pick_random()
+	else:
+		var result = _minimax(current_state, depth, -INF, INF, true, must_jump, selected_piece)
+		best_move = result.move
 	
 	if best_move and best_move.piece_node:
 		board_node.execute_move(best_move.piece_node, best_move.to.x, best_move.to.y)
@@ -231,7 +253,6 @@ func play_ai_turn():
 			await get_tree().create_timer(0.6).timeout
 			play_ai_turn()
 	else:
-		# AI has no moves
 		check_win_condition(Side.PLAYER)
 
 func _get_board_state():
@@ -252,6 +273,9 @@ func _minimax(state, depth, alpha, beta, is_max, m_jump, m_piece):
 		return {"score": _evaluate_board(state), "move": null}
 	
 	var moves = _get_all_sim_moves(state, Side.AI if is_max else Side.PLAYER, m_jump, m_piece)
+	
+	# Move Sorting: Prioritize captures to optimize Alpha-Beta pruning
+	moves.sort_custom(func(a, b): return a.is_capture and not b.is_capture)
 	
 	if moves.size() == 0:
 		if m_jump:
@@ -309,25 +333,53 @@ func _minimax(state, depth, alpha, beta, is_max, m_jump, m_piece):
 
 func _evaluate_board(state):
 	var score = 0
+	var ai_pieces = []
+	var player_pieces = []
+	
 	for r in range(8):
 		for c in range(8):
 			var p = state[r][c]
 			if not p: continue
 			
+			if p.side == Side.AI: ai_pieces.append({"r": r, "c": c, "p": p})
+			else: player_pieces.append({"r": r, "c": c, "p": p})
+			
 			var multiplier = 1 if p.side == Side.AI else -1
-			var val = 10 if not p.is_king else 30
+			# Higher value for Kings
+			var val = 10 if not p.is_king else 35
 			
-			# Positional bonus (center control)
-			var center_dist = abs(r - 3.5) + abs(c - 3.5)
-			val += (4 - center_dist) * 2
+			# Advancement Bonus: Reward pieces moving forward
+			if not p.is_king:
+				if p.side == Side.AI: val += r * 1.5 # AI wants to go to row 7
+				else: val += (7 - r) * 1.5 # Player wants to go to row 0
 			
-			# Protection (Back row)
-			if p.side == Side.AI and r == 0: val += 5
-			if p.side == Side.PLAYER and r == 7: val += 5
+			# Back Row Defense: Strong reward for keeping base row filled
+			if p.side == Side.AI and r == 0: val += 8
+			if p.side == Side.PLAYER and r == 7: val += 8
+			
+			# Center Control (Power Squares: 3,4 and 2,5)
+			var center_bonus = 0
+			if r >= 2 and r <= 5 and c >= 2 and c <= 5:
+				center_bonus = 4
+				if r >= 3 and r <= 4 and c >= 3 and c <= 4:
+					center_bonus = 6
+			val += center_bonus
 			
 			score += val * multiplier
+
+	# Endgame "Hunter" logic: AI gets aggressive if winning
+	if ai_pieces.size() > 0 and player_pieces.size() > 0:
+		if ai_pieces.size() > player_pieces.size() + 2:
+			# Find min distance to closest enemy for each AI king
+			for ai_p in ai_pieces:
+				if ai_p.p.is_king:
+					var min_dist = 100
+					for pl_p in player_pieces:
+						var d = abs(ai_p.r - pl_p.r) + abs(ai_p.c - pl_p.c)
+						if d < min_dist: min_dist = d
+					# Penalty for distance: closer is better
+					score += (14 - min_dist) * 2
 	
-	# Material Advantage
 	return score
 
 func _get_all_sim_moves(state, side, m_jump, m_piece):

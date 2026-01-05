@@ -38,13 +38,21 @@ func populate_cards(current_level: int):
 		card_container.add_child(card)
 		card.setup(rank.name, (i * 20) + 1, rank.color, current_level)
 
+var last_scroll_h = 0.0
+var scroll_vel = 0.0
+
 func _process(delta):
+	var curr_h = scroll_container.scroll_horizontal
+	scroll_vel = abs(curr_h - last_scroll_h)
+	last_scroll_h = curr_h
+	
 	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not is_scrolling:
-		_handle_snapping(delta)
+		if scroll_vel < 2.0: # Only snap when slow
+			_handle_snapping(delta)
 
 func _on_scroll_changed():
 	is_scrolling = true
-	var timer = get_tree().create_timer(0.1)
+	var timer = get_tree().create_timer(0.05)
 	timer.timeout.connect(func(): is_scrolling = false)
 
 func _handle_snapping(delta):
@@ -56,17 +64,16 @@ func _handle_snapping(delta):
 	var min_dist = INF
 	
 	for card in card_container.get_children():
-		var card_center = card.position.x + card.size.x / 2.0
+		var card_center = card.position.x + card.size.x / 2.0 + 60 # Account for margin
 		var dist = abs(center_x - card_center)
 		if dist < min_dist:
 			min_dist = dist
 			best_card = card
 	
 	if best_card:
-		var target_scroll = (best_card.global_position.x + scroll_x) - (viewport_width - best_card.size.x) / 2.0
-		# Adjust for container offset
-		target_scroll -= scroll_container.global_position.x
-		scroll_container.scroll_horizontal = lerp(float(scroll_x), float(target_scroll), snap_speed * delta)
+		var target_scroll = card_container.position.x + best_card.position.x - (viewport_width - best_card.size.x) / 2.0
+		# Ease into the target
+		scroll_container.scroll_horizontal = lerp(float(scroll_x), float(target_scroll), 12.0 * delta)
 
 func _center_initial_card(level: int):
 	var card_index = min(floor((level - 1) / 20.0), ranks.size() - 1)

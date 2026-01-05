@@ -23,17 +23,22 @@ func setup(winner):
 	if is_victory:
 		status_label.text = "VICTORY!"
 		status_label.add_theme_color_override("font_color", Color("#2ecc71"))
-		info_label.text = "MISSION ACCOMPLISHED"
+		
 		if GameManager.is_daily_challenge:
 			info_label.text = "DAILY CHALLENGE COMPLETED!"
 			next_btn.visible = false
-		else:
+		elif GameManager.is_mastery:
 			info_label.text = "LEVEL " + str(GameManager.current_level) + " MASTERY"
 			next_btn.visible = (GameManager.current_level < 200)
 			next_btn.text = "NEXT LEVEL"
+		else:
+			# PvP or Custom AI
+			info_label.text = "DOMINANCE ESTABLISHED"
+			next_btn.visible = true
+			next_btn.text = "REMATCH"
 	else:
 		status_label.text = "DEFEAT"
-		status_label.add_theme_color_override("font_color", Color("#e74c3c")) # Red
+		status_label.add_theme_color_override("font_color", Color("#e74c3c"))
 		info_label.text = "GIVE IT ANOTHER SHOT"
 		next_btn.visible = false
 	
@@ -45,8 +50,11 @@ func _animate_in():
 	tween.tween_property(card, "scale", Vector2(1.0, 1.0), 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 func _on_next_pressed():
-	# Update level and reload board via specialized launch function
-	GameManager.start_mastery_level(GameManager.current_level + 1)
+	if GameManager.is_mastery:
+		GameManager.start_mastery_level(GameManager.current_level + 1)
+	else:
+		# Rematch logic: just reload current settings
+		get_tree().reload_current_scene()
 
 func _on_retry_pressed():
 	get_tree().reload_current_scene()

@@ -30,10 +30,11 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="MasteryCard" type="PanelContainer"]
-custom_minimum_size = Vector2(280, 420)
+custom_minimum_size = Vector2(280, 360)
 offset_right = 280.0
-offset_bottom = 420.0
-pivot_offset = Vector2(140, 210)
+offset_bottom = 360.0
+size_flags_vertical = 4
+pivot_offset = Vector2(140, 180)
 theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 script = ExtResource("1_m4v5r")
 
