@@ -55,7 +55,7 @@ func _refresh_calendar():
 			btn.add_theme_color_override("font_color", Color.WHITE)
 		elif is_done:
 			sb.bg_color = Color("#27AE60", 0.15)
-			sb.border_width_all = 1
+			sb.set_border_width_all(1)
 			sb.border_color = Color("#27AE60", 0.3)
 			btn.add_theme_color_override("font_color", Color("#27AE60"))
 			btn.text = str(day) + "✓"
