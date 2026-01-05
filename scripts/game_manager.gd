@@ -178,101 +178,205 @@ func switch_turn():
 
 func play_ai_turn():
 	var board_node = get_tree().root.find_child("Board", true, false)
-	if not board_node:
-		return
+	if not board_node: return
 
+	# Determine search depth based on level
 	var depth = 2
-	if current_level > 5: depth = 3
-	if current_level > 20: depth = 4
-	if current_level > 40: depth = 5
-	if current_level > 60: depth = 6
+	if match_ai_level > 5: depth = 3
+	if match_ai_level > 15: depth = 4
+	if match_ai_level > 30: depth = 6
+	if match_ai_level > 45: depth = 8
 	
-	var best_move = get_best_move(board_node, Side.AI, depth)
+	# Initial state
+	var current_state = _get_board_state()
 	
-	if best_move.piece:
-		board_node.execute_move(best_move.piece, best_move.to.x, best_move.to.y)
+	# Start Minimax
+	var result = _minimax(current_state, depth, -INF, INF, true, must_jump, selected_piece)
+	var best_move = result.move
+	
+	if best_move and best_move.piece_node:
+		board_node.execute_move(best_move.piece_node, best_move.to.x, best_move.to.y)
 		
-		# If multi-jump is active, keep playing
 		if must_jump:
-			await get_tree().create_timer(0.8).timeout
+			await get_tree().create_timer(0.6).timeout
 			play_ai_turn()
 	else:
-		# AI cannot move -> Player wins
+		# AI has no moves
 		check_win_condition(Side.PLAYER)
 
-func get_best_move(board_node, side, depth):
+func _get_board_state():
+	var state = []
+	for r in range(8):
+		var row = []
+		for c in range(8):
+			var p = board[r][c]
+			if p:
+				row.append({"side": p.side, "is_king": p.is_king, "node": p})
+			else:
+				row.append(null)
+		state.append(row)
+	return state
+
+func _minimax(state, depth, alpha, beta, is_max, m_jump, m_piece):
+	if depth == 0:
+		return {"score": _evaluate_board(state), "move": null}
+	
+	var moves = _get_all_sim_moves(state, Side.AI if is_max else Side.PLAYER, m_jump, m_piece)
+	
+	if moves.size() == 0:
+		# End of game for this branch
+		return {"score": - 10000 if is_max else 10000, "move": null}
+	
+	var best_move = moves.pick_random()
+	
+	if is_max:
+		var max_eval = - INF
+		for move in moves:
+			var next_state = _simulate_move(state, move)
+			# Handle multi-jump in simulation
+			var m_j = false
+			var m_p = null
+			if move.is_capture:
+				var m_moves = _get_sim_legal_moves(next_state, move.to.x, move.to.y)
+				for m in m_moves:
+					if m.is_capture:
+						m_j = true
+						m_p = next_state[move.to.x][move.to.y]
+						break
+			
+			var eval = _minimax(next_state, depth - 1, alpha, beta, m_j, m_j, m_p).score
+			if eval > max_eval:
+				max_eval = eval
+				best_move = move
+			alpha = max(alpha, eval)
+			if beta <= alpha: break
+		return {"score": max_eval, "move": best_move}
+	else:
+		var min_eval = INF
+		for move in moves:
+			var next_state = _simulate_move(state, move)
+			var m_j = false
+			var m_p = null
+			if move.is_capture:
+				var m_moves = _get_sim_legal_moves(next_state, move.to.x, move.to.y)
+				for m in m_moves:
+					if m.is_capture:
+						m_j = true
+						m_p = next_state[move.to.x][move.to.y]
+						break
+						
+			var eval = _minimax(next_state, depth - 1, alpha, beta, not m_j, m_j, m_p).score
+			if eval < min_eval:
+				min_eval = eval
+				best_move = move
+			beta = min(beta, eval)
+			if beta <= alpha: break
+		return {"score": min_eval, "move": best_move}
+
+func _evaluate_board(state):
+	var score = 0
+	for r in range(8):
+		for c in range(8):
+			var p = state[r][c]
+			if not p: continue
+			
+			var multiplier = 1 if p.side == Side.AI else -1
+			var val = 10 if not p.is_king else 30
+			
+			# Positional bonus (center control)
+			var center_dist = abs(r - 3.5) + abs(c - 3.5)
+			val += (4 - center_dist) * 2
+			
+			# Protection (Back row)
+			if p.side == Side.AI and r == 0: val += 5
+			if p.side == Side.PLAYER and r == 7: val += 5
+			
+			score += val * multiplier
+	
+	# Material Advantage
+	return score
+
+func _get_all_sim_moves(state, side, m_jump, m_piece):
 	var all_moves = []
-	var pieces = []
-	if must_jump and selected_piece:
-		pieces = [selected_piece]
+	var captures = []
+	
+	if m_jump and m_piece:
+		# Find the coordinates of m_piece in the virtual state
+		for r in range(8):
+			for c in range(8):
+				if state[r][c] == m_piece:
+					var m = _get_sim_legal_moves(state, r, c)
+					for move in m:
+						if move.is_capture:
+							captures.append(move)
 	else:
 		for r in range(8):
 			for c in range(8):
-				var p = get_piece_at(r, c)
+				var p = state[r][c]
 				if p and p.side == side:
-					pieces.append(p)
+					var m = _get_sim_legal_moves(state, r, c)
+					for move in m:
+						if move.is_capture:
+							captures.append(move)
+						else:
+							all_moves.append(move)
 	
-	# Forced captures check
-	var captures = board_node.get_all_captures(side)
+	# Forced capture rule
 	if captures.size() > 0:
-		all_moves = captures
-	else:
-		for p in pieces:
-			var moves = board_node.get_legal_moves(p)
-			for m in moves:
-				all_moves.append({"piece": p, "to": m.to, "is_capture": m.is_capture})
-				
-	if all_moves.size() == 0:
-		return {"piece": null}
-		
-	# Better AI: Find all best moves and pick random
-	var best_moves = []
-	var best_score = -100000
+		return captures
+	return all_moves
+
+func _get_sim_legal_moves(state, r, c):
+	var p = state[r][c]
+	if not p: return []
 	
-	for m in all_moves:
-		var score = evaluate_move(board_node, m)
+	var moves = []
+	var directions = [Vector2i(-1, -1), Vector2i(-1, 1), Vector2i(1, -1), Vector2i(1, 1)]
+	
+	for d in directions:
+		# Simplified: Check captures (2 steps)
+		var mid_r = r + d.x
+		var mid_c = c + d.y
+		var end_r = r + d.x * 2
+		var end_c = c + d.y * 2
 		
-		# Add a small fuzzy factor to break score ties naturally
-		score += randf_range(-0.5, 0.5)
-		
-		if score > best_score:
-			best_score = score
-			best_moves = [m]
-		elif abs(score - best_score) < 0.1: # Treated as equal
-			best_moves.append(m)
+		# Move forward check for non-kings
+		if not p.is_king:
+			if p.side == Side.AI and d.x < 0: continue
+			if p.side == Side.PLAYER and d.x > 0: continue
 			
-	if best_moves.size() > 0:
-		return best_moves.pick_random()
-		
-	return all_moves.pick_random()
+		if is_on_board(end_r, end_c):
+			var mid_p = state[mid_r][mid_c]
+			if mid_p and mid_p.side != p.side and state[end_r][end_c] == null:
+				moves.append({"from": Vector2i(r, c), "to": Vector2i(end_r, end_c), "is_capture": true, "piece_node": p.node})
+				
+		# Normal moves (1 step)
+		var dest_r = r + d.x
+		var dest_c = c + d.y
+		if is_on_board(dest_r, dest_c) and state[dest_r][dest_c] == null:
+			moves.append({"from": Vector2i(r, c), "to": Vector2i(dest_r, dest_c), "is_capture": false, "piece_node": p.node})
+			
+	return moves
 
-func evaluate_move(_board_node, move):
-	var score = 0
-	if move.is_capture: score += 100
-	if move.piece.is_king: score += 10
+func _simulate_move(state, move):
+	var new_state = []
+	for r in range(8):
+		new_state.append(state[r].duplicate())
 	
-	# Center control
-	var dist_to_center = abs(move.to.x - 3.5) + abs(move.to.y - 3.5)
-	score -= dist_to_center * 2
+	var p = new_state[move.from.x][move.from.y]
+	new_state[move.from.x][move.from.y] = null
+	new_state[move.to.x][move.to.y] = p
 	
-	# Material Advancement: Encourage moving towards enemy side
-	if move.piece.side == Side.AI:
-		score += move.to.x * 2 # Higher X (row 7) is better for AI (starts at 0-2)
-	
-	# Mobility Score: Encourage using different pieces
-	# (Simplified: Random nudge to break repetition)
-	score += randf_range(0, 5)
-
-	# Repetition Penalty: Avoid immediate back-and-forth
-	# This would require tracking historical moves, which we can simplify:
-	# Just discourage moving back to where we started if possible?
-	# Hard to detect without history in this function.
-	# The random mobility nudge should help enough for now.
-	
-	# King promotion incentive
-	if move.to.x == 7: score += 50
-	
-	# Randomness for all levels to ensure variety
-	score += randf_range(0, 5)
+	if move.is_capture:
+		var mid_r = (move.from.x + move.to.x) / 2
+		var mid_c = (move.from.y + move.to.y) / 2
+		new_state[mid_r][mid_c] = null
 		
-	return score
+	# King promotion
+	if not p.is_king:
+		if (p.side == Side.AI and move.to.x == 7) or (p.side == Side.PLAYER and move.to.x == 0):
+			var np = p.duplicate()
+			np.is_king = true
+			new_state[move.to.x][move.to.y] = np
+			
+	return new_state
