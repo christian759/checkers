@@ -3,12 +3,17 @@ extends Button
 @onready var label = $Label
 
 enum State {LOCKED, CURRENT, COMPLETED}
+var level_num_stored = 1
+var state_stored = State.LOCKED
 
 func _ready():
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
+	pressed.connect(_on_pressed)
 
 func setup(level_num: int, state: State, accent_color: Color):
+	level_num_stored = level_num
+	state_stored = state
 	text = ""
 	label.text = str(level_num)
 	
@@ -52,6 +57,10 @@ func _on_mouse_exited():
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.15).set_trans(Tween.TRANS_SINE)
 	modulate.v = 1.0
+
+func _on_pressed():
+	if state_stored != State.LOCKED:
+		GameManager.start_mastery_level(level_num_stored)
 
 func _start_pulse_animation(color: Color):
 	var tween = create_tween().set_loops()

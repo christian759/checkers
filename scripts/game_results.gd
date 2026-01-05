@@ -45,9 +45,8 @@ func _animate_in():
 	tween.tween_property(card, "scale", Vector2(1.0, 1.0), 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 func _on_next_pressed():
-	# Update level and reload board
-	GameManager.current_level += 1
-	get_tree().change_scene_to_file("res://scenes/board.tscn")
+	# Update level and reload board via specialized launch function
+	GameManager.start_mastery_level(GameManager.current_level + 1)
 
 func _on_retry_pressed():
 	get_tree().reload_current_scene()

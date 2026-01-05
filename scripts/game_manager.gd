@@ -126,6 +126,22 @@ func start_custom_game(mode, ai_level, theme_index, start_side):
 	current_level = ai_level
 	board_theme_index = theme_index
 	current_turn = start_side
+	is_daily_challenge = false
+	
+	setup_board()
+	get_tree().change_scene_to_file("res://scenes/board.tscn")
+
+func start_mastery_level(level):
+	match_mode = Mode.PV_AI
+	match_ai_level = level
+	match_theme_index = 0 # Classic for Mastery
+	match_start_side = Side.PLAYER
+	
+	current_mode = Mode.PV_AI
+	current_level = level
+	board_theme_index = 0
+	current_turn = Side.PLAYER
+	is_daily_challenge = false
 	
 	setup_board()
 	get_tree().change_scene_to_file("res://scenes/board.tscn")
@@ -180,12 +196,13 @@ func play_ai_turn():
 	var board_node = get_tree().root.find_child("Board", true, false)
 	if not board_node: return
 
-	# Determine search depth based on level
+	# Advanced depth mapping for 1-200 range
 	var depth = 2
-	if match_ai_level > 5: depth = 3
-	if match_ai_level > 15: depth = 4
-	if match_ai_level > 30: depth = 6
-	if match_ai_level > 45: depth = 8
+	if match_ai_level > 10: depth = 3
+	if match_ai_level > 30: depth = 4
+	if match_ai_level > 70: depth = 5
+	if match_ai_level > 120: depth = 6
+	if match_ai_level > 170: depth = 8 # Grandmaster
 	
 	# Initial state
 	var current_state = _get_board_state()
@@ -301,10 +318,12 @@ func _get_all_sim_moves(state, side, m_jump, m_piece):
 	var captures = []
 	
 	if m_jump and m_piece:
-		# Find the coordinates of m_piece in the virtual state
+		# Find the coordinates of m_piece in the virtual state by comparing node references
+		var target_node = m_piece if typeof(m_piece) != TYPE_DICTIONARY else m_piece.get("node")
 		for r in range(8):
 			for c in range(8):
-				if state[r][c] == m_piece:
+				var p = state[r][c]
+				if p and p.get("node") == target_node:
 					var m = _get_sim_legal_moves(state, r, c)
 					for move in m:
 						if move.is_capture:
