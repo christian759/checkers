@@ -18,6 +18,12 @@ var is_daily_challenge = false
 var daily_completed = false
 var game_start_time = 0
 
+# Match Settings (Lobby)
+var match_mode = Mode.PV_AI
+var match_ai_level = 1
+var match_theme_index = 0
+var match_start_side = Side.PLAYER
+
 # Settings
 var forced_jumps = false
 var movement_mode = "diagonal" # "diagonal" or "straight"
@@ -50,6 +56,20 @@ func setup_board():
 		for c in range(8):
 			row.append(null)
 		board.append(row)
+
+func start_custom_game(mode, ai_level, theme_index, start_side):
+	match_mode = mode
+	match_ai_level = ai_level
+	match_theme_index = theme_index
+	match_start_side = start_side
+	
+	current_mode = mode
+	current_level = ai_level
+	board_theme_index = theme_index
+	current_turn = start_side
+	
+	setup_board()
+	get_tree().change_scene_to_file("res://scenes/board.tscn")
 
 func reset_game():
 	current_turn = Side.PLAYER

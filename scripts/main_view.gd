@@ -5,7 +5,7 @@ extends Control
 
 var sections = {
 	0: preload("res://scenes/daily_challenge.tscn"),
-	1: preload("res://scenes/board.tscn"), # PvP is the board
+	1: preload("res://scenes/pvp_lobby.tscn"), # PvP Lobby now
 	2: preload("res://scenes/mastery.tscn"),
 	3: preload("res://scenes/achievement.tscn"),
 	4: preload("res://scenes/settings.tscn")

@@ -3,11 +3,26 @@ extends Node2D
 var tile_size = 85.0
 var board_scale = 1.0
 
+@onready var tile_container = $Tiles
+@onready var piece_container = $Pieces
+@onready var highlights = $Highlights
+
+var piece_scene = preload("res://scenes/piece.tscn")
+var marker_script = preload("res://scripts/move_marker.gd")
+
 func _ready():
 	GameManager.turn_changed.connect(_on_turn_changed)
 	_setup_responsive_size()
 	generate_board()
 	spawn_pieces()
+	
+	if has_node("UI/QuitButton"):
+		$UI/QuitButton.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/main.tscn"))
+	
+	# Handle first turn if it's AI
+	if GameManager.current_turn == GameManager.Side.AI and GameManager.current_mode == GameManager.Mode.PV_AI:
+		await get_tree().create_timer(1.0).timeout
+		GameManager.play_ai_turn()
 
 func _on_turn_changed(_side):
 	call_deferred("check_game_over_condition")
