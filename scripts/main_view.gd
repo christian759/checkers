@@ -15,7 +15,7 @@ var current_section = null
 
 func _ready():
 	nav_bar.tab_selected.connect(_on_tab_selected)
-	_on_tab_selected(1) # Default to Board/PvP
+	_on_tab_selected(0) # Default to Daily Challenge/Home
 
 func _on_tab_selected(index):
 	if sections.has(index):

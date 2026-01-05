@@ -18,7 +18,7 @@ func _ready():
 		var tab = tabs[i]
 		tab.btn.pressed.connect(_on_tab_pressed.bind(i))
 	
-	select_tab(1) # PvP/Board by default
+	select_tab(0) # Daily Challenge by default
 
 func _on_tab_pressed(index):
 	select_tab(index)
