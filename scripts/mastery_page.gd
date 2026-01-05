@@ -1,29 +1,34 @@
 extends Control
 
+@onready var scroll_container = $VBoxContainer/ScrollContainer
 @onready var card_container = $VBoxContainer/ScrollContainer/HBoxContainer
 @onready var global_progress = $VBoxContainer/Header/ProgressLabel
 
 var card_scene = preload("res://scenes/mastery_card.tscn")
+var is_scrolling = false
+var snap_speed = 10.0
 
 var ranks = [
-	{"name": "NOVICE", "color": Color("#9e9e9e")}, # Gray
-	{"name": "APPRENTICE", "color": Color("#8bc34a")}, # Green
-	{"name": "WARRIOR", "color": Color("#03a9f4")}, # Light Blue
-	{"name": "KNIGHT", "color": Color("#3f51b5")}, # Indigo
-	{"name": "MASTER", "color": Color("#9c27b0")}, # Purple
-	{"name": "GRANDMASTER", "color": Color("#f44336")}, # Red
-	{"name": "EPIC", "color": Color("#ff9800")}, # Orange
-	{"name": "LEGENDARY", "color": Color("#ffeb3b")}, # Yellow/Gold
-	{"name": "MYTHIC", "color": Color("#00bcd4")}, # Cyan
-	{"name": "DIVINE", "color": Color("#ffffff")} # White/Glow
+	{"name": "NOVICE", "color": Color("#9e9e9e")},
+	{"name": "APPRENTICE", "color": Color("#8bc34a")},
+	{"name": "WARRIOR", "color": Color("#03a9f4")},
+	{"name": "KNIGHT", "color": Color("#3f51b5")},
+	{"name": "MASTER", "color": Color("#9c27b0")},
+	{"name": "GRANDMASTER", "color": Color("#f44336")},
+	{"name": "EPIC", "color": Color("#ff9800")},
+	{"name": "LEGENDARY", "color": Color("#ffeb3b")},
+	{"name": "MYTHIC", "color": Color("#00bcd4")},
+	{"name": "DIVINE", "color": Color("#ffffff")}
 ]
 
 func _ready():
-	# For now, let's assume level 1 is the progress
 	var current_level = GameManager.current_level if "current_level" in GameManager else 1
-	global_progress.text = "Overall Level: " + str(current_level)
+	global_progress.text = "OVERALL PROGRESS: " + str(current_level) + "/200"
 	
 	populate_cards(current_level)
+	
+	scroll_container.get_h_scroll_bar().changed.connect(_on_scroll_changed)
+	call_deferred("_center_initial_card", current_level)
 
 func populate_cards(current_level: int):
 	for i in range(ranks.size()):
@@ -31,3 +36,39 @@ func populate_cards(current_level: int):
 		var card = card_scene.instantiate()
 		card_container.add_child(card)
 		card.setup(rank.name, (i * 20) + 1, rank.color, current_level)
+
+func _process(delta):
+	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not is_scrolling:
+		_handle_snapping(delta)
+
+func _on_scroll_changed():
+	is_scrolling = true
+	var timer = get_tree().create_timer(0.1)
+	timer.timeout.connect(func(): is_scrolling = false)
+
+func _handle_snapping(delta):
+	var scroll_x = scroll_container.scroll_horizontal
+	var viewport_width = scroll_container.size.x
+	var center_x = scroll_x + viewport_width / 2.0
+	
+	var best_card = null
+	var min_dist = INF
+	
+	for card in card_container.get_children():
+		var card_center = card.position.x + card.size.x / 2.0
+		var dist = abs(center_x - card_center)
+		if dist < min_dist:
+			min_dist = dist
+			best_card = card
+	
+	if best_card:
+		var target_scroll = best_card.position.x - (viewport_width - best_card.size.x) / 2.0
+		scroll_container.scroll_horizontal = lerp(float(scroll_x), float(target_scroll), snap_speed * delta)
+
+func _center_initial_card(level: int):
+	var card_index = min(floor((level - 1) / 20.0), ranks.size() - 1)
+	if card_index < card_container.get_child_count():
+		var card = card_container.get_child(card_index)
+		var viewport_width = scroll_container.size.x
+		var target_scroll = card.position.x - (viewport_width - card.size.x) / 2.0
+		scroll_container.scroll_horizontal = target_scroll

@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dmy9u8v7p1k2r"]
+[gd_scene load_steps=3 format=3 uid="uid://dmy9u8v7p1k2r"]
 
 [ext_resource type="Script" path="res://scripts/mastery_page.gd" id="1_p2v3r"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.05, 0.05, 0.07, 1)
 
 [node name="Mastery" type="Control"]
 layout_mode = 3
@@ -11,41 +14,81 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_p2v3r")
 
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 20.0
-offset_right = -20.0
-offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 30
+theme_override_constants/separation = 40
 
-[node name="Header" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Header" type="VBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-alignment = 1
+theme_override_constants/separation = 5
 
-[node name="Title" type="Label" parent="VBoxContainer/Header"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Header"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 40
+theme_override_constants/margin_top = 40
+
+[node name="Title" type="Label" parent="VBoxContainer/Header/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 48
 text = "MASTERY"
+horizontal_alignment = 1
 
 [node name="ProgressLabel" type="Label" parent="VBoxContainer/Header"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Overall Level: 1"
+theme_override_colors/font_color = Color(0.6, 0.6, 0.7, 1)
+theme_override_font_sizes/font_size = 16
+text = "OVERALL PROGRESS: 1/200"
+horizontal_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 3
 vertical_scroll_mode = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 40
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_right = 100
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 60
 alignment = 1
+
+[node name="Footer" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="Instruction" type="Label" parent="VBoxContainer/Footer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
+theme_override_font_sizes/font_size = 14
+text = "Swipe to explore ranks"
+horizontal_alignment = 1
+vertical_alignment = 1
