@@ -13,6 +13,5 @@ func _animate_bg():
 	tween.tween_property(bg1, "rotation_degrees", 360.0, 60.0)
 	tween.tween_property(bg2, "rotation_degrees", -360.0, 45.0)
 	
-	var pulse = create_tween().set_loops()
-	pulse.tween_property(bg1, "scale", Vector2(1.2, 1.2), 10.0).set_trans(Tween.TRANS_SINE)
-	pulse.tween_property(bg1, "scale", Vector2(1.0, 1.0), 10.0).set_trans(Tween.TRANS_SINE)
+	bg1.color = Color("#2ecc71") # Emerald
+	bg2.color = Color("#27ae60") # Jade

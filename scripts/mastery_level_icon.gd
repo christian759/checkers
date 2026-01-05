@@ -19,15 +19,15 @@ func setup(level_num: int, state: State, accent_color: Color):
 	
 	match state:
 		State.LOCKED:
-			sb.bg_color = Color(0.1, 0.1, 0.1, 0.6)
-			sb.border_color = Color(0.2, 0.2, 0.2, 0.8)
-			label.modulate = Color(0.4, 0.4, 0.4)
+			sb.bg_color = Color(0.9, 0.9, 0.9, 0.8)
+			sb.border_color = Color(0.8, 0.8, 0.8)
+			label.modulate = Color(0.6, 0.6, 0.6)
 		State.CURRENT:
-			sb.bg_color = accent_color.darkened(0.7)
+			sb.bg_color = Color.WHITE
 			sb.border_color = accent_color
-			sb.shadow_color = accent_color.lightened(0.2)
-			sb.shadow_size = 8
-			label.modulate = Color.WHITE
+			sb.shadow_color = Color(accent_color, 0.4)
+			sb.shadow_size = 12
+			label.modulate = accent_color
 			_start_pulse_animation(accent_color)
 		State.COMPLETED:
 			sb.bg_color = accent_color

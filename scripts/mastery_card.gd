@@ -53,7 +53,7 @@ func setup(rank_name: String, start_level: int, accent_color: Color, current_glo
 func _on_mouse_entered():
 	var tween = create_tween().set_parallel(true)
 	tween.tween_property(self, "scale", Vector2(1.05, 1.05), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tween.tween_property($BackgroundGlow, "color", Color(1, 1, 1, 0.08), 0.3)
+	tween.tween_property($BackgroundGlow, "color", Color(0.18, 0.8, 0.44, 0.1), 0.3)
 
 func _on_mouse_exited():
 	var tween = create_tween().set_parallel(true)

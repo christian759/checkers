@@ -9,21 +9,22 @@ var is_scrolling = false
 var snap_speed = 10.0
 
 var ranks = [
-	{"name": "NOVICE", "color": Color("#9e9e9e")},
-	{"name": "APPRENTICE", "color": Color("#8bc34a")},
-	{"name": "WARRIOR", "color": Color("#03a9f4")},
-	{"name": "KNIGHT", "color": Color("#3f51b5")},
-	{"name": "MASTER", "color": Color("#9c27b0")},
-	{"name": "GRANDMASTER", "color": Color("#f44336")},
-	{"name": "EPIC", "color": Color("#ff9800")},
-	{"name": "LEGENDARY", "color": Color("#ffeb3b")},
-	{"name": "MYTHIC", "color": Color("#00bcd4")},
-	{"name": "DIVINE", "color": Color("#ffffff")}
+	{"name": "SPROUT", "color": Color("#d5f5e3")},
+	{"name": "LEAF", "color": Color("#abebc6")},
+	{"name": "SEEDLING", "color": Color("#82e0aa")},
+	{"name": "VINE", "color": Color("#58d68d")},
+	{"name": "EMERALD", "color": Color("#2ecc71")},
+	{"name": "JADE", "color": Color("#28b463")},
+	{"name": "FOREST", "color": Color("#239b56")},
+	{"name": "ANCIENT", "color": Color("#1d8348")},
+	{"name": "MYTHIC", "color": Color("#186a3e")},
+	{"name": "IMMORTAL", "color": Color("#0e311f")}
 ]
 
 func _ready():
 	var current_level = GameManager.current_level if "current_level" in GameManager else 1
 	global_progress.text = "OVERALL PROGRESS: " + str(current_level) + "/200"
+	global_progress.add_theme_color_override("font_color", Color("#2c3e50")) # Dark Slate
 	
 	populate_cards(current_level)
 	

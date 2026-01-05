@@ -23,7 +23,7 @@ script = ExtResource("1_v4m3r")
 show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 3
-color = Color(0.0941176, 0.0941176, 0.117647, 0.941176)
+color = Color(1, 1, 1, 0.94)
 
 [node name="Daily" type="Button" parent="."]
 layout_mode = 2
@@ -169,7 +169,7 @@ layout_mode = 0
 offset_top = 95.0
 offset_right = 144.0
 offset_bottom = 100.0
-color = Color(1, 0.8, 0, 1)
+color = Color(0.18, 0.8, 0.44, 1)
 
 [node name="Glow" type="ColorRect" parent="SelectionIndicator"]
 show_behind_parent = true
@@ -183,4 +183,4 @@ offset_right = 10.0
 offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 0.8, 0, 0.235294)
+color = Color(0.18, 0.8, 0.44, 0.235294)

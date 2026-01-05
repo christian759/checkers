@@ -34,7 +34,7 @@ const WIN_REWARD = 50
 const MAX_HEARTS = 5
 
 const BOARD_THEMES = [
-	{"name": "CLASSIC", "light": Color("#f5deb3"), "dark": Color("#b8860b")},
+	{"name": "CLASSIC", "light": Color("#f9f9f9"), "dark": Color("#2ecc71")},
 	{"name": "OCEAN", "light": Color("#e0f7fa"), "dark": Color("#0277bd")},
 	{"name": "FOREST", "light": Color("#dcedc8"), "dark": Color("#33691e")},
 	{"name": "PINK", "light": Color("#f8bbd0"), "dark": Color("#c2185b")},

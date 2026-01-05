@@ -2,8 +2,8 @@ extends HBoxContainer
 
 signal tab_selected(index)
 
-var active_color = Color("#ffcc00") # Vibrant Yellow
-var inactive_color = Color("#ffffff") # Pure White
+var active_color = Color("#2ecc71") # Emerald Green
+var inactive_color = Color("#7f8c8d") # Grayish for light bg
 
 @onready var tabs = [
 	{"btn": $Daily, "icon": $Daily/VBoxContainer/Icon, "label": $Daily/VBoxContainer/Label, "id": "daily"},

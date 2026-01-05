@@ -3,17 +3,17 @@
 [ext_resource type="Script" path="res://scripts/mastery_card.gd" id="1_m4v5r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
-bg_color = Color(1, 1, 1, 0.03)
+bg_color = Color(1, 1, 1, 0.4)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(1, 1, 1, 0.1)
+border_color = Color(1, 1, 1, 0.8)
 corner_radius_top_left = 24
 corner_radius_top_right = 24
 corner_radius_bottom_right = 24
 corner_radius_bottom_left = 24
-shadow_color = Color(0, 0, 0, 0.3)
+shadow_color = Color(0, 0, 0, 0.05)
 shadow_size = 20
 shadow_offset = Vector2(0, 10)
 
