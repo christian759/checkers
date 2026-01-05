@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://c6d3yuw2cdviy"]
+[gd_scene load_steps=3 format=3 uid="uid://c6d3yuw2cdviy"]
 
-[ext_resource type="Script" uid="uid://bom8wdvye7p2f" path="res://scripts/piece.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/piece.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://oe72klu37uhf" path="res://assets/textures/piece_player.svg" id="2_player_tex"]
-[ext_resource type="Texture2D" path="res://assets/textures/crown.svg" id="4_king_tex"]
 
 [node name="Piece" type="Node2D"]
 script = ExtResource("1_script")
@@ -10,15 +9,33 @@ script = ExtResource("1_script")
 [node name="Shadow" type="Sprite2D" parent="."]
 modulate = Color(0, 0, 0, 0.2)
 position = Vector2(0, 4)
-scale = Vector2(0.12, 0.12)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_player_tex")
 
 [node name="Sprite" type="Sprite2D" parent="."]
-scale = Vector2(0.12, 0.12)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_player_tex")
 
-[node name="KingIcon" type="Sprite2D" parent="."]
+[node name="StackSprite" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(0, -10)
-scale = Vector2(1.0, 1.0)
-texture = ExtResource("4_king_tex")
+position = Vector2(0, -8)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_player_tex")
+
+[node name="KingCrown" type="Polygon2D" parent="."]
+visible = false
+position = Vector2(0, -6)
+scale = Vector2(0.8, 0.8)
+color = Color(1, 0.843137, 0, 1)
+polygon = PackedVector2Array(-15, 5, -15, -10, -5, -2, 0, -15, 5, -2, 15, -10, 15, 5)
+
+[node name="Aura" type="Node2D" parent="."]
+visible = false
+
+[node name="Ring" type="Line2D" parent="Aura"]
+points = PackedVector2Array(0, -30, 21.2, -21.2, 30, 0, 21.2, 21.2, 0, 30, -21.2, 21.2, -30, 0, -21.2, -21.2, 0, -30)
+width = 2.0
+default_color = Color(1, 0.843137, 0, 0.588235)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
