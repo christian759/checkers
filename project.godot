@@ -11,16 +11,13 @@ config_version=5
 [application]
 
 config/name="checkers"
-run/main_scene="res://scenes/level_select.tscn"
+run/main_scene="res://scenes/splash_screen.tscn"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
 
 [autoload]
 
 GameManager="*res://scripts/game_manager.gd"
-AudioManager="*res://scripts/audio_manager.gd"
-SceneTransition="*res://scenes/scene_transition.tscn"
-AchievementManager="*res://scripts/achievement_manager.gd"
 
 [display]
 
@@ -29,9 +26,6 @@ window/size/viewport_height=1280
 window/stretch/mode="canvas_items"
 window/handheld/orientation=1
 
-[gui]
-
-theme/custom="res://resources/main_theme.tres"
 
 [rendering]
 

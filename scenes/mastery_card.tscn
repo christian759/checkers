@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmx9u8v7p1k2r"]
+
+[ext_resource type="Script" path="res://scripts/mastery_card.gd" id="1_m4v5r"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1v2w3"]
+bg_color = Color(0.121569, 0.121569, 0.14902, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.2, 0.25, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+
+[node name="MasteryCard" type="PanelContainer"]
+custom_minimum_size = Vector2(280, 360)
+offset_right = 280.0
+offset_bottom = 360.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1v2w3")
+script = ExtResource("1_m4v5r")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "NOVICE"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
+columns = 4

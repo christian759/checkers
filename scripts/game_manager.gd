@@ -1,13 +1,14 @@
 extends Node
 
 # Piece types
-enum Side { NONE, PLAYER, AI }
-enum Mode { PV_AI, PV_P }
+enum Side {NONE, PLAYER, AI}
+enum Mode {PV_AI, PV_P}
 
 # Game state
 var board = [] # 2D array [row][col]
 var current_turn = Side.PLAYER
 var current_mode = Mode.PV_AI # Default to PV_AI for now, will be set by menu
+var current_level = 1
 var selected_piece = null
 var must_jump = false # For multi-jump logic
 var win_streak = 0
@@ -61,7 +62,6 @@ func reset_game():
 	selected_piece = null
 	must_jump = false
 	setup_board()
-
 
 
 func check_win_condition(winner):
@@ -188,4 +188,3 @@ func evaluate_move(_board_node, move):
 	score += randf_range(0, 5)
 		
 	return score
-
