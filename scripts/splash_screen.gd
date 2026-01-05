@@ -7,21 +7,27 @@ extends Control
 
 func _ready():
 	# Initial state
-	logo_container.modulate.a = 0
-	logo_container.scale = Vector2(0.8, 0.8)
-	main_label.position.y += 20
-	sub_label.modulate.a = 0
-	sub_label.position.y += 10
+	if logo_container:
+		logo_container.modulate.a = 0
+		logo_container.scale = Vector2(0.8, 0.8)
+	if main_label:
+		main_label.position.y += 20
+	if sub_label:
+		sub_label.modulate.a = 0
+		sub_label.position.y += 10
 	
 	_animate_splash()
 
 func _process(delta):
 	# Add a subtle "jiggy" hover effect to the main text
+	if not main_label: return
+	
 	var time = Time.get_ticks_msec() / 1000.0
 	main_label.position.y = -65 + sin(time * 4.0) * 5.0
-	main_label.rotation = sin(time * 2.0) * 0.05
-	shadow_label.position = main_label.position + Vector2(5, 5)
-	shadow_label.rotation = main_label.rotation
+	main_label.rotation = sin(time * 2.0) * 0.02
+	if shadow_label:
+		shadow_label.position = main_label.position + Vector2(5, 5)
+		shadow_label.rotation = main_label.rotation
 
 func _animate_splash():
 	var tween = create_tween().set_parallel(true)

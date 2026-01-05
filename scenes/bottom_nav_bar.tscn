@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" path="res://assets/textures/icon_settings.svg" id="6_s1v5u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
-bg_color = Color(1, 1, 1, 1) # Solid White
+bg_color = Color(0.180392, 0.8, 0.443137, 1) # Emerald Green
 corner_radius_top_left = 32
 corner_radius_top_right = 32
 shadow_color = Color(0, 0, 0, 0.05)
@@ -16,7 +16,7 @@ shadow_size = 15
 shadow_offset = Vector2(0, -5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bubble"]
-bg_color = Color(0.18, 0.8, 0.44, 0.1) # Soft Green
+bg_color = Color(1, 1, 1, 0.2) # Soft contrast bubble
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
@@ -84,7 +84,7 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Tabs/Daily/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 0.8)
 theme_override_font_sizes/font_size = 12
 text = "Daily"
 horizontal_alignment = 1
@@ -113,7 +113,7 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Tabs/PvP/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 0.8)
 theme_override_font_sizes/font_size = 12
 text = "PvP"
 horizontal_alignment = 1
@@ -142,7 +142,7 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Tabs/Mastery/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 0.8)
 theme_override_font_sizes/font_size = 12
 text = "Mastery"
 horizontal_alignment = 1
@@ -171,7 +171,7 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Tabs/Achievement/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 0.8)
 theme_override_font_sizes/font_size = 12
 text = "Trophy"
 horizontal_alignment = 1
@@ -200,7 +200,7 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Tabs/Settings/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 0.8)
 theme_override_font_sizes/font_size = 12
 text = "Settings"
 horizontal_alignment = 1

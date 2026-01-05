@@ -2,8 +2,8 @@ extends Control
 
 signal tab_selected(index)
 
-var active_color = Color("#2ecc71") # Emerald Green
-var inactive_color = Color("#7f8c8d") # Grayish
+var active_color = Color("#ffffff") # Pure White for active
+var inactive_color = Color("#cfe0cf") # Light green-gray for inactive
 
 @onready var tabs_container = $Tabs
 @onready var indicator = $SelectionIndicator

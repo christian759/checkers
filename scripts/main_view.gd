@@ -21,9 +21,12 @@ func _on_tab_selected(index):
 	if sections.has(index):
 		var old_section = current_section
 		var new_section = sections[index].instantiate()
+		if not new_section: return
 		
 		# Prepare new section
-		new_section.modulate.a = 0
+		if "modulate" in new_section:
+			new_section.modulate.a = 0
+		
 		content_container.add_child(new_section)
 		
 		# Centering/Layout
