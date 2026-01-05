@@ -24,6 +24,34 @@ var match_ai_level = 1
 var match_theme_index = 0
 var match_start_side = Side.PLAYER
 
+# Daily Challenge & Persistence
+var daily_streak = 0
+var last_daily_date = "" # Format: "2026-01-05"
+var current_puzzle_id = -1
+var save_path = "user://save_game.dat"
+
+var puzzles = [
+	{
+		"id": 0,
+		"title": "THE FORK",
+		"desc": "Capture the AI king using a strategic fork.",
+		"setup": [
+			{"r": 5, "c": 3, "side": Side.PLAYER, "king": false},
+			{"r": 5, "c": 5, "side": Side.PLAYER, "king": false},
+			{"r": 3, "c": 3, "side": Side.AI, "king": true}
+		]
+	},
+	{
+		"id": 1,
+		"title": "CORNER TRAP",
+		"desc": "Box in the opponent's piece against the edge.",
+		"setup": [
+			{"r": 1, "c": 1, "side": Side.PLAYER, "king": true},
+			{"r": 0, "c": 0, "side": Side.AI, "king": false}
+		]
+	}
+]
+
 # Settings
 var forced_jumps = false
 var movement_mode = "diagonal" # "diagonal" or "straight"
@@ -47,7 +75,31 @@ const BOARD_THEMES = [
 var board_theme_index = 0
 
 func _ready():
+	load_data()
 	setup_board()
+
+func save_data():
+	var file = FileAccess.open(save_path, FileAccess.WRITE)
+	if file:
+		var data = {
+			"daily_streak": daily_streak,
+			"last_daily_date": last_daily_date,
+			"max_unlocked_level": max_unlocked_level,
+			"win_streak": win_streak
+		}
+		file.store_string(JSON.stringify(data))
+
+func load_data():
+	if FileAccess.file_exists(save_path):
+		var file = FileAccess.open(save_path, FileAccess.READ)
+		var test_json_conv = JSON.new()
+		test_json_conv.parse(file.get_as_text())
+		var data = test_json_conv.get_data()
+		if data:
+			daily_streak = data.get("daily_streak", 0)
+			last_daily_date = data.get("last_daily_date", "")
+			max_unlocked_level = data.get("max_unlocked_level", 1)
+			win_streak = data.get("win_streak", 0)
 
 func setup_board():
 	board = []
@@ -56,6 +108,13 @@ func setup_board():
 		for c in range(8):
 			row.append(null)
 		board.append(row)
+
+func complete_daily():
+	var today = Time.get_date_string_from_system()
+	if last_daily_date != today:
+		daily_streak += 1
+		last_daily_date = today
+		save_data()
 
 func start_custom_game(mode, ai_level, theme_index, start_side):
 	match_mode = mode

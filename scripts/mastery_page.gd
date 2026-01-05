@@ -29,7 +29,7 @@ func _ready():
 	populate_cards(current_level)
 	
 	scroll_container.get_h_scroll_bar().changed.connect(_on_scroll_changed)
-	call_deferred("_center_initial_card", current_level)
+	call_deferred("_center_initial_card", 1) # Start at first rank (Sprout)
 
 func populate_cards(current_level: int):
 	for i in range(ranks.size()):
@@ -63,13 +63,16 @@ func _handle_snapping(delta):
 			best_card = card
 	
 	if best_card:
-		var target_scroll = best_card.position.x - (viewport_width - best_card.size.x) / 2.0
+		var target_scroll = (best_card.global_position.x + scroll_x) - (viewport_width - best_card.size.x) / 2.0
+		# Adjust for container offset
+		target_scroll -= scroll_container.global_position.x
 		scroll_container.scroll_horizontal = lerp(float(scroll_x), float(target_scroll), snap_speed * delta)
 
 func _center_initial_card(level: int):
 	var card_index = min(floor((level - 1) / 20.0), ranks.size() - 1)
 	if card_index < card_container.get_child_count():
 		var card = card_container.get_child(card_index)
+		await get_tree().process_frame # Extra frame for layout stability
 		var viewport_width = scroll_container.size.x
 		var target_scroll = card.position.x - (viewport_width - card.size.x) / 2.0
 		scroll_container.scroll_horizontal = target_scroll

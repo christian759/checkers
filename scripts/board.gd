@@ -14,26 +14,58 @@ func _ready():
 	GameManager.turn_changed.connect(_on_turn_changed)
 	_setup_responsive_size()
 	generate_board()
-	spawn_pieces()
+	
+	if GameManager.is_daily_challenge:
+		load_puzzle(GameManager.current_puzzle_id)
+	else:
+		spawn_pieces()
 	
 	if has_node("UI/QuitButton"):
-		$UI/QuitButton.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/main.tscn"))
+		$UI/QuitButton.pressed.connect(func():
+			GameManager.is_daily_challenge = false
+			get_tree().change_scene_to_file("res://scenes/main.tscn")
+		)
 	
 	# Handle first turn if it's AI
 	if GameManager.current_turn == GameManager.Side.AI and GameManager.current_mode == GameManager.Mode.PV_AI:
 		await get_tree().create_timer(1.0).timeout
 		GameManager.play_ai_turn()
 
+func load_puzzle(id):
+	# Clear board logic
+	GameManager.setup_board()
+	
+	var puzzle = null
+	for p in GameManager.puzzles:
+		if p.id == id:
+			puzzle = p
+			break
+	
+	if puzzle:
+		for s in puzzle.setup:
+			create_piece(s.r, s.c, s.side)
+			if s.get("king", false):
+				var p = GameManager.get_piece_at(s.r, s.c)
+				if p: p.promote_to_king()
+
 func _on_turn_changed(_side):
 	call_deferred("check_game_over_condition")
 
 func check_game_over_condition():
 	if GameManager.current_mode == GameManager.Mode.PV_P:
-		return # handled elsewhere or same logic? PvP check usually separate
+		return
 		
 	if GameManager.current_turn == GameManager.Side.PLAYER:
 		if not has_valid_moves(GameManager.Side.PLAYER):
 			GameManager.check_win_condition(GameManager.Side.AI)
+	else: # AI turn
+		if not has_valid_moves(GameManager.Side.AI):
+			if GameManager.is_daily_challenge:
+				GameManager.complete_daily()
+				# Show custom victory for daily
+				GameManager.check_win_condition(GameManager.Side.PLAYER)
+			else:
+				GameManager.check_win_condition(GameManager.Side.PLAYER)
 	
 func has_valid_moves(side):
 	for p in piece_container.get_children():

@@ -1,96 +1,206 @@
-[gd_scene load_steps=5 format=3 uid="uid://dmx9u8v7p1k2r"]
+[gd_scene load_steps=9 format=3 uid="uid://dmyau8v7p1k2r"]
 
-[ext_resource type="Script" path="res://scripts/mastery_card.gd" id="1_m4v5r"]
+[ext_resource type="Script" uid="uid://plo4gapcq50d" path="res://scripts/bottom_nav_bar.gd" id="1_eojxe"]
+[ext_resource type="Texture2D" uid="uid://c1k10wvewdnle" path="res://assets/textures/icon_daily.svg" id="2_rc3jd"]
+[ext_resource type="Texture2D" uid="uid://26lukcmb6xoq" path="res://assets/textures/icon_pvp.svg" id="3_2i3ne"]
+[ext_resource type="Texture2D" uid="uid://ci7fnnvfkj1yt" path="res://assets/textures/icon_mastery.svg" id="4_kc5a1"]
+[ext_resource type="Texture2D" uid="uid://boo2wlxjnixwr" path="res://assets/textures/icon_achievement.svg" id="5_pt4am"]
+[ext_resource type="Texture2D" uid="uid://rimqtr7a6mil" path="res://assets/textures/icon_settings.svg" id="6_jx47q"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
 bg_color = Color(1, 1, 1, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.180392, 0.8, 0.443137, 1)
-corner_radius_top_left = 28
-corner_radius_top_right = 28
-corner_radius_bottom_right = 28
-corner_radius_bottom_left = 28
-shadow_color = Color(0, 0, 0, 0.1)
-shadow_size = 12
-shadow_offset = Vector2(0, 6)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+shadow_color = Color(0, 0, 0, 0.05)
+shadow_size = 15
+shadow_offset = Vector2(0, -5)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
-bg_color = Color(0.960784, 0.988235, 0.968627, 1)
-corner_radius_top_left = 24
-corner_radius_top_right = 24
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bubble"]
+bg_color = Color(0.180392, 0.8, 0.443137, 0.15)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
-bg_color = Color(0.92, 0.95, 0.93, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+[node name="BottomNavBar" type="Control"]
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -110.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("1_eojxe")
 
-[node name="MasteryCard" type="PanelContainer"]
-custom_minimum_size = Vector2(280, 480)
-offset_right = 280.0
-offset_bottom = 480.0
-pivot_offset = Vector2(140, 240)
-theme_override_styles/panel = SubResource("StyleBoxFlat_card")
-script = ExtResource("1_m4v5r")
-
-[node name="BackgroundGlow" type="ColorRect" parent="."]
-visible = false
-layout_mode = 2
-mouse_filter = 2
-color = Color(1, 1, 1, 0.02)
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="Header" type="Panel" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 80)
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_header")
-
-[node name="Title" type="Label" parent="VBoxContainer/Header"]
+[node name="Background" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0.105882, 0.368627, 0.12549, 1)
-theme_override_font_sizes/font_size = 32
-text = "SPROUT"
-horizontal_alignment = 1
-vertical_alignment = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_bar")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 30
+[node name="SelectionIndicator" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 15.0
+offset_right = 132.0
+offset_bottom = 85.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bubble")
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/h_separation = 20
-theme_override_constants/v_separation = 20
-columns = 4
+[node name="Tabs" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Footer" type="MarginContainer" parent="VBoxContainer"]
+[node name="Daily" type="Button" parent="Tabs"]
 layout_mode = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_right = 40
-theme_override_constants/margin_bottom = 30
+size_flags_horizontal = 3
+flat = true
 
-[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/Footer"]
-custom_minimum_size = Vector2(0, 10)
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Daily"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Tabs/Daily/VBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_progress_bg")
-value = 50.0
-show_percentage = false
+texture = ExtResource("2_rc3jd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Tabs/Daily/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 12
+text = "Daily"
+horizontal_alignment = 1
+
+[node name="PvP" type="Button" parent="Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+flat = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/PvP"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Tabs/PvP/VBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("3_2i3ne")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Tabs/PvP/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 12
+text = "PvP"
+horizontal_alignment = 1
+
+[node name="Mastery" type="Button" parent="Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+flat = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Mastery"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Tabs/Mastery/VBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("4_kc5a1")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Tabs/Mastery/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 12
+text = "Mastery"
+horizontal_alignment = 1
+
+[node name="Achievement" type="Button" parent="Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+flat = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Achievement"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Tabs/Achievement/VBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("5_pt4am")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Tabs/Achievement/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 12
+text = "Trophy"
+horizontal_alignment = 1
+
+[node name="Settings" type="Button" parent="Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+flat = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Tabs/Settings"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Tabs/Settings/VBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("6_jx47q")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Tabs/Settings/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 12
+text = "Settings"
+horizontal_alignment = 1
