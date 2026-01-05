@@ -97,6 +97,16 @@ theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "QUIT"
 
+[node name="UndoButton" type="Button" parent="UI/Header/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "UNDO"
+
 [node name="Spacer" type="Control" parent="UI/Header/HBox"]
 layout_mode = 2
 size_flags_horizontal = 3

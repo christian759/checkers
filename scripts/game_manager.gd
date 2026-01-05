@@ -18,6 +18,7 @@ var is_daily_challenge = false
 var is_mastery = false # Track if current game is from Mastery levels
 var daily_completed = false
 var game_start_time = 0
+var is_calculating = false # Lock input while AI thinks
 
 # Match Settings (Lobby)
 var match_mode = Mode.PV_AI
@@ -62,6 +63,7 @@ var movement_mode = "diagonal" # "diagonal" or "straight"
 
 signal turn_changed(new_side)
 signal game_over(winner) # Simplified signature for consistency
+signal board_restored() # For refreshing UI after undo/load
 
 
 const BOARD_THEMES = [
@@ -155,7 +157,64 @@ func reset_game():
 	current_turn = Side.PLAYER
 	selected_piece = null
 	must_jump = false
+	is_calculating = false
+	move_history = []
 	setup_board()
+
+func push_history():
+	# Store state BEFORE the move happens
+	var snapshot = {
+		"board": [],
+		"turn": current_turn,
+		"must_jump": must_jump,
+		"selected_piece_pos": selected_piece.grid_pos if selected_piece else null,
+		"level": current_level
+	}
+	
+	for r in range(8):
+		var row = []
+		for c in range(8):
+			var p = board[r][c]
+			if p:
+				row.append({"side": p.side, "is_king": p.is_king, "grid_pos": p.grid_pos})
+			else:
+				row.append(null)
+		snapshot.board.append(row)
+	
+	move_history.append(snapshot)
+	if move_history.size() > 50:
+		move_history.remove_at(0)
+
+func undo_move():
+	if move_history.size() == 0 or is_calculating:
+		return
+	
+	# In AI mode, we usually want to undo 2 steps (AI move + Player move)
+	# unless it's currently AI turn and we're undoing its half-finished move
+	var steps = 2 if current_mode == Mode.PV_AI else 1
+	if must_jump: steps = 1 # Only undo one jump if in middle of sequence
+	
+	for i in range(steps):
+		if move_history.size() > 0:
+			var snapshot = move_history.pop_back()
+			_restore_snapshot(snapshot)
+	
+	emit_signal("board_restored")
+
+func _restore_snapshot(snapshot):
+	current_turn = snapshot.turn
+	must_jump = snapshot.must_jump
+	current_level = snapshot.level
+	
+	# Restore the logic board array
+	for r in range(8):
+		for c in range(8):
+			var s = snapshot.board[r][c]
+			if s:
+				# We store the raw data, the Board script will recreate the nodes
+				board[r][c] = s
+			else:
+				board[r][c] = null
 
 
 func check_win_condition(winner):
@@ -215,8 +274,12 @@ func switch_turn():
 		play_ai_turn()
 
 func play_ai_turn():
+	if is_calculating: return
+	
 	var board_node = get_tree().root.find_child("Board", true, false)
 	if not board_node: return
+	
+	is_calculating = true
 
 	# Refined depth mapping for smooth progression
 	var depth = 2
@@ -250,9 +313,13 @@ func play_ai_turn():
 		board_node.execute_move(best_move.piece_node, best_move.to.x, best_move.to.y)
 		
 		if must_jump:
+			is_calculating = false # Briefly unlock for the timer
 			await get_tree().create_timer(0.6).timeout
 			play_ai_turn()
+		else:
+			is_calculating = false
 	else:
+		is_calculating = false
 		check_win_condition(Side.PLAYER)
 
 func _get_board_state():

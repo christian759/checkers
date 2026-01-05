@@ -16,6 +16,7 @@ var results_scene = preload("res://scenes/game_results.tscn")
 func _ready():
 	GameManager.turn_changed.connect(_on_turn_changed)
 	GameManager.game_over.connect(_on_game_over)
+	GameManager.board_restored.connect(_on_board_restored)
 	_setup_responsive_size()
 	generate_board()
 	_update_hud()
@@ -31,6 +32,9 @@ func _ready():
 			get_tree().change_scene_to_file("res://scenes/main.tscn")
 		)
 	
+	if has_node("UI/Header/HBox/UndoButton"):
+		%UndoButton.pressed.connect(GameManager.undo_move)
+
 	# Handle first turn if it's AI
 	if GameManager.current_turn == GameManager.Side.AI and GameManager.current_mode == GameManager.Mode.PV_AI:
 		await get_tree().create_timer(1.0).timeout
@@ -106,14 +110,16 @@ func has_valid_moves(side):
 				return true
 	return false
 
+func _on_board_restored():
+	rebuild_from_state(GameManager.board)
+	_update_hud()
+
 func rebuild_from_state(state):
 	# Clear existing pieces
 	for p in piece_container.get_children():
 		p.queue_free()
 	
-	GameManager.setup_board() # Reset the logic array
-	
-	# Recreate pieces from state
+	# Recreate pieces from state data
 	for r in range(8):
 		for c in range(8):
 			var s = state[r][c]
@@ -123,6 +129,7 @@ func rebuild_from_state(state):
 				p.grid_pos = s.grid_pos
 				p.position = grid_to_world(p.grid_pos.x, p.grid_pos.y)
 				piece_container.add_child(p)
+				# Update the logic board with the NEW node reference
 				GameManager.set_piece_at(r, c, p)
 				if s.is_king:
 					p.promote_to_king()
@@ -179,6 +186,9 @@ func world_to_grid(pos):
 	return Vector2i(floor(local_pos.y / tile_size), floor(local_pos.x / tile_size))
 
 func _input(event):
+	if GameManager.is_calculating:
+		return # Block ALL input while AI is thinking
+		
 	if GameManager.current_mode == GameManager.Mode.PV_AI:
 		if GameManager.current_turn != GameManager.Side.PLAYER:
 			return
@@ -200,6 +210,7 @@ func handle_tile_click(r, c):
 			var valid_moves = get_legal_moves(GameManager.selected_piece)
 			for move in valid_moves:
 				if move.to == Vector2i(r, c):
+					GameManager.push_history() # SAVE BEFORE MOVE
 					execute_move(GameManager.selected_piece, r, c)
 					return
 		return
@@ -229,6 +240,7 @@ func handle_tile_click(r, c):
 		var move_found = false
 		for move in valid_moves:
 			if move.to == Vector2i(r, c):
+				GameManager.push_history() # SAVE BEFORE MOVE
 				execute_move(GameManager.selected_piece, r, c)
 				move_found = true
 				break
