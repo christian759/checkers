@@ -24,12 +24,15 @@ var ranks = [
 func _ready():
 	var completed_total = GameManager.completed_levels.size()
 	global_progress.text = "OVERALL PROGRESS: " + str(completed_total) + "/200"
-	global_progress.add_theme_color_override("font_color", Color("#2c3e50")) # Dark Slate
+	global_progress.add_theme_color_override("font_color", GameManager.FOREST)
 	
-	populate_cards(GameManager.current_level)
+	populate_cards(GameManager.max_unlocked_level)
 	
 	scroll_container.get_h_scroll_bar().changed.connect(_on_scroll_changed)
-	call_deferred("_center_initial_card", 1) # Start at first rank (Sprout)
+	call_deferred("_center_initial_card", GameManager.max_unlocked_level)
+	
+	if has_node("%JumpToCurrentBtn"):
+		%JumpToCurrentBtn.pressed.connect(func(): _center_initial_card(GameManager.max_unlocked_level))
 
 func populate_cards(current_level: int):
 	for i in range(ranks.size()):
@@ -47,7 +50,7 @@ func _process(delta):
 	last_scroll_h = curr_h
 	
 	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not is_scrolling:
-		if scroll_vel < 2.0: # Only snap when slow
+		if scroll_vel < 5.0: # Snappier threshold
 			_handle_snapping(delta)
 
 func _on_scroll_changed():
@@ -64,7 +67,7 @@ func _handle_snapping(delta):
 	var min_dist = INF
 	
 	for card in card_container.get_children():
-		var card_center = card.position.x + card.size.x / 2.0 + 60 # Account for margin
+		var card_center = card.position.x + card.size.x / 2.0 + 60
 		var dist = abs(center_x - card_center)
 		if dist < min_dist:
 			min_dist = dist
@@ -72,14 +75,15 @@ func _handle_snapping(delta):
 	
 	if best_card:
 		var target_scroll = card_container.position.x + best_card.position.x - (viewport_width - best_card.size.x) / 2.0
-		# Ease into the target
-		scroll_container.scroll_horizontal = lerp(float(scroll_x), float(target_scroll), 12.0 * delta)
+		scroll_container.scroll_horizontal = lerp(float(scroll_x), float(target_scroll), 15.0 * delta) # Faster snapping
 
 func _center_initial_card(level: int):
 	var card_index = min(floor((level - 1) / 20.0), ranks.size() - 1)
 	if card_index < card_container.get_child_count():
 		var card = card_container.get_child(card_index)
-		await get_tree().process_frame # Extra frame for layout stability
+		await get_tree().process_frame
 		var viewport_width = scroll_container.size.x
 		var target_scroll = card.position.x - (viewport_width - card.size.x) / 2.0
-		scroll_container.scroll_horizontal = target_scroll
+		
+		var tween = create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+		tween.tween_property(scroll_container, "scroll_horizontal", target_scroll, 0.8)

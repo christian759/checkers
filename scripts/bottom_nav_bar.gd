@@ -24,30 +24,29 @@ func _on_tab_pressed(index: int):
 	tab_selected.emit(index)
 
 func set_active_tab(index: int):
-	var active_color = Color("#1B4332") # Bold Forest Green
-	var inactive_color = Color("#1B4332", 0.4)
+	var active_color = GameManager.FOREST
+	var inactive_color = GameManager.FOREST.lerp(Color.WHITE, 0.6)
 	
 	for i in range(tabs.size()):
 		var tab = tabs[i]
 		var is_active = (i == index)
 		
 		var target_color = active_color if is_active else inactive_color
-		var tween = create_tween().set_parallel(true)
+		var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE)
 		
 		if tab.icon:
-			tween.tween_property(tab.icon, "modulate", target_color, 0.3).set_trans(Tween.TRANS_SINE)
-			tween.tween_property(tab.icon, "scale", Vector2(1.1, 1.1) if is_active else Vector2(1.0, 1.0), 0.3)
+			tween.tween_property(tab.icon, "modulate", target_color, 0.3)
+			tween.tween_property(tab.icon, "scale", Vector2(1.15, 1.15) if is_active else Vector2(1.0, 1.0), 0.3)
 		
 		if tab.label:
 			tween.tween_property(tab.label, "theme_override_colors/font_color", target_color, 0.3)
-			tab.label.modulate.a = 1.0 if is_active else 0.7
+			tab.label.modulate.a = 1.0 if is_active else 0.5
 	
-	# Animate Indicator
+	# Animate Indicator (Now a pill shape)
 	if indicator:
 		var target_tab = tabs[index].btn
-		var target_x = target_tab.position.x
-		var target_w = target_tab.size.x
+		var target_x = target_tab.position.x + target_tab.size.x / 2.0 - 20.0
 		
-		var i_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
-		i_tween.tween_property(indicator, "position:x", target_x, 0.4)
-		i_tween.tween_property(indicator, "size:x", target_w, 0.4)
+		var i_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+		i_tween.tween_property(indicator, "position:x", target_x, 0.5)
+		i_tween.tween_property(indicator, "size:x", 40.0, 0.5) # Pill shape

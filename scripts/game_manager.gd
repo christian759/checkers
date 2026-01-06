@@ -61,9 +61,19 @@ var puzzles = [
 	}
 ]
 
+# Emerald Minimalist Design Tokens
+const FOREST = Color("#1B4332")
+const MINT_SAGE = Color("#B7E4C7")
+const MINT_LITE = Color("#D8F3DC")
+const BORDER_SOFT = Color("#1B4332", 0.08)
+const LARGE_RADIUS = 80.0
+const MEDIUM_RADIUS = 32.0
+
 # Settings
 var forced_jumps = false
 var movement_mode = "diagonal" # "diagonal" or "straight"
+var sound_enabled = true
+var vibration_enabled = true
 
 signal turn_changed(new_side)
 signal game_over(winner) # Simplified signature for consistency
@@ -71,11 +81,11 @@ signal board_restored() # For refreshing UI after undo/load
 
 
 const BOARD_THEMES = [
-	{"name": "CLASSIC", "light": Color("#f9f9f9"), "dark": Color("#2ecc71")},
+	{"name": "EMERALD", "light": Color("#f8fff9"), "dark": Color("#1b4332")},
 	{"name": "OCEAN", "light": Color("#e0f7fa"), "dark": Color("#0277bd")},
 	{"name": "FOREST", "light": Color("#dcedc8"), "dark": Color("#33691e")},
-	{"name": "PINK", "light": Color("#f8bbd0"), "dark": Color("#c2185b")},
-	{"name": "NIGHT", "light": Color("#cfcfcf"), "dark": Color("#202020")}
+	{"name": "PINK", "light": Color("#fdf2f8"), "dark": Color("#9d174d")},
+	{"name": "NIGHT", "light": Color("#e5e5e5"), "dark": Color("#171717")}
 ]
 
 
