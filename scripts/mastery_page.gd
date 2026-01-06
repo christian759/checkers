@@ -40,6 +40,9 @@ func populate_cards(current_level: int):
 		var card = card_scene.instantiate()
 		card_container.add_child(card)
 		card.setup(rank.name, (i * 20) + 1, rank.color, current_level)
+		# Yield every 2 cards to keep UI responsive
+		if i % 2 == 0:
+			await get_tree().process_frame
 
 var last_scroll_h = 0.0
 var scroll_vel = 0.0

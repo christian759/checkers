@@ -137,28 +137,42 @@ func rebuild_from_state(state):
 	
 
 func generate_board():
+	# Clear previous tiles if any (though usually this runs once)
+	for child in tile_container.get_children():
+		child.queue_free()
+		
 	for r in range(8):
 		for c in range(8):
 			var is_dark = (r + c) % 2 == 1
 			var tile = Panel.new()
-			var gap = tile_size * 0.05
+			# Gap logic for "Floating Tile" look
+			var gap = 4.0
 			tile.size = Vector2(tile_size - gap, tile_size - gap)
 			tile.position = Vector2(c * tile_size + gap / 2.0, r * tile_size + gap / 2.0)
 			
 			var sb = StyleBoxFlat.new()
-			sb.corner_radius_top_left = tile_size * 0.15
-			sb.corner_radius_top_right = tile_size * 0.15
-			sb.corner_radius_bottom_left = tile_size * 0.15
-			sb.corner_radius_bottom_right = tile_size * 0.15
+			sb.set_corner_radius_all(12) # Soft corners on tiles
 			
 			if is_dark:
-				sb.bg_color = GameManager.BOARD_THEMES[GameManager.board_theme_index].dark
+				# Use the new v8 FRESH FOREST color
+				sb.bg_color = GameManager.FOREST
 			else:
-				sb.bg_color = GameManager.BOARD_THEMES[GameManager.board_theme_index].light
+				# Use the new v8 LITE MINT color
+				sb.bg_color = GameManager.MINT_LITE
 				
 			tile.add_theme_stylebox_override("panel", sb)
 			tile.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			tile_container.add_child(tile)
+	
+	# Update Board Frame for contrast
+	var border_sb = StyleBoxFlat.new()
+	border_sb.bg_color = Color.WHITE
+	border_sb.set_corner_radius_all(24)
+	border_sb.set_border_width_all(8)
+	border_sb.border_color = GameManager.MINT_LITE # Soft border
+	border_sb.shadow_color = Color(0, 0, 0, 0.05)
+	border_sb.shadow_size = 40
+	board_frame.add_theme_stylebox_override("panel", border_sb)
 
 func spawn_pieces():
 	# Standard layout

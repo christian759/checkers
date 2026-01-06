@@ -22,12 +22,17 @@ func _ready():
 	for c in word:
 		var lbl = Label.new()
 		lbl.text = c
-		lbl.add_theme_font_size_override("font_size", 72)
+		lbl.add_theme_font_size_override("font_size", 80) # Larger
 		lbl.add_theme_color_override("font_color", Color("#1B4332"))
 		lbl.pivot_offset = Vector2(30, 45)
 		char_box.add_child(lbl)
 		chars.append(lbl)
 		lbl.modulate.a = 0
+	
+	if sub_label:
+		sub_label.text = "BY JIGGY"
+		sub_label.add_theme_font_size_override("font_size", 28)
+		sub_label.add_theme_constant_override("line_spacing", 4)
 	
 	_animate_splash()
 

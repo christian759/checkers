@@ -57,19 +57,34 @@ func _update_visuals():
 	queue_redraw()
 
 func _draw():
-	var current_theme = theme_data if theme_data else GameManager.BOARD_THEMES[GameManager.board_theme_index]
-	var color = current_theme.light if side == GameManager.Side.PLAYER else current_theme.dark
-	var border_color = Color.BLACK if side == GameManager.Side.AI else Color.WHITE
+	# v8 Premium "Chip" Implementation
+	var color = Color.WHITE
+	var accent = GameManager.FOREST
 	
-	# Clean Minimalist Piece
-	# 1. Base Shadow
-	draw_circle(Vector2(0, 4), 28, Color(0, 0, 0, 0.1))
+	if side == GameManager.Side.PLAYER:
+		color = Color("#FEFEFE") # Pure White
+		accent = GameManager.FOREST # Use v8 Token as accent
+	else:
+		color = GameManager.FOREST # AI is Green
+		accent = Color.WHITE
+		
+	# 1. Base (Outer Chip)
+	draw_set_transform(Vector2.ZERO, 0, Vector2(1, 1))
+	draw_circle(Vector2.ZERO, 34, color)
 	
-	# 2. Outer Ring
-	draw_circle(Vector2.ZERO, 30, border_color)
+	# 2. Beveled Rim (Simulated 3D)
+	draw_arc(Vector2.ZERO, 31, 0, TAU, 64, Color.BLACK if side == GameManager.Side.PLAYER else Color.WHITE, 0.1, true) # Subtle rim
+	draw_arc(Vector2.ZERO, 28, 0, TAU, 64, accent.lerp(color, 0.7), 4.0, true) # Inner thick colored band
 	
-	# 3. Inner Body
-	draw_circle(Vector2.ZERO, 26, color)
-	
-	# 4. Center Detail (Minimal)
-	draw_arc(Vector2.ZERO, 15, 0, TAU, 32, border_color, 1.5)
+	# 3. Inner Detail
+	if is_king:
+		# Draw Crown Polygon
+		var crown_pts = PackedVector2Array([
+			Vector2(-12, 4), Vector2(-16, -6), Vector2(-8, -2), Vector2(0, -12),
+			Vector2(8, -2), Vector2(16, -6), Vector2(12, 4), Vector2(0, 8)
+		])
+		draw_colored_polygon(crown_pts, accent)
+		draw_polyline(crown_pts, accent.darkened(0.2), 1.5, true)
+	else:
+		# Standard Piece: Simple Dot or Ring
+		draw_circle(Vector2.ZERO, 8, accent.lerp(color, 0.5))

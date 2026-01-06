@@ -61,13 +61,14 @@ var puzzles = [
 	}
 ]
 
-# Emerald Minimalist Design Tokens
-const FOREST = Color("#1B4332")
-const MINT_SAGE = Color("#B7E4C7")
-const MINT_LITE = Color("#D8F3DC")
-const BORDER_SOFT = Color("#1B4332", 0.08)
-const LARGE_RADIUS = 80.0
-const MEDIUM_RADIUS = 32.0
+# Emerald Minimalist Design Tokens (v8 Fresh)
+const FOREST = Color("#10B981") # Vibrant Emerald 500 (Clean, modern)
+const MINT_SAGE = Color("#34D399") # Emerald 400 (Soft accent)
+const MINT_LITE = Color("#D1FAE5") # Emerald 100 (Visible light green)
+const BORDER_SOFT = Color("#10B981", 0.15)
+const LARGE_RADIUS = 96.0
+const MEDIUM_RADIUS = 40.0
+const BG_COLOR = Color("#F0FDF4") # Emerald 50 (Very soft tint)
 
 # Settings
 var forced_jumps = false
