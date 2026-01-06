@@ -10,6 +10,7 @@ var board_scale = 1.0
 @onready var board_frame = %BoardFrame
 
 var piece_scene = preload("res://scenes/piece.tscn")
+const Piece = preload("res://scripts/piece.gd")
 var marker_script = preload("res://scripts/move_marker.gd")
 var results_scene = preload("res://scenes/game_results.tscn")
 
