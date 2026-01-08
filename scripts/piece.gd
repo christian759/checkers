@@ -60,9 +60,9 @@ func _draw():
 	
 	if side == GameManager.Side.PLAYER:
 		color = Color("#FEFEFE") # Pure White
-		accent = GameManager.FOREST # Use v8 Token as accent
+		accent = Color("#4B5563") # Dark Grey accent
 	else:
-		color = GameManager.FOREST # AI is Green
+		color = GameManager.RED # AI is Red
 		accent = Color.WHITE
 		
 	# 1. Base (Flat Chip)

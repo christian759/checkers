@@ -1,14 +1,13 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://dcpvumwxq52aj"]
 
-[ext_resource type="Script" path="res://scripts/achievement_page.gd" id="1_achieve"]
+[ext_resource type="Script" uid="uid://b1ryxdqhjbnv8" path="res://scripts/achievement_page.gd" id="1_achieve"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.972549, 0.984314, 0.976471, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
 bg_color = Color(1, 1, 1, 1)
-corner_radius_bottom_right = 48
-corner_radius_bottom_left = 48
+corner_radius_bottom_right = 30
 shadow_color = Color(0, 0, 0, 0.05)
 shadow_size = 20
 
@@ -80,7 +79,7 @@ size_flags_horizontal = 3
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 120
+theme_override_constants/margin_bottom = 70
 
 [node name="List" type="VBoxContainer" parent="VBox/Scroll/Margin"]
 unique_name_in_owner = true

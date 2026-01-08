@@ -63,6 +63,7 @@ var puzzles = [
 
 # Emerald Minimalist Design Tokens (v8 Fresh)
 const FOREST = Color("#10B981") # Vibrant Emerald 500 (Clean, modern)
+const RED = Color("#EF4444") # Vibrant Red (Classic AI)
 const MINT_SAGE = Color("#34D399") # Emerald 400 (Soft accent)
 const MINT_LITE = Color("#D1FAE5") # Emerald 100 (Visible light green)
 const BORDER_SOFT = Color("#10B981", 0.15)

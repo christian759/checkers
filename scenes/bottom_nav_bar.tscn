@@ -1,12 +1,19 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3 uid="uid://cvfmn6014ong"]
 
-[ext_resource type="Script" path="res://scripts/bottom_nav_bar.gd" id="1_nav"]
-[ext_resource type="Script" path="res://scripts/tech_panel.gd" id="2_premium"]
-[ext_resource type="Texture2D" path="res://assets/textures/icon_daily.svg" id="3_s1v5u"]
-[ext_resource type="Texture2D" path="res://assets/textures/icon_pvp.svg" id="4_s1v5u"]
-[ext_resource type="Texture2D" path="res://assets/textures/icon_mastery.svg" id="5_s1v5u"]
-[ext_resource type="Texture2D" path="res://assets/textures/icon_achievement.svg" id="6_s1v5u"]
-[ext_resource type="Texture2D" path="res://assets/textures/icon_settings.svg" id="7_s1v5u"]
+[ext_resource type="Script" uid="uid://plo4gapcq50d" path="res://scripts/bottom_nav_bar.gd" id="1_nav"]
+[ext_resource type="Texture2D" uid="uid://c1k10wvewdnle" path="res://assets/textures/icon_daily.svg" id="3_s1v5u"]
+[ext_resource type="Texture2D" uid="uid://26lukcmb6xoq" path="res://assets/textures/icon_pvp.svg" id="4_s1v5u"]
+[ext_resource type="Texture2D" uid="uid://ci7fnnvfkj1yt" path="res://assets/textures/icon_mastery.svg" id="5_s1v5u"]
+[ext_resource type="Texture2D" uid="uid://boo2wlxjnixwr" path="res://assets/textures/icon_achievement.svg" id="6_s1v5u"]
+[ext_resource type="Texture2D" uid="uid://rimqtr7a6mil" path="res://assets/textures/icon_settings.svg" id="7_s1v5u"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dock"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_all = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_indicator"]
+bg_color = Color(0.105882, 0.262745, 0.196078, 0.1)
+corner_radius_all = 24
 
 [node name="BottomNavBar" type="Control"]
 custom_minimum_size = Vector2(0, 110)
@@ -31,24 +38,18 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 16
 
-[node name="DockHull" type="Control" parent="Margin"]
+[node name="DockHull" type="Panel" parent="Margin"]
 layout_mode = 2
-script = ExtResource("2_premium")
-bg_color = Color(1, 1, 1, 1)
-corner_radius = 32.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dock")
 
-[node name="SelectionIndicator" type="Control" parent="Margin/DockHull"]
+[node name="SelectionIndicator" type="Panel" parent="Margin/DockHull"]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 20.0
+anchors_preset = 0
+offset_left = 26.0
 offset_top = 12.0
-offset_right = 100.0
+offset_right = 106.0
 offset_bottom = 72.0
-script = ExtResource("2_premium")
-bg_color = Color(0.105882, 0.262745, 0.196078, 0.1)
-border_width = 0.0
-corner_radius = 24.0
-show_shadow = false
+theme_override_styles/panel = SubResource("StyleBoxFlat_indicator")
 
 [node name="Tabs" type="HBoxContainer" parent="Margin/DockHull"]
 layout_mode = 1

@@ -14,9 +14,13 @@ var selected_time_index = 0
 
 func _ready():
 	_setup_time_controls()
-	play_btn.pressed.connect(_on_play_pressed)
+	# Defensive check for node existence
+	if play_btn:
+		play_btn.pressed.connect(_on_play_pressed)
 
 func _setup_time_controls():
+	if not time_grid: return
+	
 	# Clear existing
 	for child in time_grid.get_children():
 		child.queue_free()

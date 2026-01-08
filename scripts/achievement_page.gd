@@ -8,12 +8,13 @@ func _ready():
 	refresh_list()
 
 func _add_item(title: String, desc: String, is_unlocked: bool, category: String):
-	var panel = Control.new()
+	var panel = PanelContainer.new()
 	panel.custom_minimum_size = Vector2(0, 110)
-	panel.script = load("res://scripts/tech_panel.gd")
-	panel.set("bg_color", Color.WHITE)
-	panel.set("border_width", 0.0)
-	panel.set("corner_radius", 32.0)
+	
+	var sb = StyleBoxFlat.new()
+	sb.bg_color = Color.WHITE
+	sb.set_corner_radius_all(32)
+	panel.add_theme_stylebox_override("panel", sb)
 	
 	var margin = MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 24)

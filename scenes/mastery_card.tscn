@@ -1,31 +1,33 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://dh2moy76khcxu"]
 
-[ext_resource type="Script" path="res://scripts/mastery_card.gd" id="1_c2v3r"]
-[ext_resource type="Script" path="res://scripts/tech_panel.gd" id="2_premium"]
+[ext_resource type="Script" uid="uid://cv73mwg5eibbu" path="res://scripts/mastery_card.gd" id="1_c2v3r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pb_bg"]
 bg_color = Color(0.105882, 0.262745, 0.196078, 0.1)
-corner_radius_all = 8
 
-[node name="MasteryCard" type="Control"]
-custom_minimum_size = Vector2(360, 560)
-layout_mode = 3
-anchors_preset = 0
-pivot_offset = Vector2(180, 280)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_all = 64
+
+[node name="MasteryCard" type="Node2D"]
 script = ExtResource("1_c2v3r")
 
-[node name="CardHull" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="CardHull" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 140.0
+offset_top = 300.0
+offset_right = 590.0
+offset_bottom = 900.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("2_premium")
-bg_color = Color(1, 1, 1, 1)
-corner_radius = 64.0
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
-[node name="Margin" type="MarginContainer" parent="."]
+[node name="Margin" type="MarginContainer" parent="CardHull"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,36 +39,36 @@ theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 40
 
-[node name="VBox" type="VBoxContainer" parent="Margin"]
+[node name="VBox" type="VBoxContainer" parent="CardHull/Margin"]
 layout_mode = 2
 theme_override_constants/separation = 40
 
-[node name="Title" type="Label" parent="Margin/VBox"]
+[node name="Title" type="Label" parent="CardHull/Margin/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 1)
 theme_override_font_sizes/font_size = 28
 text = "Rank Name"
 horizontal_alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="Margin/VBox"]
+[node name="GridContainer" type="GridContainer" parent="CardHull/Margin/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 16
 columns = 4
 
-[node name="Footer" type="VBoxContainer" parent="Margin/VBox"]
+[node name="Footer" type="VBoxContainer" parent="CardHull/Margin/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="ProgressBar" type="ProgressBar" parent="Margin/VBox/Footer"]
+[node name="ProgressBar" type="ProgressBar" parent="CardHull/Margin/VBox/Footer"]
 custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_pb_bg")
 value = 50.0
 show_percentage = false
 
-[node name="RankInfo" type="Label" parent="Margin/VBox/Footer"]
+[node name="RankInfo" type="Label" parent="CardHull/Margin/VBox/Footer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.4)
 theme_override_font_sizes/font_size = 14
