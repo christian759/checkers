@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" path="res://assets/textures/icon_settings.svg" id="6_s1v5u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
-bg_color = Color(0.08, 0.08, 0.08, 1) # Deep Dark
+bg_color = Color(0.06, 0.2, 0.08, 1) # Deep Forest Green
 corner_radius_top_left = 35
 corner_radius_top_right = 35
 corner_radius_bottom_right = 35

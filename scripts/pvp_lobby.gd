@@ -1,14 +1,14 @@
 extends Control
 
-@onready var bubble = $ScrollContainer/VBoxContainer/Content/ModeSection/Card/VBox/SegmentedControl/Bubble
-@onready var ai_btn = $ScrollContainer/VBoxContainer/Content/ModeSection/Card/VBox/SegmentedControl/Buttons/AiBtn
-@onready var friend_btn = $ScrollContainer/VBoxContainer/Content/ModeSection/Card/VBox/SegmentedControl/Buttons/FriendBtn
+@onready var bubble = $ScrollContainer/VBoxContainer/Content/ModeSection/VBox/SegmentedControl/Bubble
+@onready var ai_btn = $ScrollContainer/VBoxContainer/Content/ModeSection/VBox/SegmentedControl/Buttons/AiBtn
+@onready var friend_btn = $ScrollContainer/VBoxContainer/Content/ModeSection/VBox/SegmentedControl/Buttons/FriendBtn
 
 @onready var ai_settings = $ScrollContainer/VBoxContainer/Content/AiSettings
-@onready var level_label = $ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/Card/VBox/HBox/Value
-@onready var level_slider = $ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/Card/VBox/LevelSlider
-@onready var start_toggle = $ScrollContainer/VBoxContainer/Content/AiSettings/StartSection/Card/HBox/StartToggle
-@onready var theme_grid = $ScrollContainer/VBoxContainer/Content/ThemeSection/Card/VBox/Grid
+@onready var level_label = $ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/VBox/HBox/Value
+@onready var level_slider = $ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/VBox/LevelSlider
+@onready var start_toggle = $ScrollContainer/VBoxContainer/Content/AiSettings/StartSection/HBox/StartToggle
+@onready var theme_grid = $ScrollContainer/VBoxContainer/Content/ThemeSection/VBox/Grid
 @onready var start_button = $ScrollContainer/VBoxContainer/Footer/StartButton
 
 var selected_mode = 0 # 0: AI, 1: Friend
