@@ -29,7 +29,6 @@ func promote():
 	var tween = create_tween().set_parallel(true)
 	tween.tween_property(king_crown, "scale", Vector2(1.0, 1.0), 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	
-	# No shine, just a gentle scale
 	_update_visuals()
 
 func selected_anim(active: bool):
@@ -41,12 +40,10 @@ func set_highlight(active: bool):
 	tween.tween_property(self, "scale", target_scale, 0.2).set_trans(Tween.TRANS_SINE)
 	
 	if active:
-		# Subtle lift
-		tween.tween_property(shadow, "position:y", 12, 0.2)
-		tween.tween_property(shadow, "modulate:a", 0.3, 0.2)
+		# Simple scale, no shadow lift for flat look
+		pass
 	else:
-		tween.tween_property(shadow, "position:y", 4, 0.2)
-		tween.tween_property(shadow, "modulate:a", 0.1, 0.2)
+		pass
 
 func move_to(new_grid_pos: Vector2i, target_pos: Vector2):
 	grid_pos = new_grid_pos
@@ -68,13 +65,17 @@ func _draw():
 		color = GameManager.FOREST # AI is Green
 		accent = Color.WHITE
 		
-	# 1. Base (Outer Chip)
+	# 1. Base (Flat Chip)
 	draw_set_transform(Vector2.ZERO, 0, Vector2(1, 1))
+	# Draw main body
 	draw_circle(Vector2.ZERO, 34, color)
 	
-	# 2. Beveled Rim (Simulated 3D)
-	draw_arc(Vector2.ZERO, 31, 0, TAU, 64, Color.BLACK if side == GameManager.Side.PLAYER else Color.WHITE, 0.1, true) # Subtle rim
-	draw_arc(Vector2.ZERO, 28, 0, TAU, 64, accent.lerp(color, 0.7), 4.0, true) # Inner thick colored band
+	# 2. Simple Border (Flat)
+	# Draw a simple, clean border instead of 3D bevels
+	if side == GameManager.Side.PLAYER:
+		draw_arc(Vector2.ZERO, 34, 0, TAU, 64, GameManager.BORDER_SOFT, 2.0, true)
+	else:
+		draw_arc(Vector2.ZERO, 34, 0, TAU, 64, Color.WHITE, 2.0, true)
 	
 	# 3. Inner Detail
 	if is_king:

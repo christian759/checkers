@@ -29,13 +29,4 @@ scale = Vector2(0.8, 0.8)
 color = Color(1, 0.843137, 0, 1)
 polygon = PackedVector2Array(-15, 5, -15, -10, -5, -2, 0, -15, 5, -2, 15, -10, 15, 5)
 
-[node name="Aura" type="Node2D" parent="."]
-visible = false
 
-[node name="Ring" type="Line2D" parent="Aura"]
-points = PackedVector2Array(0, -30, 21.2, -21.2, 30, 0, 21.2, 21.2, 0, 30, -21.2, 21.2, -30, 0, -21.2, -21.2, 0, -30)
-width = 2.0
-default_color = Color(1, 0.843137, 0, 0.588235)
-joint_mode = 2
-begin_cap_mode = 2
-end_cap_mode = 2
