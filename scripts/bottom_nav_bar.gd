@@ -17,13 +17,9 @@ func _ready():
 	var dock_panel = $Margin/DockHull
 	if dock_panel:
 		var sb = StyleBoxFlat.new()
-		sb.bg_color = Color.WHITE.lerp(Color.TRANSPARENT, 0.05)
-		sb.set_corner_radius_all(100)
-		sb.set_border_width_all(1)
-		sb.border_color = Color.WHITE
-		sb.shadow_color = Color(0, 0, 0, 0.05)
-		sb.shadow_size = 30
-		sb.shadow_offset = Vector2(0, 5)
+		sb.bg_color = Color.WHITE
+		sb.set_corner_radius_all(0) # Flat bottom edge
+		# No shadow or border for grounded look
 		dock_panel.add_theme_stylebox_override("panel", sb)
 
 	# Indicator: Minimalist Dot
@@ -58,22 +54,13 @@ func set_active_tab(index: int):
 			tween.tween_property(tab.icon, "modulate", target_color, 0.4)
 			# Subtle scale up for active
 			tween.tween_property(tab.icon, "scale", Vector2(1.2, 1.2) if is_active else Vector2(1.0, 1.0), 0.5)
-			# Reset position (no slide)
-			tween.tween_property(tab.icon, "offset", Vector2(0, -5) if is_active else Vector2.ZERO, 0.5)
+			# No offset animation
+			pass
 		
 		# Labels are hidden in this minimalist design, or very subtle
 		if tab.label:
 			tab.label.visible = false
 	
-	# Animate Indicator (The Dot)
-	if indicator:
-		var target_tab = tabs[index].btn
-		var i_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
-		
-		# Center the dot under the icon
-		var dot_size = 8.0
-		var center_x = target_tab.position.x + target_tab.size.x / 2.0 - (dot_size / 2.0)
-		
-		i_tween.tween_property(indicator, "position:x", center_x, 0.6)
-		i_tween.tween_property(indicator, "size", Vector2(dot_size, dot_size), 0.6)
-		i_tween.tween_property(indicator, "position:y", target_tab.size.y - 12.0, 0.6)
+	# Indicator removed - no dot animation
+	# if indicator:
+	# 	indicator.visible = false

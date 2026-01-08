@@ -70,14 +70,14 @@ func _handle_snapping(delta):
 	var min_dist = INF
 	
 	for card in card_container.get_children():
-		var card_center = card.position.x + card.size.x / 2.0 + 60
+		var card_center = card.position.x + card.get_node("CardHull").size.x / 2.0 + 60
 		var dist = abs(center_x - card_center)
 		if dist < min_dist:
 			min_dist = dist
 			best_card = card
 	
 	if best_card:
-		var target_scroll = card_container.position.x + best_card.position.x - (viewport_width - best_card.size.x) / 2.0
+		var target_scroll = card_container.position.x + best_card.position.x - (viewport_width - best_card.get_node("CardHull").size.x) / 2.0
 		scroll_container.scroll_horizontal = lerp(float(scroll_x), float(target_scroll), 15.0 * delta) # Faster snapping
 
 func _center_initial_card(level: int):
@@ -86,7 +86,7 @@ func _center_initial_card(level: int):
 		var card = card_container.get_child(card_index)
 		await get_tree().process_frame
 		var viewport_width = scroll_container.size.x
-		var target_scroll = card.position.x - (viewport_width - card.size.x) / 2.0
+		var target_scroll = card.position.x - (viewport_width - card.get_node("CardHull").size.x) / 2.0
 		
 		var tween = create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 		tween.tween_property(scroll_container, "scroll_horizontal", target_scroll, 0.8)

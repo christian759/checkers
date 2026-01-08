@@ -1,6 +1,15 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/pvp_lobby.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.972549, 0.984314, 0.976471, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_all = 32
+shadow_color = Color(0, 0, 0, 0.05)
+shadow_size = 10
 
 [node name="PvPLobby" type="Control"]
 layout_mode = 3
@@ -11,14 +20,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.19, 0.20, 0.22, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
 
 [node name="SafeArea" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -27,41 +36,72 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 20
+theme_override_constants/margin_left = 24
 theme_override_constants/margin_top = 40
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 100
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 120
 
 [node name="VBox" type="VBoxContainer" parent="SafeArea"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 40
 
 [node name="Title" type="Label" parent="SafeArea/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 1)
+theme_override_font_sizes/font_size = 48
 text = "Play"
 horizontal_alignment = 1
 
-[node name="Spacer" type="Control" parent="SafeArea/VBox"]
+[node name="ModeSection" type="VBoxContainer" parent="SafeArea/VBox"]
 layout_mode = 2
-size_flags_vertical = 3
+theme_override_constants/separation = 16
 
-[node name="TimeTitle" type="Label" parent="SafeArea/VBox"]
+[node name="Label" type="Label" parent="SafeArea/VBox/ModeSection"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.6)
 theme_override_font_sizes/font_size = 18
-text = "Time Control"
+text = "OPPONENT"
 horizontal_alignment = 1
 
-[node name="TimeGrid" type="GridContainer" parent="SafeArea/VBox"]
+[node name="ModeGrid" type="GridContainer" parent="SafeArea/VBox/ModeSection"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 10
 columns = 2
 
-[node name="Spacer2" type="Control" parent="SafeArea/VBox"]
+[node name="AILevelSection" type="VBoxContainer" parent="SafeArea/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="SafeArea/VBox/AILevelSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.6)
+theme_override_font_sizes/font_size = 18
+text = "AI STRENGTH"
+horizontal_alignment = 1
+
+[node name="LevelGrid" type="GridContainer" parent="SafeArea/VBox/AILevelSection"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 5
+
+[node name="TimeSection" type="VBoxContainer" parent="SafeArea/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="SafeArea/VBox/TimeSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.6)
+theme_override_font_sizes/font_size = 18
+text = "TIME CONTROL"
+horizontal_alignment = 1
+
+[node name="TimeGrid" type="GridContainer" parent="SafeArea/VBox/TimeSection"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 2
+
+[node name="Spacer" type="Control" parent="SafeArea/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -71,4 +111,4 @@ custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 32
-text = "Play"
+text = "Start Match"

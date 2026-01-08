@@ -60,13 +60,3 @@ func setup(rank_name: String, start_level: int, accent_color: Color, current_glo
 	# Cleanup old label if exists
 	var old_lbl = progress_bar.get_parent().get_node_or_null("FooterLabel")
 	if old_lbl: old_lbl.queue_free()
-
-func _on_mouse_entered():
-	var tween = create_tween().set_parallel(true)
-	tween.tween_property(self, "scale", Vector2(1.04, 1.04), 0.4).set_trans(Tween.TRANS_SINE)
-	modulate.a = 1.0
-
-func _on_mouse_exited():
-	var tween = create_tween().set_parallel(true)
-	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.3).set_trans(Tween.TRANS_SINE)
-	modulate.a = 1.0

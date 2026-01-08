@@ -2,12 +2,11 @@
 
 [ext_resource type="Script" uid="uid://cv73mwg5eibbu" path="res://scripts/mastery_card.gd" id="1_c2v3r"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pb_bg"]
-bg_color = Color(0.105882, 0.262745, 0.196078, 0.1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
 bg_color = Color(1, 1, 1, 1)
-corner_radius_all = 64
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pb_bg"]
+bg_color = Color(0.105882, 0.262745, 0.196078, 0.1)
 
 [node name="MasteryCard" type="Node2D"]
 script = ExtResource("1_c2v3r")

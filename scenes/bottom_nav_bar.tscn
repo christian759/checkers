@@ -44,6 +44,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_dock")
 
 [node name="SelectionIndicator" type="Panel" parent="Margin/DockHull"]
 unique_name_in_owner = true
+visible = false
 anchors_preset = 0
 offset_left = 26.0
 offset_top = 12.0

@@ -51,26 +51,29 @@ func move_to(new_grid_pos: Vector2i, target_pos: Vector2):
 	tween.tween_property(self, "position", target_pos, 0.3)
 
 func _update_visuals():
+	if not is_inside_tree(): return
+	
+	var sprite = $Sprite
+	var stack_sprite = $StackSprite
+	
+	if side == GameManager.Side.PLAYER:
+		modulate = Color("#FEFEFE") # Pure White
+	else:
+		modulate = GameManager.RED # AI is Red
+		
 	queue_redraw()
 
 func _draw():
 	# v8 Premium "Chip" Implementation
-	var color = Color.WHITE
 	var accent = GameManager.FOREST
 	
 	if side == GameManager.Side.PLAYER:
-		color = Color("#FEFEFE") # Pure White
 		accent = Color("#4B5563") # Dark Grey accent
 	else:
-		color = GameManager.RED # AI is Red
 		accent = Color.WHITE
 		
 	# 1. Base (Flat Chip)
 	draw_set_transform(Vector2.ZERO, 0, Vector2(1, 1))
-	# Draw main body
-	draw_circle(Vector2.ZERO, 34, color)
-	
-	# 2. Simple Border (Removed for totally flat look)
 	pass
 	
 	# 3. Inner Detail
@@ -84,4 +87,5 @@ func _draw():
 		draw_polyline(crown_pts, accent.darkened(0.2), 1.5, true)
 	else:
 		# Standard Piece: Simple Dot or Ring
-		draw_circle(Vector2.ZERO, 8, accent.lerp(color, 0.5))
+		# draw_circle(Vector2.ZERO, 8, accent.lerp(color, 0.5))
+		pass
