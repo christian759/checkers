@@ -7,7 +7,37 @@ bg_color = Color(0.972549, 0.984314, 0.976471, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
 bg_color = Color(1, 1, 1, 1)
+<<<<<<< Updated upstream
 corner_radius_all = 32
+=======
+border_width_bottom = 1
+border_color = Color(0.9, 0.9, 0.9, 1)
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toggle_on"]
+bg_color = Color(0.06, 0.35, 0.15, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toggle_off"]
+bg_color = Color(0.92, 0.94, 0.92, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_focus"]
+
+[sub_resource type="Theme" id="Theme_toggle"]
+CheckButton/styles/normal = SubResource("StyleBoxFlat_toggle_off")
+CheckButton/styles/pressed = SubResource("StyleBoxFlat_toggle_on")
+CheckButton/styles/hover = SubResource("StyleBoxFlat_toggle_off")
+CheckButton/styles/hover_pressed = SubResource("StyleBoxFlat_toggle_on")
+CheckButton/styles/focus = SubResource("StyleBoxEmpty_focus")
+>>>>>>> Stashed changes
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -25,7 +55,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+<<<<<<< Updated upstream
 theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+=======
+color = Color(0.98, 1, 0.98, 1)
+>>>>>>> Stashed changes
 
 [node name="SafeArea" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -39,6 +73,7 @@ theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 100
 
+<<<<<<< Updated upstream
 [node name="VBox" type="VBoxContainer" parent="SafeArea"]
 layout_mode = 2
 theme_override_constants/separation = 30
@@ -81,15 +116,134 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 1)
 theme_override_font_sizes/font_size = 20
+=======
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 45
+
+[node name="HeaderPanel" type="Panel" parent="ScrollContainer/VBox"]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/HeaderPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="ScrollContainer/VBox/HeaderPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.06, 0.2, 0.08, 1)
+theme_override_font_sizes/font_size = 42
+text = "Preferences"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="ScrollContainer/VBox/HeaderPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.6, 0.5, 1)
+theme_override_font_sizes/font_size = 16
+text = "Personalize your game behavior"
+horizontal_alignment = 1
+
+[node name="Content" type="VBoxContainer" parent="ScrollContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="AudioSection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
+layout_mode = 2
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_right = 35
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Content/AudioSection"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/AudioSection/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.18, 0.8, 0.44, 1)
+theme_override_font_sizes/font_size = 14
+text = "AUDIO"
+
+[node name="SoundRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/AudioSection/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/AudioSection/VBox/SoundRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "Sound Effects"
+
+[node name="SoundToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/AudioSection/VBox/SoundRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 36)
+layout_mode = 2
+theme = SubResource("Theme_toggle")
+button_pressed = true
+
+[node name="MusicRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/AudioSection/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/AudioSection/VBox/MusicRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "Background Music"
+
+[node name="MusicToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/AudioSection/VBox/MusicRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 36)
+layout_mode = 2
+theme = SubResource("Theme_toggle")
+button_pressed = true
+
+[node name="GameplaySection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
+layout_mode = 2
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_right = 35
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Content/GameplaySection"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/GameplaySection/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.18, 0.8, 0.44, 1)
+theme_override_font_sizes/font_size = 14
+text = "GAMEPLAY"
+
+[node name="ForcedJumpsRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/GameplaySection/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/ForcedJumpsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+>>>>>>> Stashed changes
 text = "Forced Jumps"
 vertical_alignment = 1
 
+<<<<<<< Updated upstream
 [node name="ForcedJumpsBtn" type="Button" parent="SafeArea/VBox/SettingsContainer/ForcedJumpsCard/Margin/HBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(60, 32)
+=======
+[node name="ForcedJumpsToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/ForcedJumpsRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 36)
+>>>>>>> Stashed changes
 layout_mode = 2
 flat = true
 
+<<<<<<< Updated upstream
 [node name="SoundCard" type="Panel" parent="SafeArea/VBox/SettingsContainer"]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
@@ -119,14 +273,34 @@ vertical_alignment = 1
 [node name="SoundBtn" type="Button" parent="SafeArea/VBox/SettingsContainer/SoundCard/Margin/HBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(60, 32)
+=======
+[node name="HintsRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/GameplaySection/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/HintsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "Move Hints"
+
+[node name="MoveHintsToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/HintsRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 36)
+>>>>>>> Stashed changes
 layout_mode = 2
 flat = true
 
+<<<<<<< Updated upstream
 [node name="VibrationCard" type="Panel" parent="SafeArea/VBox/SettingsContainer"]
 custom_minimum_size = Vector2(0, 80)
+=======
+[node name="InfoSection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
+>>>>>>> Stashed changes
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
+<<<<<<< Updated upstream
 [node name="Margin" type="MarginContainer" parent="SafeArea/VBox/SettingsContainer/VibrationCard"]
 layout_mode = 1
 anchors_preset = 15
@@ -155,5 +329,31 @@ layout_mode = 2
 flat = true
 
 [node name="Spacer2" type="Control" parent="SafeArea/VBox"]
+=======
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Content/InfoSection"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/InfoSection/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.18, 0.8, 0.44, 1)
+theme_override_font_sizes/font_size = 14
+text = "REGAL CHESS"
+
+[node name="VersionLabel" type="Label" parent="ScrollContainer/VBox/Content/InfoSection/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.6, 0.5, 0.6)
+theme_override_font_sizes/font_size = 15
+text = "Version 1.0.5 (Emerald Edition)"
+
+[node name="CreditsLabel" type="Label" parent="ScrollContainer/VBox/Content/InfoSection/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.6, 0.5, 0.5)
+theme_override_font_sizes/font_size = 14
+text = "Developed by Antigravity Studios"
+
+[node name="FooterSpace" type="Control" parent="ScrollContainer/VBox"]
+custom_minimum_size = Vector2(0, 150)
+>>>>>>> Stashed changes
 layout_mode = 2
 size_flags_vertical = 3

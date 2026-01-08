@@ -8,12 +8,27 @@
 [ext_resource type="Texture2D" uid="uid://rimqtr7a6mil" path="res://assets/textures/icon_settings.svg" id="7_s1v5u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dock"]
+<<<<<<< Updated upstream
 bg_color = Color(1, 1, 1, 1)
 corner_radius_all = 32
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_indicator"]
 bg_color = Color(0.105882, 0.262745, 0.196078, 0.1)
 corner_radius_all = 24
+=======
+bg_color = Color(0.06, 0.2, 0.08, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+shadow_color = Color(0, 0, 0, 0.2)
+shadow_size = 15
+shadow_offset = Vector2(0, -5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_indicator"]
+bg_color = Color(1, 1, 1, 0.1)
+corner_radius_all = 25
+>>>>>>> Stashed changes
 
 [node name="BottomNavBar" type="Control"]
 custom_minimum_size = Vector2(0, 110)
@@ -33,14 +48,22 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+<<<<<<< Updated upstream
 theme_override_constants/margin_left = 24
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 16
+=======
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+>>>>>>> Stashed changes
 
 [node name="DockHull" type="Panel" parent="Margin"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dock")
+<<<<<<< Updated upstream
 
 [node name="SelectionIndicator" type="Panel" parent="Margin/DockHull"]
 unique_name_in_owner = true
@@ -52,6 +75,18 @@ offset_right = 106.0
 offset_bottom = 72.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_indicator")
 
+=======
+
+[node name="SelectionIndicator" type="Panel" parent="Margin/DockHull"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 92.0
+offset_bottom = 68.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_indicator")
+
+>>>>>>> Stashed changes
 [node name="Tabs" type="HBoxContainer" parent="Margin/DockHull"]
 layout_mode = 1
 anchors_preset = 15
@@ -76,7 +111,10 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Icon" type="TextureRect" parent="Margin/DockHull/Tabs/Daily/VBox"]
+<<<<<<< Updated upstream
 modulate = Color(0.105882, 0.262745, 0.196078, 0.4)
+=======
+>>>>>>> Stashed changes
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 texture = ExtResource("3_s1v5u")
@@ -85,7 +123,11 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Margin/DockHull/Tabs/Daily/VBox"]
 layout_mode = 2
+<<<<<<< Updated upstream
 theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.4)
+=======
+theme_override_colors/font_color = Color(0.18, 0.8, 0.44, 1)
+>>>>>>> Stashed changes
 theme_override_font_sizes/font_size = 11
 text = "Daily"
 horizontal_alignment = 1
@@ -105,7 +147,10 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Icon" type="TextureRect" parent="Margin/DockHull/Tabs/PvP/VBox"]
+<<<<<<< Updated upstream
 modulate = Color(0.105882, 0.262745, 0.196078, 0.4)
+=======
+>>>>>>> Stashed changes
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 texture = ExtResource("4_s1v5u")
@@ -114,7 +159,11 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Margin/DockHull/Tabs/PvP/VBox"]
 layout_mode = 2
+<<<<<<< Updated upstream
 theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.4)
+=======
+theme_override_colors/font_color = Color(0.18, 0.8, 0.44, 1)
+>>>>>>> Stashed changes
 theme_override_font_sizes/font_size = 11
 text = "Versus"
 horizontal_alignment = 1
@@ -134,7 +183,10 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Icon" type="TextureRect" parent="Margin/DockHull/Tabs/Mastery/VBox"]
+<<<<<<< Updated upstream
 modulate = Color(0.105882, 0.262745, 0.196078, 0.4)
+=======
+>>>>>>> Stashed changes
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 texture = ExtResource("5_s1v5u")
@@ -143,7 +195,11 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Margin/DockHull/Tabs/Mastery/VBox"]
 layout_mode = 2
+<<<<<<< Updated upstream
 theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.4)
+=======
+theme_override_colors/font_color = Color(0.18, 0.8, 0.44, 1)
+>>>>>>> Stashed changes
 theme_override_font_sizes/font_size = 11
 text = "Mastery"
 horizontal_alignment = 1
@@ -163,7 +219,10 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Icon" type="TextureRect" parent="Margin/DockHull/Tabs/Achievement/VBox"]
+<<<<<<< Updated upstream
 modulate = Color(0.105882, 0.262745, 0.196078, 0.4)
+=======
+>>>>>>> Stashed changes
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 texture = ExtResource("6_s1v5u")
@@ -172,7 +231,11 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Margin/DockHull/Tabs/Achievement/VBox"]
 layout_mode = 2
+<<<<<<< Updated upstream
 theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.4)
+=======
+theme_override_colors/font_color = Color(0.18, 0.8, 0.44, 1)
+>>>>>>> Stashed changes
 theme_override_font_sizes/font_size = 11
 text = "Awards"
 horizontal_alignment = 1
@@ -192,7 +255,10 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Icon" type="TextureRect" parent="Margin/DockHull/Tabs/Settings/VBox"]
+<<<<<<< Updated upstream
 modulate = Color(0.105882, 0.262745, 0.196078, 0.4)
+=======
+>>>>>>> Stashed changes
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 texture = ExtResource("7_s1v5u")
@@ -201,7 +267,11 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Margin/DockHull/Tabs/Settings/VBox"]
 layout_mode = 2
+<<<<<<< Updated upstream
 theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.4)
+=======
+theme_override_colors/font_color = Color(0.18, 0.8, 0.44, 1)
+>>>>>>> Stashed changes
 theme_override_font_sizes/font_size = 11
 text = "Help"
 horizontal_alignment = 1
