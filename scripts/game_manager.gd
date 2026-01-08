@@ -34,8 +34,12 @@ var completed_levels = [] # Array of level IDs (integers)
 # Daily Challenge & Persistence
 var daily_streak = 0
 var last_daily_date = "" # Format: "2026-01-05"
+<<<<<<< Updated upstream
 var completed_daily_dates = [] # Array of date strings
 var current_daily_date = "" # The specific date being played
+=======
+var completed_dailies = [] # Array of date strings "YYYY-MM-DD"
+>>>>>>> Stashed changes
 var current_puzzle_id = -1
 var save_path = "user://save_game.dat"
 
@@ -106,7 +110,11 @@ func save_data():
 			"max_unlocked_level": max_unlocked_level,
 			"win_streak": win_streak,
 			"completed_levels": completed_levels,
+<<<<<<< Updated upstream
 			"completed_daily_dates": completed_daily_dates
+=======
+			"completed_dailies": completed_dailies
+>>>>>>> Stashed changes
 		}
 		file.store_string(JSON.stringify(data))
 
@@ -122,7 +130,11 @@ func load_data():
 			max_unlocked_level = data.get("max_unlocked_level", 1)
 			win_streak = data.get("win_streak", 0)
 			completed_levels = data.get("completed_levels", [])
+<<<<<<< Updated upstream
 			completed_daily_dates = data.get("completed_daily_dates", [])
+=======
+			completed_dailies = data.get("completed_dailies", [])
+>>>>>>> Stashed changes
 
 func setup_board():
 	board = []
@@ -141,9 +153,14 @@ func complete_daily(date: String = ""):
 	if last_daily_date != today and target_date == today:
 		daily_streak += 1
 		last_daily_date = today
+<<<<<<< Updated upstream
 	
 	if not target_date in completed_daily_dates:
 		completed_daily_dates.append(target_date)
+=======
+		if not today in completed_dailies:
+			completed_dailies.append(today)
+>>>>>>> Stashed changes
 		AchievementManager.update_stat("daily_count", 1)
 	
 	save_data()

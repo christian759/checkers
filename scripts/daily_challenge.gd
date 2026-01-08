@@ -1,115 +1,103 @@
 extends Control
 
-@onready var month_label = %MonthLabel
-@onready var streak_label = %StreakLabel
-@onready var grid = %Grid
-@onready var task_date_label = %TaskDate
-@onready var task_title = %TaskTitle
-@onready var task_desc = %TaskDesc
-@onready var solve_button = %SolveButton
+@onready var streak_val = %Value
+@onready var calendar_grid = %CalendarGrid
+@onready var puzzle_title = $ScrollContainer/VBox/MissionsSection/Card/VBox/VBox/PuzzleTitle
+@onready var puzzle_desc = $ScrollContainer/VBox/MissionsSection/Card/VBox/PuzzleDesc
+@onready var solve_button = $ScrollContainer/VBox/MissionsSection/Card/VBox/SolveButton
 
-var current_view_date = Time.get_date_dict_from_system()
-var selected_date_str = ""
-var selected_puzzle = null
+var current_puzzle = null
 
 func _ready():
-	selected_date_str = Time.get_date_string_from_system()
-	_refresh_calendar()
-	_select_day(selected_date_str)
+	_setup_calendar()
+	_refresh_ui()
 	solve_button.pressed.connect(_on_solve_pressed)
-	
-	# Initial solve button style
-	var sb = StyleBoxFlat.new()
-	sb.bg_color = Color("#1B4332")
-	sb.set_corner_radius_all(32)
-	solve_button.add_theme_stylebox_override("normal", sb)
-	solve_button.add_theme_stylebox_override("hover", sb)
 
-func _refresh_calendar():
-	for child in grid.get_children():
+func _refresh_ui():
+	streak_val.text = str(GameManager.daily_streak)
+	
+	current_puzzle = _get_today_puzzle()
+	puzzle_title.text = current_puzzle.title
+	puzzle_desc.text = current_puzzle.desc
+	
+	var today = Time.get_date_string_from_system()
+	if GameManager.last_daily_date == today:
+		solve_button.disabled = true
+		solve_button.text = "COMPLETED"
+		puzzle_title.text = "Training Complete"
+		puzzle_desc.text = "Great work! You've mastered today's tactical mission. Return tomorrow for your next challenge."
+
+func _setup_calendar():
+	# Clear existing
+	for child in calendar_grid.get_children():
 		child.queue_free()
 	
+	# Create 7 days (current week)
 	var today_dict = Time.get_date_dict_from_system()
-	month_label.text = _get_month_name(today_dict.month) + " " + str(today_dict.year)
-	streak_label.text = str(GameManager.daily_streak) + " Day Streak"
+	var day_of_week = _get_day_of_week(today_dict) # 0 = Sun, 6 = Sat (Simplified)
 	
-	var days_in_month = 31
-	if today_dict.month == 2: days_in_month = 28
-	elif today_dict.month in [4, 6, 9, 11]: days_in_month = 30
-	
-	for day in range(1, days_in_month + 1):
-		var date_str = "%04d-%02d-%02d" % [today_dict.year, today_dict.month, day]
-		var btn = Button.new()
-		btn.custom_minimum_size = Vector2(48, 48)
-		btn.text = str(day)
-		btn.add_theme_font_size_override("font_size", 16)
-		
-		var sb = StyleBoxFlat.new()
-		sb.set_corner_radius_all(24)
-		sb.anti_aliasing = true
-		
-		var is_today = day == today_dict.day
-		var is_future = day > today_dict.day
-		
-		if is_today:
-			sb.bg_color = Color("#1B4332")
-			btn.add_theme_color_override("font_color", Color.WHITE)
-		elif is_future:
-			sb.bg_color = Color("#1B4332", 0.05)
-			btn.add_theme_color_override("font_color", Color("#1B4332", 0.2))
-			btn.disabled = true
-		else:
-			var is_done = GameManager.completed_daily_dates.has(date_str)
-			if is_done:
-				sb.bg_color = Color("#1B4332", 0.15)
-				btn.add_theme_color_override("font_color", Color("#1B4332"))
-				btn.text = "•"
-			else:
-				sb.bg_color = Color.WHITE
-				sb.set_border_width_all(1)
-				sb.border_color = Color("#1B4332", 0.1)
-				btn.add_theme_color_override("font_color", Color("#1B4332", 0.6))
-		
-		btn.add_theme_stylebox_override("normal", sb)
-		btn.add_theme_stylebox_override("hover", sb)
-		btn.pressed.connect(_select_day.bind(date_str))
-		grid.add_child(btn)
+	# Let's just show the last 7 days including today
+	for i in range(7):
+		var day_panel = _create_day_node(6 - i)
+		calendar_grid.add_child(day_panel)
+		# Move today to the end or start? Usually calendar flows. 
+		# Let's just show 7 slots and mark completed ones.
 
-func _select_day(date_str: String):
-	selected_date_str = date_str
-	var puzzle = _get_puzzle_for_date(date_str)
-	selected_puzzle = puzzle
+func _create_day_node(days_ago: int) -> Panel:
+	var panel = Panel.new()
+	panel.custom_minimum_size = Vector2(40, 50)
 	
-	var parts = date_str.split("-")
-	task_date_label.text = _get_month_name(int(parts[1])) + " " + parts[2]
+	var day_date = _get_date_string_offset(-days_ago)
+	var is_today = days_ago == 0
+	var is_completed = day_date in GameManager.completed_dailies
 	
-	var d = Time.get_date_dict_from_system()
-	var today_str = "%04d-%02d-%02d" % [d.year, d.month, d.day]
+	var style = StyleBoxFlat.new()
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_right = 8
+	style.corner_radius_bottom_left = 8
+	style.bg_color = Color("#063314") if is_completed else (Color("#f0f5f0") if is_today else Color.WHITE)
+	style.border_width_left = 1
+	style.border_width_top = 1
+	style.border_width_right = 1
+	style.border_width_bottom = 1
+	style.border_color = Color("#00ff88") if is_today else Color("#eeeeee")
 	
-	if date_str > today_str:
-		task_title.text = "Locked"
-		task_desc.text = "This challenge will be available on the scheduled date."
-		solve_button.disabled = true
-		solve_button.text = "Not Available"
-	else:
-		var is_done = GameManager.completed_daily_dates.has(date_str)
-		task_title.text = "Capture Challenge"
-		task_desc.text = "Solve the puzzle to maintain your daily streak and sharpen your skills."
-		solve_button.disabled = false
-		solve_button.text = "Replay Challenge" if is_done else "Start Challenge"
+	panel.add_theme_stylebox_override("panel", style)
+	
+	var label = Label.new()
+	label.text = day_date.split("-")[2] # Just the day number
+	label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	label.add_theme_font_size_override("font_size", 14)
+	label.add_theme_color_override("font_color", Color.WHITE if is_completed else Color("#666666"))
+	panel.add_child(label)
+	
+	if is_completed:
+		var check = Label.new()
+		check.text = "✓"
+		check.add_theme_font_size_override("font_size", 10)
+		check.add_theme_color_override("font_color", Color("#00ff88"))
+		check.position = Vector2(25, 5)
+		panel.add_child(check)
+		
+	return panel
 
-func _get_puzzle_for_date(date_str: String):
-	var hash_sum = 0
-	for c in date_str:
-		hash_sum += c.unicode_at(0)
-	var idx = hash_sum % GameManager.puzzles.size()
-	return GameManager.puzzles[idx]
+func _get_date_string_offset(offset: int) -> String:
+	var unix = Time.get_unix_time_from_system() + (offset * 86400)
+	var dict = Time.get_date_dict_from_unix_time(unix)
+	return "%04d-%02d-%02d" % [dict.year, dict.month, dict.day]
 
-func _get_month_name(m):
-	return ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][m]
+func _get_day_of_week(dict) -> int:
+	# Simplified zeller or similar not needed for basic display
+	return 0
+
+func _get_today_puzzle():
+	var date_dict = Time.get_date_dict_from_system()
+	var day_index = date_dict.day + date_dict.month * 31
+	var puzzle_index = day_index % GameManager.puzzles.size()
+	return GameManager.puzzles[puzzle_index]
 
 func _on_solve_pressed():
 	GameManager.is_daily_challenge = true
-	GameManager.current_puzzle_id = selected_puzzle.id
-	GameManager.current_daily_date = selected_date_str
+	GameManager.current_puzzle_id = current_puzzle.id
 	get_tree().change_scene_to_file("res://scenes/board.tscn")
