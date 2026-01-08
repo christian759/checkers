@@ -35,8 +35,12 @@ var completed_levels = [] # Array of level IDs (integers)
 var daily_streak = 0
 var last_daily_date = "" # Format: "2026-01-05"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 var completed_daily_dates = [] # Array of date strings
 var current_daily_date = "" # The specific date being played
+=======
+var completed_dailies = [] # Array of date strings "YYYY-MM-DD"
+>>>>>>> Stashed changes
 =======
 var completed_dailies = [] # Array of date strings "YYYY-MM-DD"
 >>>>>>> Stashed changes
@@ -111,7 +115,11 @@ func save_data():
 			"win_streak": win_streak,
 			"completed_levels": completed_levels,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 			"completed_daily_dates": completed_daily_dates
+=======
+			"completed_dailies": completed_dailies
+>>>>>>> Stashed changes
 =======
 			"completed_dailies": completed_dailies
 >>>>>>> Stashed changes
@@ -131,7 +139,11 @@ func load_data():
 			win_streak = data.get("win_streak", 0)
 			completed_levels = data.get("completed_levels", [])
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 			completed_daily_dates = data.get("completed_daily_dates", [])
+=======
+			completed_dailies = data.get("completed_dailies", [])
+>>>>>>> Stashed changes
 =======
 			completed_dailies = data.get("completed_dailies", [])
 >>>>>>> Stashed changes
@@ -154,9 +166,14 @@ func complete_daily(date: String = ""):
 		daily_streak += 1
 		last_daily_date = today
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	
 	if not target_date in completed_daily_dates:
 		completed_daily_dates.append(target_date)
+=======
+		if not today in completed_dailies:
+			completed_dailies.append(today)
+>>>>>>> Stashed changes
 =======
 		if not today in completed_dailies:
 			completed_dailies.append(today)
