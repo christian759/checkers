@@ -2,7 +2,7 @@ class_name Piece
 extends Node2D
 
 @onready var king_crown = $KingCrown
-@onready var shadow = $Shadow
+
 
 var side = GameManager.Side.PLAYER
 var is_king = false
@@ -70,12 +70,8 @@ func _draw():
 	# Draw main body
 	draw_circle(Vector2.ZERO, 34, color)
 	
-	# 2. Simple Border (Flat)
-	# Draw a simple, clean border instead of 3D bevels
-	if side == GameManager.Side.PLAYER:
-		draw_arc(Vector2.ZERO, 34, 0, TAU, 64, GameManager.BORDER_SOFT, 2.0, true)
-	else:
-		draw_arc(Vector2.ZERO, 34, 0, TAU, 64, Color.WHITE, 2.0, true)
+	# 2. Simple Border (Removed for totally flat look)
+	pass
 	
 	# 3. Inner Detail
 	if is_king:

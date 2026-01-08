@@ -1,33 +1,33 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/pvp_lobby.gd" id="1_script"]
-[ext_resource type="Script" path="res://scripts/tech_panel.gd" id="2_premium"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
-bg_color = Color(0.972549, 0.984314, 0.976471, 1)
+bg_color = Color(0.19, 0.20, 0.22, 1) # Dark Blue-Grey (Chess.com vibe)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pill_bg"]
-bg_color = Color(1, 1, 1, 1)
-corner_radius_all = 32
-border_width_all = 1
-border_color = Color(0.105882, 0.262745, 0.196078, 0.1)
-shadow_color = Color(0, 0, 0, 0.05)
-shadow_size = 10
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.15, 0.16, 0.18, 1) # Slightly darker panel
+corner_radius_all = 8
+shadow_color = Color(0, 0, 0, 0.2)
+shadow_size = 4
+shadow_offset = Vector2(0, 2)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pill_active"]
-bg_color = Color(0.105882, 0.262745, 0.196078, 1)
-corner_radius_all = 28
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_primary"]
+bg_color = Color(0.48, 0.65, 0.33, 1) # Chess Green
+corner_radius_all = 8
+shadow_color = Color(0, 0, 0, 0.2)
+shadow_size = 2
+shadow_offset = Vector2(0, 2)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_bg"]
-bg_color = Color(0.105882, 0.262745, 0.196078, 0.1)
-corner_radius_all = 12
-expand_margin_top = 4.0
-expand_margin_bottom = 4.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_secondary"]
+bg_color = Color(0.24, 0.25, 0.27, 1) # Grey
+corner_radius_all = 8
 
-[sub_resource type="Theme" id="Theme_emerald"]
-HSlider/styles/grabber_area = SubResource("StyleBoxFlat_pill_active")
-HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_pill_active")
-HSlider/styles/slider = SubResource("StyleBoxFlat_slider_bg")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_time_control"]
+bg_color = Color(0.24, 0.25, 0.27, 1)
+corner_radius_all = 8
+border_width_all = 2
+border_color = Color(0.24, 0.25, 0.27, 0) # Transparent border by default
 
 [node name="PvPLobby" type="Control"]
 layout_mode = 3
@@ -47,272 +47,84 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
 
-[node name="Scroll" type="ScrollContainer" parent="."]
+[node name="SafeArea" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-horizontal_scroll_mode = 0
-vertical_scroll_mode = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 100
 
-[node name="Layout" type="VBoxContainer" parent="Scroll"]
+[node name="VBox" type="VBoxContainer" parent="SafeArea"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 40
+theme_override_constants/separation = 20
 
-[node name="HeaderSpace" type="Control" parent="Scroll/Layout"]
-custom_minimum_size = Vector2(0, 140)
+[node name="Header" type="HBoxContainer" parent="SafeArea/VBox"]
 layout_mode = 2
+theme_override_constants/separation = 15
 
-[node name="Title" type="Label" parent="Scroll/Layout/HeaderSpace"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 1)
-theme_override_font_sizes/font_size = 42
-text = "Match Setup"
-horizontal_alignment = 1
+[node name="Avatar" type="Panel" parent="SafeArea/VBox/Header"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_secondary")
+
+[node name="Info" type="VBoxContainer" parent="SafeArea/VBox/Header"]
+layout_mode = 2
+alignment = 1
+
+[node name="Name" type="Label" parent="SafeArea/VBox/Header/Info"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Guest"
 vertical_alignment = 1
 
-[node name="Content" type="VBoxContainer" parent="Scroll/Layout"]
+[node name="Rating" type="Label" parent="SafeArea/VBox/Header/Info"]
 layout_mode = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/separation = 30
-
-[node name="ModeCard" type="Control" parent="Scroll/Layout/Content"]
-custom_minimum_size = Vector2(0, 180)
-layout_mode = 2
-script = ExtResource("2_premium")
-bg_color = Color(1, 1, 1, 1)
-corner_radius = 48.0
-
-[node name="Margin" type="MarginContainer" parent="Scroll/Layout/Content/ModeCard"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
-
-[node name="VBox" type="VBoxContainer" parent="Scroll/Layout/Content/ModeCard/Margin"]
-layout_mode = 2
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="Label" type="Label" parent="Scroll/Layout/Content/ModeCard/Margin/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.6)
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
 theme_override_font_sizes/font_size = 14
-text = "OPPONENT TYPE"
-horizontal_alignment = 1
+text = "Rating: 800"
+vertical_alignment = 1
 
-[node name="Pill" type="Panel" parent="Scroll/Layout/Content/ModeCard/Margin/VBox"]
-custom_minimum_size = Vector2(0, 64)
+[node name="Spacer" type="Control" parent="SafeArea/VBox"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_pill_bg")
+size_flags_vertical = 3
 
-[node name="ActiveBubble" type="Panel" parent="Scroll/Layout/Content/ModeCard/Margin/VBox/Pill"]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 6.0
-offset_top = 6.0
-offset_right = 180.0
-offset_bottom = 58.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_pill_active")
-
-[node name="Btns" type="HBoxContainer" parent="Scroll/Layout/Content/ModeCard/Margin/VBox/Pill"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="AiBtn" type="Button" parent="Scroll/Layout/Content/ModeCard/Margin/VBox/Pill/Btns"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 16
-text = "AI Opponent"
-flat = true
-
-[node name="FriendBtn" type="Button" parent="Scroll/Layout/Content/ModeCard/Margin/VBox/Pill/Btns"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.6)
-theme_override_font_sizes/font_size = 16
-text = "Local Friend"
-flat = true
-
-[node name="AiSettings" type="VBoxContainer" parent="Scroll/Layout/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 30
-
-[node name="StrengthCard" type="Control" parent="Scroll/Layout/Content/AiSettings"]
-custom_minimum_size = Vector2(0, 180)
-layout_mode = 2
-script = ExtResource("2_premium")
-bg_color = Color(1, 1, 1, 1)
-corner_radius = 48.0
-
-[node name="Margin" type="MarginContainer" parent="Scroll/Layout/Content/AiSettings/StrengthCard"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
-
-[node name="VBox" type="VBoxContainer" parent="Scroll/Layout/Content/AiSettings/StrengthCard/Margin"]
+[node name="GameSettings" type="VBoxContainer" parent="SafeArea/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 20
-alignment = 1
 
-[node name="HBox" type="HBoxContainer" parent="Scroll/Layout/Content/AiSettings/StrengthCard/Margin/VBox"]
+[node name="TimeTitle" type="Label" parent="SafeArea/VBox/GameSettings"]
 layout_mode = 2
-
-[node name="Label" type="Label" parent="Scroll/Layout/Content/AiSettings/StrengthCard/Margin/VBox/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.8)
 theme_override_font_sizes/font_size = 18
-text = "Skill Level"
-
-[node name="LevelValue" type="Label" parent="Scroll/Layout/Content/AiSettings/StrengthCard/Margin/VBox/HBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 1)
-theme_override_font_sizes/font_size = 32
-text = "100"
-
-[node name="LevelSlider" type="HSlider" parent="Scroll/Layout/Content/AiSettings/StrengthCard/Margin/VBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-theme = SubResource("Theme_emerald")
-min_value = 1.0
-max_value = 200.0
-value = 1.0
-
-[node name="SideCard" type="Control" parent="Scroll/Layout/Content/AiSettings"]
-custom_minimum_size = Vector2(0, 160)
-layout_mode = 2
-script = ExtResource("2_premium")
-bg_color = Color(1, 1, 1, 1)
-corner_radius = 48.0
-
-[node name="Margin" type="MarginContainer" parent="Scroll/Layout/Content/AiSettings/SideCard"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
-
-[node name="VBox" type="VBoxContainer" parent="Scroll/Layout/Content/AiSettings/SideCard/Margin"]
-layout_mode = 2
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="Label" type="Label" parent="Scroll/Layout/Content/AiSettings/SideCard/Margin/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.6)
-text = "PLAY AS"
+text = "Time Control"
 horizontal_alignment = 1
 
-[node name="StartPill" type="Panel" parent="Scroll/Layout/Content/AiSettings/SideCard/Margin/VBox"]
-custom_minimum_size = Vector2(0, 56)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_pill_bg")
-
-[node name="StartBubble" type="Panel" parent="Scroll/Layout/Content/AiSettings/SideCard/Margin/VBox/StartPill"]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 6.0
-offset_top = 6.0
-offset_right = 180.0
-offset_bottom = 50.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_pill_active")
-
-[node name="Btns" type="HBoxContainer" parent="Scroll/Layout/Content/AiSettings/SideCard/Margin/VBox/StartPill"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="YouBtn" type="Button" parent="Scroll/Layout/Content/AiSettings/SideCard/Margin/VBox/StartPill/Btns"]
+[node name="TimeGrid" type="GridContainer" parent="SafeArea/VBox/GameSettings"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 3
+
+[node name="Spacer2" type="Control" parent="SafeArea/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayBtn" type="Button" parent="SafeArea/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-text = "White"
-flat = true
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_primary")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_primary")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_primary")
+text = "Play"
 
-[node name="AiStartBtn" type="Button" parent="Scroll/Layout/Content/AiSettings/SideCard/Margin/VBox/StartPill/Btns"]
-unique_name_in_owner = true
+[node name="BottomBuffer" type="Control" parent="SafeArea/VBox"]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.105882, 0.262745, 0.196078, 0.6)
-text = "Black"
-flat = true
-
-[node name="ThemeCard" type="Control" parent="Scroll/Layout/Content"]
-custom_minimum_size = Vector2(0, 160)
-layout_mode = 2
-script = ExtResource("2_premium")
-bg_color = Color(1, 1, 1, 1)
-corner_radius = 48.0
-
-[node name="Margin" type="MarginContainer" parent="Scroll/Layout/Content/ThemeCard"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_right = 24
-
-[node name="ThemeGrid" type="HBoxContainer" parent="Scroll/Layout/Content/ThemeCard/Margin"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="Actions" type="MarginContainer" parent="Scroll/Layout"]
-layout_mode = 2
-theme_override_constants/margin_top = 40
-theme_override_constants/margin_bottom = 120
-
-[node name="StartMatchBtn" type="Button" parent="Scroll/Layout/Actions"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(320, 80)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_pill_active")
-text = "Start Match"
