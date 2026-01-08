@@ -126,12 +126,10 @@ theme_override_constants/margin_left = 24
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 120
 
-[node name="PuzzleCard" type="Control" parent="Scroll/Layout/SelectedPuzzleContainer"]
+[node name="PuzzleCard" type="Panel" parent="Scroll/Layout/SelectedPuzzleContainer"]
 custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
-script = ExtResource("2_premium")
-bg_color = Color(1, 1, 1, 1)
-corner_radius = 48.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
 [node name="VBox" type="VBoxContainer" parent="Scroll/Layout/SelectedPuzzleContainer/PuzzleCard"]
 layout_mode = 1

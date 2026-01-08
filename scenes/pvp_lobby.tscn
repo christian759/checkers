@@ -1,32 +1,6 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://scripts/pvp_lobby_new.gd" id="1_script"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
-bg_color = Color(0.19, 0.20, 0.22, 1) # Dark Blue-Grey (Chess.com vibe)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
-bg_color = Color(0.15, 0.16, 0.18, 1) # Slightly darker panel
-corner_radius_all = 8
-shadow_color = Color(0, 0, 0, 0.2)
-shadow_size = 4
-shadow_offset = Vector2(0, 2)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_primary"]
-bg_color = Color(0.48, 0.65, 0.33, 1) # Chess Green
-corner_radius_all = 8
-shadow_color = Color(0, 0, 0, 0.2)
-shadow_size = 2
-shadow_offset = Vector2(0, 2)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_secondary"]
-bg_color = Color(0.24, 0.25, 0.27, 1) # Grey
-corner_radius_all = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_time_control"]
-bg_color = Color(0.24, 0.25, 0.27, 1)
-corner_radius_all = 8
-border_color = Color(0.24, 0.25, 0.27, 0) # Transparent border by default
+[ext_resource type="Script" path="res://scripts/pvp_lobby.gd" id="1_script"]
 
 [node name="PvPLobby" type="Control"]
 layout_mode = 3
@@ -37,14 +11,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="Panel" parent="."]
+[node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+color = Color(0.19, 0.20, 0.22, 1)
 
 [node name="SafeArea" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -62,52 +36,30 @@ theme_override_constants/margin_bottom = 100
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Header" type="HBoxContainer" parent="SafeArea/VBox"]
+[node name="Title" type="Label" parent="SafeArea/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 15
-
-[node name="Avatar" type="Panel" parent="SafeArea/VBox/Header"]
-custom_minimum_size = Vector2(60, 60)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_secondary")
-
-[node name="Info" type="VBoxContainer" parent="SafeArea/VBox/Header"]
-layout_mode = 2
-alignment = 1
-
-[node name="Name" type="Label" parent="SafeArea/VBox/Header/Info"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Guest"
-vertical_alignment = 1
-
-[node name="Rating" type="Label" parent="SafeArea/VBox/Header/Info"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
-theme_override_font_sizes/font_size = 14
-text = "Rating: 800"
-vertical_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "Play"
+horizontal_alignment = 1
 
 [node name="Spacer" type="Control" parent="SafeArea/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="GameSettings" type="VBoxContainer" parent="SafeArea/VBox"]
+[node name="TimeTitle" type="Label" parent="SafeArea/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 20
-
-[node name="TimeTitle" type="Label" parent="SafeArea/VBox/GameSettings"]
-layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_font_sizes/font_size = 18
 text = "Time Control"
 horizontal_alignment = 1
 
-[node name="TimeGrid" type="GridContainer" parent="SafeArea/VBox/GameSettings"]
+[node name="TimeGrid" type="GridContainer" parent="SafeArea/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
-columns = 3
+columns = 2
 
 [node name="Spacer2" type="Control" parent="SafeArea/VBox"]
 layout_mode = 2
@@ -119,11 +71,4 @@ custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_primary")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_primary")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_primary")
 text = "Play"
-
-[node name="BottomBuffer" type="Control" parent="SafeArea/VBox"]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 2

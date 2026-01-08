@@ -1,15 +1,13 @@
-extends Control
+extends Node2D
 
-@onready var title_label = $Margin/VBox/Title
-@onready var grid = $Margin/VBox/GridContainer
-@onready var progress_bar = $Margin/VBox/Footer/ProgressBar
+@onready var title_label = $CardHull/Margin/VBox/Title
+@onready var grid = $CardHull/Margin/VBox/GridContainer
+@onready var progress_bar = $CardHull/Margin/VBox/Footer/ProgressBar
 
 var level_icon_scene = preload("res://scenes/mastery_level_icon.tscn")
 
 func _ready():
-	mouse_entered.connect(_on_mouse_entered)
-	mouse_exited.connect(_on_mouse_exited)
-	pivot_offset = size / 2
+	pass
 
 func setup(rank_name: String, start_level: int, accent_color: Color, current_global_level: int):
 	title_label.text = rank_name
