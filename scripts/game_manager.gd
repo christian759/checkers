@@ -450,10 +450,11 @@ func _get_sim_legal_moves(state, r, c, is_jump_chain):
 				var mid_p = state[r + d.x][c + d.y]
 				if mid_p and mid_p.side != p.side and state[jump_r][jump_c] == null:
 					# NEW RULE: Backward kill ONLY during double jump chain
-					if is_forward or is_jump_chain:
+					# Allow sideways capture (d.x == 0)
+					if is_forward or d.x == 0 or is_jump_chain:
 						moves.append({"from": Vector2i(r, c), "to": Vector2i(jump_r, jump_c), "is_capture": true, "piece_node": p.node})
 			
-			if not is_jump_chain and is_forward:
+			if not is_jump_chain and (is_forward or d.x == 0):
 				if is_on_board(r + d.x, c + d.y) and state[r + d.x][c + d.y] == null:
 					moves.append({"from": Vector2i(r, c), "to": Vector2i(r + d.x, c + d.y), "is_capture": false, "piece_node": p.node})
 	return moves

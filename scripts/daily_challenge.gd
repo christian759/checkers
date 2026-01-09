@@ -76,9 +76,9 @@ func _update_streak():
 	streak_value.text = str(streak) + " DAYS"
 
 func _on_play_challenge():
-	# For now, start a random puzzle or the first one
+	# For now, start the first puzzle. In the future, this can be date-based.
 	GameManager.is_daily_challenge = true
-	# Logic to pick puzzle based on day could go here
+	GameManager.current_puzzle_id = 0
 	GameManager.get_tree().change_scene_to_file("res://scenes/board.tscn")
 
 # Helper functions
