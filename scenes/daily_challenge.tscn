@@ -96,7 +96,7 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 40
 
 [node name="Header" type="Panel" parent="ScrollContainer/VBox"]
-custom_minimum_size = Vector2(0, 140)
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_header")
 
@@ -112,29 +112,29 @@ alignment = 1
 [node name="Title" type="Label" parent="ScrollContainer/VBox/Header/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
-theme_override_font_sizes/font_size = 32
-text = "Daily Challenge"
+theme_override_font_sizes/font_size = 36
+text = "Daily Lab"
 horizontal_alignment = 1
 
 [node name="MonthLabel" type="Label" parent="ScrollContainer/VBox/Header/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.6, 0.6, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 16
 text = "JANUARY 2026"
 horizontal_alignment = 1
 
 [node name="Content" type="VBoxContainer" parent="ScrollContainer/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 35
+theme_override_constants/separation = 30
 
 [node name="StreakSection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
 layout_mode = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_right = 40
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_right = 30
 
 [node name="Panel" type="Panel" parent="ScrollContainer/VBox/Content/StreakSection"]
-custom_minimum_size = Vector2(0, 80)
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_streak")
 
@@ -153,32 +153,33 @@ alignment = 1
 
 [node name="Label" type="Label" parent="ScrollContainer/VBox/Content/StreakSection/Panel/HBox/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_font_sizes/font_size = 14
 text = "CURRENT STREAK"
 horizontal_alignment = 1
 
 [node name="StreakValue" type="Label" parent="ScrollContainer/VBox/Content/StreakSection/Panel/HBox/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
-text = "12 DAYS"
+theme_override_font_sizes/font_size = 42
+text = "12"
+horizontal_alignment = 1
+
+[node name="DaysLabel" type="Label" parent="ScrollContainer/VBox/Content/StreakSection/Panel/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_font_sizes/font_size = 12
+text = "DAYS"
 horizontal_alignment = 1
 
 [node name="CalendarSection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
 layout_mode = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_right = 40
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_right = 30
 
 [node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Content/CalendarSection"]
 layout_mode = 2
 theme_override_constants/separation = 15
-
-[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/CalendarSection/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.5, 0.6, 0.6, 1)
-theme_override_font_sizes/font_size = 13
-text = "MONTHLY PROGRESS"
 
 [node name="Card" type="PanelContainer" parent="ScrollContainer/VBox/Content/CalendarSection/VBox"]
 layout_mode = 2
@@ -194,14 +195,14 @@ theme_override_constants/margin_bottom = 20
 [node name="CalendarGrid" type="GridContainer" parent="ScrollContainer/VBox/Content/CalendarSection/VBox/Card/Margin"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 10
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
 columns = 7
 
 [node name="TodaySection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
 layout_mode = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_right = 40
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_right = 30
 
 [node name="Card" type="PanelContainer" parent="ScrollContainer/VBox/Content/TodaySection"]
 layout_mode = 2
@@ -221,22 +222,25 @@ theme_override_constants/separation = 15
 [node name="Label" type="Label" parent="ScrollContainer/VBox/Content/TodaySection/Card/Margin/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
-theme_override_font_sizes/font_size = 18
-text = "Today's Challenge"
+theme_override_font_sizes/font_size = 20
+text = "Ready to Play?"
 
 [node name="Desc" type="Label" parent="ScrollContainer/VBox/Content/TodaySection/Card/Margin/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.6, 0.6, 1)
 theme_override_font_sizes/font_size = 14
-text = "Solve the puzzle to maintain your streak and earn exclusive rewards."
+text = "Keep your streak alive! Complete today's puzzle to unlock rewards."
 autowrap_mode = 3
 
 [node name="PlayBtn" type="Button" parent="ScrollContainer/VBox/Content/TodaySection/Card/Margin/VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_play")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_play")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_play")
 text = "START CHALLENGE"
 
 [node name="Footer" type="Control" parent="ScrollContainer/VBox"]

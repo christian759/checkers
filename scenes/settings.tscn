@@ -30,6 +30,16 @@ CheckButton/styles/hover = SubResource("StyleBoxFlat_toggle_off")
 CheckButton/styles/hover_pressed = SubResource("StyleBoxFlat_toggle_on")
 CheckButton/styles/focus = SubResource("StyleBoxEmpty_focus")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.05)
+shadow_size = 10
+shadow_offset = Vector2(0, 4)
+
 [node name="Settings" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -61,10 +71,10 @@ vertical_scroll_mode = 3
 [node name="VBox" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 40
+theme_override_constants/separation = 30
 
 [node name="Header" type="Panel" parent="ScrollContainer/VBox"]
-custom_minimum_size = Vector2(0, 140)
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_header")
 
@@ -80,154 +90,155 @@ alignment = 1
 [node name="Title" type="Label" parent="ScrollContainer/VBox/Header/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 36
 text = "Settings"
-horizontal_alignment = 1
-
-[node name="Subtitle" type="Label" parent="ScrollContainer/VBox/Header/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.5, 0.6, 0.6, 1)
-theme_override_font_sizes/font_size = 14
-text = "CUSTOMIZE YOUR EXPERIENCE"
 horizontal_alignment = 1
 
 [node name="Content" type="VBoxContainer" parent="ScrollContainer/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 45
+theme_override_constants/separation = 20
 
-[node name="AudioSection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
+[node name="AudioCard" type="PanelContainer" parent="ScrollContainer/VBox/Content"]
 layout_mode = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_right = 40
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
-[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Content/AudioSection"]
+[node name="Margin" type="MarginContainer" parent="ScrollContainer/VBox/Content/AudioCard"]
 layout_mode = 2
-theme_override_constants/separation = 25
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
 
-[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/AudioSection/VBox"]
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Content/AudioCard/Margin"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/AudioCard/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.18, 0.8, 0.44, 1)
 theme_override_font_sizes/font_size = 14
 text = "AUDIO"
 
-[node name="SoundRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/AudioSection/VBox"]
+[node name="SoundRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/AudioCard/Margin/VBox"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/AudioSection/VBox/SoundRow"]
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/AudioCard/Margin/VBox/SoundRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 18
 text = "Sound Effects"
 
-[node name="SoundToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/AudioSection/VBox/SoundRow"]
+[node name="SoundToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/AudioCard/Margin/VBox/SoundRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(64, 32)
+custom_minimum_size = Vector2(70, 40)
 layout_mode = 2
 theme = SubResource("Theme_toggle")
 button_pressed = true
 
-[node name="MusicRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/AudioSection/VBox"]
+[node name="MusicRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/AudioCard/Margin/VBox"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/AudioSection/VBox/MusicRow"]
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/AudioCard/Margin/VBox/MusicRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 18
 text = "Background Music"
 
-[node name="MusicToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/AudioSection/VBox/MusicRow"]
+[node name="MusicToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/AudioCard/Margin/VBox/MusicRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(64, 32)
+custom_minimum_size = Vector2(70, 40)
 layout_mode = 2
 theme = SubResource("Theme_toggle")
 button_pressed = true
 
-[node name="GameplaySection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
+[node name="GameplayCard" type="PanelContainer" parent="ScrollContainer/VBox/Content"]
 layout_mode = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_right = 40
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
-[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Content/GameplaySection"]
+[node name="Margin" type="MarginContainer" parent="ScrollContainer/VBox/Content/GameplayCard"]
 layout_mode = 2
-theme_override_constants/separation = 25
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
 
-[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/GameplaySection/VBox"]
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Content/GameplayCard/Margin"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/GameplayCard/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.18, 0.8, 0.44, 1)
 theme_override_font_sizes/font_size = 14
 text = "GAMEPLAY"
 
-[node name="ForcedJumpsRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/GameplaySection/VBox"]
+[node name="ForcedJumpsRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/GameplayCard/Margin/VBox"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/ForcedJumpsRow"]
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/GameplayCard/Margin/VBox/ForcedJumpsRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 18
 text = "Forced Jumps"
 
-[node name="ForcedJumpsToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/ForcedJumpsRow"]
+[node name="ForcedJumpsToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/GameplayCard/Margin/VBox/ForcedJumpsRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(64, 32)
+custom_minimum_size = Vector2(70, 40)
 layout_mode = 2
 theme = SubResource("Theme_toggle")
 
-[node name="HintsRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/GameplaySection/VBox"]
+[node name="HintsRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/GameplayCard/Margin/VBox"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/HintsRow"]
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/GameplayCard/Margin/VBox/HintsRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 18
 text = "Move Hints"
 
-[node name="MoveHintsToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/HintsRow"]
+[node name="MoveHintsToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/GameplayCard/Margin/VBox/HintsRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(64, 32)
+custom_minimum_size = Vector2(70, 40)
 layout_mode = 2
 theme = SubResource("Theme_toggle")
 button_pressed = true
 
-[node name="StraightRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/GameplaySection/VBox"]
+[node name="StraightRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/GameplayCard/Margin/VBox"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/StraightRow"]
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/GameplayCard/Margin/VBox/StraightRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 18
 text = "Straight Movement"
 
-[node name="StraightToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/StraightRow"]
+[node name="StraightToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/GameplayCard/Margin/VBox/StraightRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(64, 32)
+custom_minimum_size = Vector2(70, 40)
 layout_mode = 2
 theme = SubResource("Theme_toggle")
 
 [node name="InfoSection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
 layout_mode = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_right = 40
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_right = 60
 
 [node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Content/InfoSection"]
 layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/InfoSection/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
-theme_override_font_sizes/font_size = 14
-text = "INFO"
+theme_override_constants/separation = 5
 
 [node name="Version" type="Label" parent="ScrollContainer/VBox/Content/InfoSection/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
-theme_override_font_sizes/font_size = 13
-text = "Version 1.0.0 (Slate & Emerald)"
+theme_override_colors/font_color = Color(0.5, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 12
+text = "Version 1.0.0 (Emerald Edition)"
+horizontal_alignment = 1
 
 [node name="Credits" type="Label" parent="ScrollContainer/VBox/Content/InfoSection/VBox"]
 layout_mode = 2

@@ -73,7 +73,7 @@ func _setup_calendar():
 
 func _update_streak():
 	var streak = GameManager.daily_streak
-	streak_value.text = str(streak) + " DAYS"
+	streak_value.text = str(streak)
 
 func _on_play_challenge():
 	# For now, start the first puzzle. In the future, this can be date-based.
