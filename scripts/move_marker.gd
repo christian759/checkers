@@ -10,6 +10,6 @@ func _draw():
 	# Draw glow/shadow ring
 	draw_arc(Vector2.ZERO, 15, 0, TAU, 32, Color(0, 0, 0, 0.2), 4.0, true)
 	# Draw main ring
-	draw_arc(Vector2.ZERO, 15, 0, TAU, 32, Color.WHITE, 2.5, true)
+	draw_arc(Vector2.ZERO, 15, 0, TAU, 32, Color("#e67e22"), 2.5, true)
 	# Draw pulsing center
-	draw_circle(Vector2.ZERO, 6, Color.WHITE)
+	draw_circle(Vector2.ZERO, 6, Color("#e67e22"))

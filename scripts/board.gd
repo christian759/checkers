@@ -30,13 +30,13 @@ func _ready():
 	else:
 		spawn_pieces()
 	
-	if has_node("UI/Header/HBox/QuitButton"):
-		$UI/Header/HBox/QuitButton.pressed.connect(func():
+	if has_node("UI/Header/HBox/Controls/QuitButton"):
+		$UI/Header/HBox/Controls/QuitButton.pressed.connect(func():
 			GameManager.is_daily_challenge = false
 			get_tree().change_scene_to_file("res://scenes/main.tscn")
 		)
 	
-	if has_node("UI/Header/HBox/UndoButton"):
+	if has_node("UI/Header/HBox/Controls/UndoButton"):
 		%UndoButton.pressed.connect(GameManager.undo_move)
 
 func _process(delta):
@@ -67,10 +67,12 @@ func _update_timer(delta):
 		# Update UI
 		p1_time_label.text = _format_time(GameManager.player_time)
 		p2_time_label.text = _format_time(GameManager.opponent_time)
+		$UI/Footer/VBox/PlayerClock.visible = true
+		$UI/Header/HBox/OpponentClock.visible = true
 	else:
-		# Just show standard timer style or hide
-		p1_time_label.text = "--:--"
-		p2_time_label.text = "--:--"
+		# Hide clocks if no time limit
+		$UI/Footer/VBox/PlayerClock.visible = false
+		$UI/Header/HBox/OpponentClock.visible = false
 
 func _format_time(seconds):
 	var m = int(seconds / 60.0)
@@ -325,10 +327,11 @@ func get_legal_moves(piece: Piece):
 				var mid_p = GameManager.get_piece_at(fr + d.x, fc + d.y)
 				if mid_p and mid_p.side != piece.side and GameManager.get_piece_at(jump_r, jump_c) == null:
 					# NEW RULE: Restricted backward captures (only on multi-jump chain)
-					if is_forward or GameManager.must_jump:
+					# Allow sideways capture (d.x == 0)
+					if is_forward or d.x == 0 or GameManager.must_jump:
 						moves.append({"to": Vector2i(jump_r, jump_c), "is_capture": true})
 			
-			if is_forward and not GameManager.must_jump:
+			if (is_forward or d.x == 0) and not GameManager.must_jump:
 				var dr = fr + d.x
 				var dc = fc + d.y
 				if GameManager.is_on_board(dr, dc) and GameManager.get_piece_at(dr, dc) == null:
