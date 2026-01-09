@@ -192,6 +192,22 @@ layout_mode = 2
 theme = SubResource("Theme_toggle")
 button_pressed = true
 
+[node name="StraightRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/GameplaySection/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/StraightRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
+theme_override_font_sizes/font_size = 16
+text = "Straight Movement"
+
+[node name="StraightToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/StraightRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 32)
+layout_mode = 2
+theme = SubResource("Theme_toggle")
+
 [node name="InfoSection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
 layout_mode = 2
 theme_override_constants/margin_left = 40

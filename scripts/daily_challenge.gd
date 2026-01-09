@@ -62,9 +62,11 @@ func _setup_calendar():
 		
 		var label = Label.new()
 		label.text = str(day)
-		label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		label.add_theme_font_size_override("font_size", 13)
-		label.add_theme_color_override("font_color", Color("#2c3e50") if day <= now.day else Color("#bdc3c7")) # Slate for passed/today, Silver for future
+		label.add_theme_color_override("font_color", Color("#2c3e50") if day <= now.day else Color("#bdc3c7"))
 		
 		panel.add_child(label)
 		calendar_grid.add_child(panel)

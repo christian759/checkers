@@ -98,20 +98,28 @@ func _update_turn_label(side):
 	var inactive_color = Color("#7f8c8d") # Grey
 	
 	if side == GameManager.Side.PLAYER:
-		%TurnLabel.text = "YOUR TURN"
+		if GameManager.current_mode == GameManager.Mode.PV_P:
+			%TurnLabel.text = "WHITE'S TURN"
+		else:
+			%TurnLabel.text = "YOUR TURN"
+			
 		%TurnLabel.add_theme_color_override("font_color", active_color)
 		p1_time_label.add_theme_color_override("font_color", active_color)
 		p1_time_label.modulate.a = 1.0
 		p2_time_label.add_theme_color_override("font_color", inactive_color)
 		p2_time_label.modulate.a = 0.5
 	else:
+		var red_color = Color("#e67e22") # Orange/Red
 		if GameManager.current_mode == GameManager.Mode.PV_AI:
 			%TurnLabel.text = "AI THINKING..."
 		else:
-			%TurnLabel.text = "OPPONENT'S TURN"
+			if GameManager.current_mode == GameManager.Mode.PV_P:
+				%TurnLabel.text = "RED'S TURN"
+			else:
+				%TurnLabel.text = "OPPONENT'S TURN"
 			
-		%TurnLabel.add_theme_color_override("font_color", Color("#e67e22"))
-		p2_time_label.add_theme_color_override("font_color", Color("#e67e22"))
+		%TurnLabel.add_theme_color_override("font_color", red_color)
+		p2_time_label.add_theme_color_override("font_color", red_color)
 		p2_time_label.modulate.a = 1.0
 		p1_time_label.add_theme_color_override("font_color", inactive_color)
 		p1_time_label.modulate.a = 0.5
@@ -283,7 +291,12 @@ func clear_highlights():
 
 func get_legal_moves(piece: Piece):
 	var moves = []
-	var directions = [Vector2i(-1, -1), Vector2i(-1, 1), Vector2i(1, -1), Vector2i(1, 1)]
+	var directions = []
+	if GameManager.movement_mode == "diagonal":
+		directions = [Vector2i(-1, -1), Vector2i(-1, 1), Vector2i(1, -1), Vector2i(1, 1)]
+	else:
+		directions = [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1)]
+		
 	var fr = piece.grid_pos.x
 	var fc = piece.grid_pos.y
 	

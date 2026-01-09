@@ -419,7 +419,11 @@ func _get_sim_legal_moves(state, r, c, is_jump_chain):
 	var p = state[r][c]
 	if not p: return []
 	var moves = []
-	var directions = [Vector2i(-1, -1), Vector2i(-1, 1), Vector2i(1, -1), Vector2i(1, 1)]
+	var directions = []
+	if movement_mode == "diagonal":
+		directions = [Vector2i(-1, -1), Vector2i(-1, 1), Vector2i(1, -1), Vector2i(1, 1)]
+	else:
+		directions = [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1)]
 	
 	for d in directions:
 		if p.is_king:
