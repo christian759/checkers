@@ -37,10 +37,10 @@ func _on_tab_selected(index):
 			new_section.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		
 		# Smooth Transition
-		var tween = create_tween().set_parallel(true)
-		
 		if old_section:
-			tween.tween_property(old_section, "modulate:a", 0.0, 0.25).set_trans(Tween.TRANS_SINE)
+			var out_tween = create_tween().set_parallel(true)
+			out_tween.tween_property(old_section, "modulate:a", 0.0, 0.25).set_trans(Tween.TRANS_SINE)
+			
 			# Removing old section after fade
 			var clear_tween = create_tween()
 			clear_tween.tween_interval(0.25)
