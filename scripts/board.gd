@@ -8,6 +8,7 @@ var board_scale = 1.0
 @onready var highlights = $Gameplay/Highlights
 @onready var gameplay = $Gameplay
 @onready var board_frame = %BoardFrame
+@onready var timer_label = %TimerLabel
 
 var piece_scene = preload("res://scenes/piece.tscn")
 var marker_script = preload("res://scripts/move_marker.gd")
@@ -34,6 +35,16 @@ func _ready():
 	
 	if has_node("UI/Header/HBox/UndoButton"):
 		%UndoButton.pressed.connect(GameManager.undo_move)
+
+func _process(_delta):
+	_update_timer()
+
+func _update_timer():
+	if GameManager.game_start_time > 0:
+		var elapsed = (Time.get_ticks_msec() - GameManager.game_start_time) / 1000.0
+		var mins = int(elapsed / 60.0)
+		var secs = int(elapsed) % 60
+		timer_label.text = "%02d:%02d" % [mins, secs]
 
 	# Handle first turn if it's AI
 	if GameManager.current_turn == GameManager.Side.AI and GameManager.current_mode == GameManager.Mode.PV_AI:

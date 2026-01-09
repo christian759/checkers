@@ -1,0 +1,224 @@
+[gd_scene load_steps=7 format=3 uid="uid://daily_challenge_v6"]
+
+[ext_resource type="Script" path="res://scripts/daily_challenge.gd" id="1_page"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 2
+border_color = Color(0.17, 0.63, 0.52, 0.1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.17, 0.24, 0.31, 0.08)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_streak"]
+bg_color = Color(0.172549, 0.243137, 0.313726, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_play"]
+bg_color = Color(0.0862745, 0.627451, 0.521569, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_day_active"]
+bg_color = Color(0.0862745, 0.627451, 0.521569, 0.15)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0862745, 0.627451, 0.521569, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="DailyChallenge" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_page")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.97, 0.98, 0.98, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 40
+
+[node name="Header" type="Panel" parent="ScrollContainer/VBox"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Header"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="ScrollContainer/VBox/Header/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
+theme_override_font_sizes/font_size = 32
+text = "Daily Challenge"
+horizontal_alignment = 1
+
+[node name="MonthLabel" type="Label" parent="ScrollContainer/VBox/Header/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 14
+text = "JANUARY 2026"
+horizontal_alignment = 1
+
+[node name="Content" type="VBoxContainer" parent="ScrollContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 35
+
+[node name="StreakSection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="Panel" type="Panel" parent="ScrollContainer/VBox/Content/StreakSection"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_streak")
+
+[node name="HBox" type="HBoxContainer" parent="ScrollContainer/VBox/Content/StreakSection/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Content/StreakSection/Panel/HBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/StreakSection/Panel/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.8, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "CURRENT STREAK"
+horizontal_alignment = 1
+
+[node name="StreakValue" type="Label" parent="ScrollContainer/VBox/Content/StreakSection/Panel/HBox/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "12 DAYS"
+horizontal_alignment = 1
+
+[node name="CalendarSection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Content/CalendarSection"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/CalendarSection/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 13
+text = "MONTHLY PROGRESS"
+
+[node name="Card" type="PanelContainer" parent="ScrollContainer/VBox/Content/CalendarSection/VBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="Margin" type="MarginContainer" parent="ScrollContainer/VBox/Content/CalendarSection/VBox/Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="CalendarGrid" type="GridContainer" parent="ScrollContainer/VBox/Content/CalendarSection/VBox/Card/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 7
+
+[node name="TodaySection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="Card" type="PanelContainer" parent="ScrollContainer/VBox/Content/TodaySection"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="Margin" type="MarginContainer" parent="ScrollContainer/VBox/Content/TodaySection/Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Content/TodaySection/Card/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/TodaySection/Card/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
+theme_override_font_sizes/font_size = 18
+text = "Today's Challenge"
+
+[node name="Desc" type="Label" parent="ScrollContainer/VBox/Content/TodaySection/Card/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 14
+text = "Solve the puzzle to maintain your streak and earn exclusive rewards."
+autowrap_mode = 3
+
+[node name="PlayBtn" type="Button" parent="ScrollContainer/VBox/Content/TodaySection/Card/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_play")
+text = "START CHALLENGE"
+
+[node name="Footer" type="Control" parent="ScrollContainer/VBox"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2

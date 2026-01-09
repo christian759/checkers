@@ -1,0 +1,315 @@
+[gd_scene load_steps=10 format=3 uid="uid://08gms38xbpc1"]
+
+[ext_resource type="Script" path="res://scripts/pvp_lobby.gd" id="1_v4m3r"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 2
+border_color = Color(0.172549, 0.627451, 0.521569, 0.1)
+shadow_color = Color(0.17, 0.24, 0.31, 0.05)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_segmented_bg"]
+bg_color = Color(0.92, 0.94, 0.95, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bubble"]
+bg_color = Color(0.0862745, 0.627451, 0.521569, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.09, 0.63, 0.52, 0.2)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_bg"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.88, 0.9, 0.92, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="Theme" id="Theme_mature"]
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_bubble")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_bubble")
+HSlider/styles/slider = SubResource("StyleBoxFlat_slider_bg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_primary"]
+bg_color = Color(0.0862745, 0.627451, 0.521569, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.17, 0.24, 0.31, 0.15)
+shadow_size = 12
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_primary_h"]
+bg_color = Color(0.101961, 0.737255, 0.611765, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.17, 0.24, 0.31, 0.2)
+shadow_size = 15
+
+[node name="PvPLobby" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_v4m3r")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.972549, 0.980392, 0.980392, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 40
+
+[node name="HeaderPanel" type="Panel" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/HeaderPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Title" type="Label" parent="ScrollContainer/VBoxContainer/HeaderPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.172549, 0.243137, 0.313726, 1)
+theme_override_font_sizes/font_size = 36
+text = "New Game"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="ScrollContainer/VBoxContainer/HeaderPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 14
+text = "CONFIGURE YOUR MATCH"
+horizontal_alignment = 1
+
+[node name="Content" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 45
+
+[node name="ModeSection" type="MarginContainer" parent="ScrollContainer/VBoxContainer/Content"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/Content/ModeSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Content/ModeSection/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 14
+text = "SELECT OPPONENT"
+
+[node name="SegmentedControl" type="Panel" parent="ScrollContainer/VBoxContainer/Content/ModeSection/VBox"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_segmented_bg")
+
+[node name="Bubble" type="Panel" parent="ScrollContainer/VBoxContainer/Content/ModeSection/VBox/SegmentedControl"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 4.0
+offset_top = -24.0
+offset_right = 150.0
+offset_bottom = 24.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bubble")
+
+[node name="Buttons" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/Content/ModeSection/VBox/SegmentedControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="AiBtn" type="Button" parent="ScrollContainer/VBoxContainer/Content/ModeSection/VBox/SegmentedControl/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "Computer"
+flat = true
+
+[node name="FriendBtn" type="Button" parent="ScrollContainer/VBoxContainer/Content/ModeSection/VBox/SegmentedControl/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 15
+text = "Friend"
+flat = true
+
+[node name="AiSettings" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/Content"]
+layout_mode = 2
+theme_override_constants/separation = 45
+
+[node name="LevelSection" type="MarginContainer" parent="ScrollContainer/VBoxContainer/Content/AiSettings"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBox" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 14
+text = "AI DIFFICULTY"
+
+[node name="Value" type="Label" parent="ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/VBox/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.0862745, 0.627451, 0.521569, 1)
+theme_override_font_sizes/font_size = 16
+text = "Lv 1"
+
+[node name="LevelSlider" type="HSlider" parent="ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/VBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme = SubResource("Theme_mature")
+min_value = 1.0
+max_value = 200.0
+value = 1.0
+
+[node name="StartOrderSection" type="MarginContainer" parent="ScrollContainer/VBoxContainer/Content/AiSettings"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/Content/AiSettings/StartOrderSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Content/AiSettings/StartOrderSection/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 14
+text = "WHO STARTS?"
+
+[node name="OrderControl" type="Panel" parent="ScrollContainer/VBoxContainer/Content/AiSettings/StartOrderSection/VBox"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_segmented_bg")
+
+[node name="OrderBubble" type="Panel" parent="ScrollContainer/VBoxContainer/Content/AiSettings/StartOrderSection/VBox/OrderControl"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 4.0
+offset_top = -24.0
+offset_right = 150.0
+offset_bottom = 24.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bubble")
+
+[node name="Buttons" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/Content/AiSettings/StartOrderSection/VBox/OrderControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="MeBtn" type="Button" parent="ScrollContainer/VBoxContainer/Content/AiSettings/StartOrderSection/VBox/OrderControl/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "Me"
+flat = true
+
+[node name="OpponentBtn" type="Button" parent="ScrollContainer/VBoxContainer/Content/AiSettings/StartOrderSection/VBox/OrderControl/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 15
+text = "Opponent"
+flat = true
+
+[node name="ThemeSection" type="MarginContainer" parent="ScrollContainer/VBoxContainer/Content"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/Content/ThemeSection"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Content/ThemeSection/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 14
+text = "BOARD THEME"
+
+[node name="Grid" type="HFlowContainer" parent="ScrollContainer/VBoxContainer/Content/ThemeSection/VBox"]
+layout_mode = 2
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
+alignment = 0
+
+[node name="Footer" type="MarginContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 140
+
+[node name="StartButton" type="Button" parent="ScrollContainer/VBoxContainer/Footer"]
+custom_minimum_size = Vector2(280, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_primary")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_primary_h")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_primary_h")
+text = "Start Match"

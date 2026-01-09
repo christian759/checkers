@@ -1,0 +1,224 @@
+[gd_scene load_steps=8 format=3 uid="uid://ds0au8v7p1k2r"]
+
+[ext_resource type="Script" path="res://scripts/settings_page.gd" id="1_page"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 2
+border_color = Color(0.17, 0.63, 0.52, 0.1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toggle_on"]
+bg_color = Color(0.0862745, 0.627451, 0.521569, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toggle_off"]
+bg_color = Color(0.9, 0.92, 0.94, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_focus"]
+
+[sub_resource type="Theme" id="Theme_toggle"]
+CheckButton/styles/normal = SubResource("StyleBoxFlat_toggle_off")
+CheckButton/styles/pressed = SubResource("StyleBoxFlat_toggle_on")
+CheckButton/styles/hover = SubResource("StyleBoxFlat_toggle_off")
+CheckButton/styles/hover_pressed = SubResource("StyleBoxFlat_toggle_on")
+CheckButton/styles/focus = SubResource("StyleBoxEmpty_focus")
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_page")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.97, 0.98, 0.98, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 40
+
+[node name="Header" type="Panel" parent="ScrollContainer/VBox"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Header"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="ScrollContainer/VBox/Header/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
+theme_override_font_sizes/font_size = 32
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="ScrollContainer/VBox/Header/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 14
+text = "CUSTOMIZE YOUR EXPERIENCE"
+horizontal_alignment = 1
+
+[node name="Content" type="VBoxContainer" parent="ScrollContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 45
+
+[node name="AudioSection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Content/AudioSection"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/AudioSection/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 14
+text = "AUDIO"
+
+[node name="SoundRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/AudioSection/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/AudioSection/VBox/SoundRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
+theme_override_font_sizes/font_size = 16
+text = "Sound Effects"
+
+[node name="SoundToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/AudioSection/VBox/SoundRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 32)
+layout_mode = 2
+theme = SubResource("Theme_toggle")
+button_pressed = true
+
+[node name="MusicRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/AudioSection/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/AudioSection/VBox/MusicRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
+theme_override_font_sizes/font_size = 16
+text = "Background Music"
+
+[node name="MusicToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/AudioSection/VBox/MusicRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 32)
+layout_mode = 2
+theme = SubResource("Theme_toggle")
+button_pressed = true
+
+[node name="GameplaySection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Content/GameplaySection"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/GameplaySection/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 14
+text = "GAMEPLAY"
+
+[node name="ForcedJumpsRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/GameplaySection/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/ForcedJumpsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
+theme_override_font_sizes/font_size = 16
+text = "Forced Jumps"
+
+[node name="ForcedJumpsToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/ForcedJumpsRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 32)
+layout_mode = 2
+theme = SubResource("Theme_toggle")
+
+[node name="HintsRow" type="HBoxContainer" parent="ScrollContainer/VBox/Content/GameplaySection/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/HintsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.17, 0.24, 0.31, 1)
+theme_override_font_sizes/font_size = 16
+text = "Move Hints"
+
+[node name="MoveHintsToggle" type="CheckButton" parent="ScrollContainer/VBox/Content/GameplaySection/VBox/HintsRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 32)
+layout_mode = 2
+theme = SubResource("Theme_toggle")
+button_pressed = true
+
+[node name="InfoSection" type="MarginContainer" parent="ScrollContainer/VBox/Content"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBox/Content/InfoSection"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/Content/InfoSection/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 14
+text = "INFO"
+
+[node name="Version" type="Label" parent="ScrollContainer/VBox/Content/InfoSection/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 13
+text = "Version 1.0.0 (Slate & Emerald)"
+
+[node name="Credits" type="Label" parent="ScrollContainer/VBox/Content/InfoSection/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
+theme_override_font_sizes/font_size = 12
+text = "Developed by Antigravity AI"
+
+[node name="Footer" type="Control" parent="ScrollContainer/VBox"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
