@@ -151,8 +151,9 @@ layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
+offset_left = 4.0
 offset_top = -24.0
-offset_right = 320.0
+offset_right = 324.0
 offset_bottom = 24.0
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_bubble")
@@ -217,15 +218,12 @@ text = "Lv 1"
 
 [node name="LevelSlider" type="HSlider" parent="ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme = SubResource("Theme_mature")
 min_value = 1.0
 max_value = 200.0
 value = 40.0
-rounded = true
-tick_count = 10
-ticks_position = 3
 
 [node name="StartOrderSection" type="MarginContainer" parent="ScrollContainer/VBoxContainer/Content/AiSettings"]
 layout_mode = 2
@@ -286,6 +284,85 @@ size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
 theme_override_font_sizes/font_size = 15
 text = "Opponent"
+flat = true
+
+[node name="ClockSection" type="MarginContainer" parent="ScrollContainer/VBoxContainer/Content"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/Content/ClockSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Content/ClockSection/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.49, 0.55, 0.55, 1)
+theme_override_font_sizes/font_size = 14
+text = "MATCH CLOCK"
+
+[node name="ClockControl" type="Panel" parent="ScrollContainer/VBoxContainer/Content/ClockSection/VBox"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_segmented_bg")
+
+[node name="ClockBubble" type="Panel" parent="ScrollContainer/VBoxContainer/Content/ClockSection/VBox/ClockControl"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 4.0
+offset_top = -24.0
+offset_right = 164.0
+offset_bottom = 24.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bubble")
+
+[node name="Buttons" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/Content/ClockSection/VBox/ClockControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="ClockOffBtn" type="Button" parent="ScrollContainer/VBoxContainer/Content/ClockSection/VBox/ClockControl/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "Off"
+flat = true
+
+[node name="Clock1mBtn" type="Button" parent="ScrollContainer/VBoxContainer/Content/ClockSection/VBox/ClockControl/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.49, 0.55, 0.55, 1)
+theme_override_font_sizes/font_size = 14
+text = "1m"
+flat = true
+
+[node name="Clock5mBtn" type="Button" parent="ScrollContainer/VBoxContainer/Content/ClockSection/VBox/ClockControl/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.49, 0.55, 0.55, 1)
+theme_override_font_sizes/font_size = 14
+text = "5m"
+flat = true
+
+[node name="Clock10mBtn" type="Button" parent="ScrollContainer/VBoxContainer/Content/ClockSection/VBox/ClockControl/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.49, 0.55, 0.55, 1)
+theme_override_font_sizes/font_size = 14
+text = "10m"
 flat = true
 
 [node name="ThemeSection" type="MarginContainer" parent="ScrollContainer/VBoxContainer/Content"]

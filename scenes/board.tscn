@@ -148,28 +148,91 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -140.0
+offset_top = -220.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_right = 40
-theme_override_constants/margin_bottom = 50
+theme_override_constants/margin_bottom = 40
 
-[node name="TurnCard" type="Panel" parent="UI/Footer"]
-custom_minimum_size = Vector2(0, 64)
+[node name="VBox" type="VBoxContainer" parent="UI/Footer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 2
+
+[node name="TurnCard" type="Panel" parent="UI/Footer/VBox"]
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_turn_bg")
 
-[node name="TurnLabel" type="Label" parent="UI/Footer/TurnCard"]
-unique_name_in_owner = true
+[node name="HBox" type="HBoxContainer" parent="UI/Footer/VBox/TurnCard"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
+
+[node name="PlayerClock" type="VBoxContainer" parent="UI/Footer/VBox/TurnCard/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="UI/Footer/VBox/TurnCard/HBox/PlayerClock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.4, 0.2, 0.5)
+theme_override_font_sizes/font_size = 10
+text = "PLAYER"
+horizontal_alignment = 1
+
+[node name="P1Time" type="Label" parent="UI/Footer/VBox/TurnCard/HBox/PlayerClock"]
+unique_name_in_owner = true
+layout_mode = 2
 theme_override_colors/font_color = Color(0.18, 0.8, 0.44, 1)
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 28
+text = "05:00"
+horizontal_alignment = 1
+
+[node name="Divider" type="Control" parent="UI/Footer/VBox/TurnCard/HBox"]
+custom_minimum_size = Vector2(2, 40)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ColorRect" type="ColorRect" parent="UI/Footer/VBox/TurnCard/HBox/Divider"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.18, 0.8, 0.44, 0.1)
+
+[node name="OpponentClock" type="VBoxContainer" parent="UI/Footer/VBox/TurnCard/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="UI/Footer/VBox/TurnCard/HBox/OpponentClock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.4, 0.2, 0.5)
+theme_override_font_sizes/font_size = 10
+text = "OPPONENT"
+horizontal_alignment = 1
+
+[node name="P2Time" type="Label" parent="UI/Footer/VBox/TurnCard/HBox/OpponentClock"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.6, 0.4, 0.5)
+theme_override_font_sizes/font_size = 28
+text = "05:00"
+horizontal_alignment = 1
+
+[node name="TurnLabel" type="Label" parent="UI/Footer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.18, 0.8, 0.44, 1)
+theme_override_font_sizes/font_size = 18
 text = "YOUR TURN"
 horizontal_alignment = 1
 vertical_alignment = 1

@@ -13,12 +13,12 @@ var selected_piece = null
 var must_jump = false # For multi-jump logic
 var win_streak = 0
 var max_unlocked_level = 1
-var move_history = [] # Stack of {pieces_state, turn, settings}
+var move_history = []
 var is_daily_challenge = false
 var is_mastery = false
 var daily_completed = false
 var game_start_time = 0
-var is_calculating = false # Lock input while AI thinks
+var is_calculating = false
 var undo_used_in_match = false
 var active_theme_played = false
 
@@ -27,14 +27,19 @@ var match_mode = Mode.PV_AI
 var match_ai_level = 1
 var match_theme_index = 0
 var match_start_side = Side.PLAYER
+var match_time_limit = 0 # 0 = Infinite, else seconds
+
+# Match Clock State
+var player_time = 0.0
+var opponent_time = 0.0
 
 # Mastery Progression Tracking
-var completed_levels = [] # Array of level IDs (integers)
+var completed_levels = []
 
 # Daily Challenge & Persistence
 var daily_streak = 0
-var last_daily_date = "" # Format: "2026-01-05"
-var completed_dailies = [] # Array of date strings "YYYY-MM-DD"
+var last_daily_date = ""
+var completed_dailies = []
 var current_puzzle_id = -1
 var save_path = "user://save_game.dat"
 
@@ -62,7 +67,7 @@ var puzzles = [
 
 # Settings
 var forced_jumps = false
-var movement_mode = "diagonal" # "diagonal" or "straight"
+var movement_mode = "diagonal"
 
 signal turn_changed(new_side)
 signal game_over(winner)
@@ -129,7 +134,8 @@ func complete_daily():
 		AchievementManager.update_stat("daily_count", 1)
 		save_data()
 
-func start_custom_game(mode, ai_level, theme_index, start_side):
+func start_custom_game(mode, ai_level, theme_index, start_side, time_limit = 0):
+	reset_game()
 	undo_used_in_match = false
 	active_theme_played = false
 	game_start_time = Time.get_ticks_msec()
@@ -139,6 +145,11 @@ func start_custom_game(mode, ai_level, theme_index, start_side):
 	match_ai_level = ai_level
 	match_theme_index = theme_index
 	match_start_side = start_side
+	match_time_limit = time_limit
+	
+	# Init Timers
+	player_time = float(time_limit)
+	opponent_time = float(time_limit)
 	
 	current_mode = mode
 	current_level = ai_level
@@ -151,6 +162,7 @@ func start_custom_game(mode, ai_level, theme_index, start_side):
 	get_tree().change_scene_to_file("res://scenes/board.tscn")
 
 func start_mastery_level(level):
+	reset_game()
 	undo_used_in_match = false
 	active_theme_played = false
 	game_start_time = Time.get_ticks_msec()
@@ -159,6 +171,7 @@ func start_mastery_level(level):
 	match_ai_level = level
 	match_theme_index = 0
 	match_start_side = Side.PLAYER
+	match_time_limit = 0
 	
 	current_mode = Mode.PV_AI
 	current_level = level
@@ -184,7 +197,9 @@ func push_history():
 		"turn": current_turn,
 		"must_jump": must_jump,
 		"selected_piece_pos": selected_piece.grid_pos if selected_piece else null,
-		"level": current_level
+		"level": current_level,
+		"player_time": player_time,
+		"opponent_time": opponent_time
 	}
 	
 	for r in range(8):
@@ -224,6 +239,8 @@ func _restore_snapshot(snapshot):
 	current_turn = snapshot.turn
 	must_jump = snapshot.must_jump
 	current_level = snapshot.level
+	player_time = snapshot.player_time
+	opponent_time = snapshot.opponent_time
 	
 	for r in range(8):
 		for c in range(8):
@@ -269,7 +286,8 @@ func set_piece_at(r, c, piece):
 
 func has_moves(side):
 	var state = _get_board_state()
-	var moves = _get_all_sim_moves(state, side, must_jump, selected_piece)
+	var piece_pos = selected_piece.grid_pos if selected_piece else Vector2i(-1, -1)
+	var moves = _get_all_sim_moves(state, side, must_jump, piece_pos)
 	return moves.size() > 0
 
 func switch_turn():
@@ -297,10 +315,11 @@ func play_ai_turn():
 	if match_ai_level > 160: depth = 5
 	
 	var current_state = _get_board_state()
-	var result = _minimax(current_state, depth, -INF, INF, true, must_jump, selected_piece)
+	var piece_pos = selected_piece.grid_pos if selected_piece else Vector2i(-1, -1)
+	var result = _minimax(current_state, depth, -INF, INF, true, must_jump, piece_pos)
 	var best_move = result.move
 	
-	if best_move and best_move.piece_node:
+	if best_move and best_move.get("piece_node"):
 		board_node.execute_move(best_move.piece_node, best_move.to.x, best_move.to.y)
 		is_calculating = false
 	else:
@@ -322,11 +341,11 @@ func _get_board_state():
 		state.append(row)
 	return state
 
-func _minimax(state, depth, alpha, beta, is_max, m_jump, m_piece):
+func _minimax(state, depth, alpha, beta, is_max, m_jump, m_piece_pos):
 	if depth == 0:
 		return {"score": _evaluate_board(state), "move": null}
 	
-	var moves = _get_all_sim_moves(state, Side.AI if is_max else Side.PLAYER, m_jump, m_piece)
+	var moves = _get_all_sim_moves(state, Side.AI if is_max else Side.PLAYER, m_jump, m_piece_pos)
 	if moves.size() == 0:
 		return {"score": - 10000 if is_max else 10000, "move": null}
 	
@@ -335,7 +354,7 @@ func _minimax(state, depth, alpha, beta, is_max, m_jump, m_piece):
 		var max_eval = - INF
 		for move in moves:
 			var next_state = _simulate_move(state, move)
-			var eval = _minimax(next_state, depth - 1, alpha, beta, false, false, null).score
+			var eval = _minimax(next_state, depth - 1, alpha, beta, false, false, Vector2i(-1, -1)).score
 			if eval > max_eval:
 				max_eval = eval
 				best_move = move
@@ -346,7 +365,7 @@ func _minimax(state, depth, alpha, beta, is_max, m_jump, m_piece):
 		var min_eval = INF
 		for move in moves:
 			var next_state = _simulate_move(state, move)
-			var eval = _minimax(next_state, depth - 1, alpha, beta, true, false, null).score
+			var eval = _minimax(next_state, depth - 1, alpha, beta, true, false, Vector2i(-1, -1)).score
 			if eval < min_eval:
 				min_eval = eval
 				best_move = move
@@ -365,25 +384,22 @@ func _evaluate_board(state):
 				else: score -= val
 	return score
 
-func _get_all_sim_moves(state, side, m_jump, m_piece):
+func _get_all_sim_moves(state, side, m_jump, m_piece_pos):
 	var all_moves = []
 	var captures = []
 	
-	if m_jump and m_piece:
-		var target_node = m_piece if typeof(m_piece) != TYPE_DICTIONARY else m_piece.get("node")
-		for r in range(8):
-			for c in range(8):
-				var p = state[r][c]
-				if p and p.get("node") == target_node:
-					var m = _get_sim_legal_moves(state, r, c)
-					for move in m:
-						if move.is_capture: captures.append(move)
+	if m_jump and m_piece_pos.x != -1:
+		var p = state[m_piece_pos.x][m_piece_pos.y]
+		if p:
+			var m = _get_sim_legal_moves(state, m_piece_pos.x, m_piece_pos.y, true)
+			for move in m:
+				if move.is_capture: captures.append(move)
 	else:
 		for r in range(8):
 			for c in range(8):
 				var p = state[r][c]
 				if p and p.side == side:
-					var m = _get_sim_legal_moves(state, r, c)
+					var m = _get_sim_legal_moves(state, r, c, false)
 					for move in m:
 						if move.is_capture: captures.append(move)
 						else: all_moves.append(move)
@@ -391,7 +407,7 @@ func _get_all_sim_moves(state, side, m_jump, m_piece):
 	if captures.size() > 0: return captures
 	return all_moves
 
-func _get_sim_legal_moves(state, r, c):
+func _get_sim_legal_moves(state, r, c, is_jump_chain):
 	var p = state[r][c]
 	if not p: return []
 	var moves = []
@@ -416,13 +432,16 @@ func _get_sim_legal_moves(state, r, c):
 		else:
 			var jump_r = r + d.x * 2
 			var jump_c = c + d.y * 2
+			var is_forward = (p.side == Side.AI and d.x > 0) or (p.side == Side.PLAYER and d.x < 0)
+			
 			if is_on_board(jump_r, jump_c):
 				var mid_p = state[r + d.x][c + d.y]
 				if mid_p and mid_p.side != p.side and state[jump_r][jump_c] == null:
-					moves.append({"from": Vector2i(r, c), "to": Vector2i(jump_r, jump_c), "is_capture": true, "piece_node": p.node})
+					# NEW RULE: Backward kill ONLY during double jump chain
+					if is_forward or is_jump_chain:
+						moves.append({"from": Vector2i(r, c), "to": Vector2i(jump_r, jump_c), "is_capture": true, "piece_node": p.node})
 			
-			var forward = (p.side == Side.AI and d.x > 0) or (p.side == Side.PLAYER and d.x < 0)
-			if forward:
+			if not is_jump_chain and is_forward:
 				if is_on_board(r + d.x, c + d.y) and state[r + d.x][c + d.y] == null:
 					moves.append({"from": Vector2i(r, c), "to": Vector2i(r + d.x, c + d.y), "is_capture": false, "piece_node": p.node})
 	return moves

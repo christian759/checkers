@@ -8,6 +8,12 @@ extends Control
 @onready var me_btn = %MeBtn
 @onready var opp_btn = %OpponentBtn
 
+@onready var clock_bubble = %ClockBubble
+@onready var clock_off_btn = %ClockOffBtn
+@onready var clock_1m_btn = %Clock1mBtn
+@onready var clock_5m_btn = %Clock5mBtn
+@onready var clock_10m_btn = %Clock10mBtn
+
 @onready var ai_settings = %AiSettings
 @onready var level_label = %Value
 @onready var level_slider = %LevelSlider
@@ -16,6 +22,7 @@ extends Control
 
 var selected_mode = 0 # 0: AI, 1: Friend
 var selected_order = 0 # 0: Me, 1: Opponent
+var selected_clock_index = 0 # 0: Off, 1: 1m, 2: 5m, 3: 10m
 var selected_theme_index = 0
 
 func _ready():
@@ -27,9 +34,15 @@ func _ready():
 	me_btn.pressed.connect(_on_order_toggled.bind(0))
 	opp_btn.pressed.connect(_on_order_toggled.bind(1))
 	
+	# Clock Selection
+	clock_off_btn.pressed.connect(_on_clock_toggled.bind(0))
+	clock_1m_btn.pressed.connect(_on_clock_toggled.bind(1))
+	clock_5m_btn.pressed.connect(_on_clock_toggled.bind(2))
+	clock_10m_btn.pressed.connect(_on_clock_toggled.bind(3))
+	
 	# AI Level
 	level_slider.value_changed.connect(_on_level_changed)
-	_on_level_changed(1)
+	_on_level_changed(40)
 	
 	# Themes
 	_setup_theme_grid()
@@ -54,10 +67,18 @@ func _on_order_toggled(index):
 	selected_order = index
 	_animate_segmented(order_bubble, index, [me_btn, opp_btn])
 
+func _on_clock_toggled(index):
+	if selected_clock_index == index: return
+	selected_clock_index = index
+	_animate_segmented(clock_bubble, index, [clock_off_btn, clock_1m_btn, clock_5m_btn, clock_10m_btn])
+
 func _animate_segmented(target_bubble, index, buttons):
 	var parent_width = target_bubble.get_parent().size.x
-	var target_x = 4.0 if index == 0 else parent_width / 2.0 + 2.0
-	var target_width = parent_width / 2.0 - 10.0
+	var btn_count = buttons.size()
+	var btn_width = parent_width / float(btn_count)
+	
+	var target_x = (index * btn_width) + 4.0
+	var target_width = btn_width - 8.0
 	
 	var tween = create_tween().set_parallel(true)
 	tween.tween_property(target_bubble, "position:x", target_x, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
@@ -117,4 +138,7 @@ func _on_start_pressed():
 	var ai_level = int(level_slider.value)
 	var start_side = GameManager.Side.PLAYER if selected_order == 0 else GameManager.Side.AI
 	
-	GameManager.start_custom_game(mode, ai_level, selected_theme_index, start_side)
+	var clock_times = [0, 60, 300, 600]
+	var time_limit = clock_times[selected_clock_index]
+	
+	GameManager.start_custom_game(mode, ai_level, selected_theme_index, start_side, time_limit)

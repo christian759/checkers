@@ -10,6 +10,9 @@ var board_scale = 1.0
 @onready var board_frame = %BoardFrame
 @onready var timer_label = %TimerLabel
 
+@onready var p1_time_label = %P1Time
+@onready var p2_time_label = %P2Time
+
 var piece_scene = preload("res://scenes/piece.tscn")
 var marker_script = preload("res://scripts/move_marker.gd")
 var results_scene = preload("res://scenes/game_results.tscn")
@@ -36,15 +39,43 @@ func _ready():
 	if has_node("UI/Header/HBox/UndoButton"):
 		%UndoButton.pressed.connect(GameManager.undo_move)
 
-func _process(_delta):
-	_update_timer()
+func _process(delta):
+	_update_timer(delta)
 
-func _update_timer():
-	if GameManager.game_start_time > 0:
-		var elapsed = (Time.get_ticks_msec() - GameManager.game_start_time) / 1000.0
-		var mins = int(elapsed / 60.0)
-		var secs = int(elapsed) % 60
-		timer_label.text = "%02d:%02d" % [mins, secs]
+func _update_timer(delta):
+	if GameManager.game_start_time <= 0: return
+	
+	# Global Elapsed Timer
+	var elapsed = (Time.get_ticks_msec() - GameManager.game_start_time) / 1000.0
+	var mins = int(elapsed / 60.0)
+	var secs = int(elapsed) % 60
+	timer_label.text = "%02d:%02d" % [mins, secs]
+	
+	# Match Clocks
+	if GameManager.match_time_limit > 0:
+		if GameManager.current_turn == GameManager.Side.PLAYER:
+			GameManager.player_time -= delta
+			if GameManager.player_time <= 0:
+				GameManager.player_time = 0
+				GameManager.check_win_condition(GameManager.Side.AI)
+		else:
+			GameManager.opponent_time -= delta
+			if GameManager.opponent_time <= 0:
+				GameManager.opponent_time = 0
+				GameManager.check_win_condition(GameManager.Side.PLAYER)
+		
+		# Update UI
+		p1_time_label.text = _format_time(GameManager.player_time)
+		p2_time_label.text = _format_time(GameManager.opponent_time)
+	else:
+		# Just show standard timer style or hide
+		p1_time_label.text = "--:--"
+		p2_time_label.text = "--:--"
+
+func _format_time(seconds):
+	var m = int(seconds / 60.0)
+	var s = int(seconds) % 60
+	return "%02d:%02d" % [m, s]
 
 func _update_hud():
 	if GameManager.is_daily_challenge:
@@ -63,16 +94,27 @@ func _on_turn_changed(side):
 	_update_turn_label(side)
 
 func _update_turn_label(side):
+	var active_color = Color("#2ecc71") # Vibrant Green
+	var inactive_color = Color("#7f8c8d") # Grey
+	
 	if side == GameManager.Side.PLAYER:
 		%TurnLabel.text = "YOUR TURN"
-		%TurnLabel.add_theme_color_override("font_color", Color("#2ecc71"))
+		%TurnLabel.add_theme_color_override("font_color", active_color)
+		p1_time_label.add_theme_color_override("font_color", active_color)
+		p1_time_label.modulate.a = 1.0
+		p2_time_label.add_theme_color_override("font_color", inactive_color)
+		p2_time_label.modulate.a = 0.5
 	else:
 		if GameManager.current_mode == GameManager.Mode.PV_AI:
 			%TurnLabel.text = "AI THINKING..."
-			%TurnLabel.add_theme_color_override("font_color", Color("#e67e22"))
 		else:
 			%TurnLabel.text = "OPPONENT'S TURN"
-			%TurnLabel.add_theme_color_override("font_color", Color("#e67e22"))
+			
+		%TurnLabel.add_theme_color_override("font_color", Color("#e67e22"))
+		p2_time_label.add_theme_color_override("font_color", Color("#e67e22"))
+		p2_time_label.modulate.a = 1.0
+		p1_time_label.add_theme_color_override("font_color", inactive_color)
+		p1_time_label.modulate.a = 0.5
 
 func _on_game_over(winner):
 	var results = results_scene.instantiate()
@@ -86,7 +128,7 @@ func _setup_responsive_size():
 	
 	var board_total_size = tile_size * 8.0
 	var margin_x = (view_size.x - board_total_size) / 2.0
-	var margin_y = (view_size.y - board_total_size) / 2.0
+	var margin_y = (view_size.y - board_total_size) / 2.6 # Offset slightly up for footer
 	
 	gameplay.position = Vector2(margin_x, margin_y)
 	
@@ -264,13 +306,16 @@ func get_legal_moves(piece: Piece):
 		else:
 			var jump_r = fr + d.x * 2
 			var jump_c = fc + d.y * 2
+			var is_forward = (piece.side == GameManager.Side.PLAYER and d.x < 0) or (piece.side == GameManager.Side.AI and d.x > 0)
+			
 			if GameManager.is_on_board(jump_r, jump_c):
 				var mid_p = GameManager.get_piece_at(fr + d.x, fc + d.y)
 				if mid_p and mid_p.side != piece.side and GameManager.get_piece_at(jump_r, jump_c) == null:
-					moves.append({"to": Vector2i(jump_r, jump_c), "is_capture": true})
+					# NEW RULE: Restricted backward captures (only on multi-jump chain)
+					if is_forward or GameManager.must_jump:
+						moves.append({"to": Vector2i(jump_r, jump_c), "is_capture": true})
 			
-			var forward = (piece.side == GameManager.Side.PLAYER and d.x < 0) or (piece.side == GameManager.Side.AI and d.x > 0)
-			if forward and not GameManager.must_jump:
+			if is_forward and not GameManager.must_jump:
 				var dr = fr + d.x
 				var dc = fc + d.y
 				if GameManager.is_on_board(dr, dc) and GameManager.get_piece_at(dr, dc) == null:
@@ -310,7 +355,7 @@ func execute_move(piece, destination_row, destination_col):
 	if is_capture and not promoted:
 		var has_more = false
 		for m in get_legal_moves(piece):
-			if m.is_capture: has_more = true; break
+			if m.get("is_capture"): has_more = true; break
 		if has_more:
 			GameManager.must_jump = true
 			select_piece(piece)
