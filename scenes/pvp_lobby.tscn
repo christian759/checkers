@@ -5,6 +5,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
 bg_color = Color(1, 1, 1, 1)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 border_width_bottom = 1
 border_color = Color(0.9, 0.9, 0.9, 1)
 corner_radius_bottom_right = 32
@@ -41,6 +42,12 @@ border_width_bottom = 2
 border_color = Color(0.18, 0.8, 0.44, 0.1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_segmented_bg"]
+=======
+border_width_bottom = 2
+border_color = Color(0.18, 0.8, 0.44, 0.1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_segmented_bg"]
+>>>>>>> Stashed changes
 bg_color = Color(0.95, 0.98, 0.95, 1)
 corner_radius_top_left = 12
 corner_radius_top_right = 12
@@ -66,6 +73,9 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [sub_resource type="Theme" id="Theme_emerald"]
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_bubble")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_bubble")
@@ -99,6 +109,7 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 shadow_color = Color(0.14, 0.64, 0.35, 0.3)
 shadow_size = 18
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_match"]
@@ -117,6 +128,8 @@ corner_radius_top_left = 25
 corner_radius_top_right = 25
 corner_radius_bottom_right = 25
 corner_radius_bottom_left = 25
+=======
+>>>>>>> Stashed changes
 
 [node name="PvPLobby" type="Control"]
 layout_mode = 3
@@ -135,7 +148,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 color = Color(0.98, 1, 0.98, 1)
+=======
+color = Color(1, 1, 1, 1)
+>>>>>>> Stashed changes
 =======
 color = Color(1, 1, 1, 1)
 >>>>>>> Stashed changes
@@ -154,15 +171,21 @@ vertical_scroll_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 theme_override_constants/separation = 35
 
 [node name="HeaderPanel" type="Panel" parent="ScrollContainer/VBox"]
 custom_minimum_size = Vector2(0, 160)
 =======
+=======
+>>>>>>> Stashed changes
 theme_override_constants/separation = 45
 
 [node name="HeaderPanel" type="Panel" parent="ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 150)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_header")
@@ -179,10 +202,13 @@ alignment = 1
 [node name="Title" type="Label" parent="ScrollContainer/VBox/HeaderPanel/VBox"]
 layout_mode = 2
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 theme_override_colors/font_color = Color(0.06, 0.2, 0.08, 1)
 theme_override_font_sizes/font_size = 42
 text = "New Match"
 =======
+=======
+>>>>>>> Stashed changes
 theme_override_colors/font_color = Color(0.1, 0.3, 0.1, 1)
 theme_override_font_sizes/font_size = 42
 text = "New Game"
@@ -192,9 +218,15 @@ horizontal_alignment = 1
 [node name="Subtitle" type="Label" parent="ScrollContainer/VBox/HeaderPanel/VBox"]
 layout_mode = 2
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 theme_override_colors/font_color = Color(0.5, 0.6, 0.5, 1)
 theme_override_font_sizes/font_size = 16
 text = "Configure your rules and board"
+=======
+theme_override_colors/font_color = Color(0.4, 0.6, 0.4, 1)
+theme_override_font_sizes/font_size = 16
+text = "MATCH CONFIGURATION"
+>>>>>>> Stashed changes
 =======
 theme_override_colors/font_color = Color(0.4, 0.6, 0.4, 1)
 theme_override_font_sizes/font_size = 16
@@ -218,6 +250,7 @@ theme_override_constants/separation = 15
 [node name="Label" type="Label" parent="ScrollContainer/VBox/Content/ModeSection/VBox"]
 layout_mode = 2
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 theme_override_colors/font_color = Color(0.3, 0.4, 0.3, 1)
 theme_override_font_sizes/font_size = 14
 text = "SELECT OPPONENT"
@@ -232,6 +265,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_segmented_bg")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 56)
 =======
+=======
+>>>>>>> Stashed changes
 theme_override_colors/font_color = Color(0.3, 0.5, 0.3, 1)
 theme_override_font_sizes/font_size = 15
 text = "CHOOSE OPPONENT"
@@ -243,21 +278,30 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_segmented_bg")
 
 [node name="Bubble" type="Panel" parent="ScrollContainer/VBoxContainer/Content/ModeSection/VBox/SegmentedControl"]
 custom_minimum_size = Vector2(0, 50)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 offset_left = 4.0
 offset_top = -28.0
 offset_right = 160.0
 offset_bottom = 28.0
 =======
+=======
+>>>>>>> Stashed changes
 offset_left = 5.0
 offset_top = -25.0
 offset_right = 155.0
 offset_bottom = 25.0
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_bubble")
@@ -283,8 +327,13 @@ flat = true
 layout_mode = 2
 size_flags_horizontal = 3
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 theme_override_colors/font_color = Color(0.5, 0.6, 0.5, 1)
 theme_override_font_sizes/font_size = 15
+=======
+theme_override_colors/font_color = Color(0.4, 0.6, 0.4, 1)
+theme_override_font_sizes/font_size = 16
+>>>>>>> Stashed changes
 =======
 theme_override_colors/font_color = Color(0.4, 0.6, 0.4, 1)
 theme_override_font_sizes/font_size = 16
@@ -313,9 +362,15 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 theme_override_colors/font_color = Color(0.3, 0.4, 0.3, 1)
 theme_override_font_sizes/font_size = 14
 text = "Difficulty Level"
+=======
+theme_override_colors/font_color = Color(0.3, 0.5, 0.3, 1)
+theme_override_font_sizes/font_size = 15
+text = "AI LEVEL"
+>>>>>>> Stashed changes
 =======
 theme_override_colors/font_color = Color(0.3, 0.5, 0.3, 1)
 theme_override_font_sizes/font_size = 15
@@ -330,11 +385,18 @@ theme_override_font_sizes/font_size = 20
 text = "Lv 1"
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 [node name="LevelSlider" type="HSlider" parent="ScrollContainer/VBox/Content/AiSettings/LevelSection/VBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme = SubResource("Theme_premium")
+=======
+[node name="LevelSlider" type="HSlider" parent="ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/VBox"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme = SubResource("Theme_emerald")
+>>>>>>> Stashed changes
 =======
 [node name="LevelSlider" type="HSlider" parent="ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/VBox"]
 custom_minimum_size = Vector2(0, 45)
@@ -357,6 +419,7 @@ theme_override_constants/separation = 15
 [node name="Label" type="Label" parent="ScrollContainer/VBox/Content/AiSettings/FirstMoveSection/VBox"]
 layout_mode = 2
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 theme_override_colors/font_color = Color(0.3, 0.4, 0.3, 1)
 theme_override_font_sizes/font_size = 14
 text = "WHO STARTS?"
@@ -371,6 +434,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_segmented_bg")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 56)
 =======
+=======
+>>>>>>> Stashed changes
 theme_override_colors/font_color = Color(0.3, 0.5, 0.3, 1)
 theme_override_font_sizes/font_size = 15
 text = "WHO STARTS FIRST?"
@@ -382,21 +447,30 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_segmented_bg")
 
 [node name="OrderBubble" type="Panel" parent="ScrollContainer/VBoxContainer/Content/AiSettings/StartOrderSection/VBox/OrderControl"]
 custom_minimum_size = Vector2(0, 50)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 offset_left = 4.0
 offset_top = -28.0
 offset_right = 160.0
 offset_bottom = 28.0
 =======
+=======
+>>>>>>> Stashed changes
 offset_left = 5.0
 offset_top = -25.0
 offset_right = 155.0
 offset_bottom = 25.0
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_bubble")
@@ -424,10 +498,13 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 theme_override_colors/font_color = Color(0.5, 0.6, 0.5, 1)
 theme_override_font_sizes/font_size = 15
 text = "Computer"
 =======
+=======
+>>>>>>> Stashed changes
 theme_override_colors/font_color = Color(0.4, 0.6, 0.4, 1)
 theme_override_font_sizes/font_size = 16
 text = "Opponent"
@@ -446,11 +523,14 @@ theme_override_constants/separation = 20
 [node name="Label" type="Label" parent="ScrollContainer/VBox/Content/ThemeSection/VBox"]
 layout_mode = 2
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 theme_override_colors/font_color = Color(0.3, 0.4, 0.3, 1)
 theme_override_font_sizes/font_size = 14
 text = "BOARD SURFACE"
 horizontal_alignment = 1
 =======
+=======
+>>>>>>> Stashed changes
 theme_override_colors/font_color = Color(0.3, 0.5, 0.3, 1)
 theme_override_font_sizes/font_size = 15
 text = "BOARD THEME"
@@ -475,16 +555,22 @@ custom_minimum_size = Vector2(300, 80)
 =======
 [node name="StartButton" type="Button" parent="ScrollContainer/VBoxContainer/Footer"]
 custom_minimum_size = Vector2(300, 75)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 24
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_match")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_match_h")
 text = "JOIN MATCH"
 =======
+=======
+>>>>>>> Stashed changes
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_primary")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_primary_h")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_primary_h")
