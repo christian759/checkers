@@ -215,9 +215,16 @@ func show_toast(title: String):
 	canvas.add_child(panel)
 	
 	var sb = StyleBoxFlat.new()
-	sb.bg_color = Color(0.1, 0.1, 0.1, 0.9)
+	sb.bg_color = Color.WHITE
+	sb.border_width_left = 2
+	sb.border_width_top = 2
+	sb.border_width_right = 2
+	sb.border_width_bottom = 2
+	sb.border_color = Color("#2ecc71")
 	sb.corner_radius_bottom_left = 20
 	sb.corner_radius_bottom_right = 20
+	sb.shadow_color = Color(0, 0, 0, 0.1)
+	sb.shadow_size = 15
 	panel.add_theme_stylebox_override("panel", sb)
 	
 	var margin = MarginContainer.new()
@@ -240,6 +247,7 @@ func show_toast(title: String):
 	label2.text = title
 	label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label2.add_theme_font_size_override("font_size", 24)
+	label2.add_theme_color_override("font_color", Color("#2c3e50")) # Dark Slate
 	vbox.add_child(label2)
 	
 	# Animate in and out

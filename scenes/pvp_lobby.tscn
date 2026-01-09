@@ -145,6 +145,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_segmented_bg")
 
 [node name="Bubble" type="Panel" parent="ScrollContainer/VBoxContainer/Content/ModeSection/VBox/SegmentedControl"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 1
 anchors_preset = 4
@@ -167,6 +168,7 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 
 [node name="AiBtn" type="Button" parent="ScrollContainer/VBoxContainer/Content/ModeSection/VBox/SegmentedControl/Buttons"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -175,6 +177,7 @@ text = "Computer"
 flat = true
 
 [node name="FriendBtn" type="Button" parent="ScrollContainer/VBoxContainer/Content/ModeSection/VBox/SegmentedControl/Buttons"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
@@ -183,6 +186,7 @@ text = "Friend"
 flat = true
 
 [node name="AiSettings" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/Content"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 45
 
@@ -206,12 +210,14 @@ theme_override_font_sizes/font_size = 14
 text = "AI DIFFICULTY"
 
 [node name="Value" type="Label" parent="ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/VBox/HBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.0862745, 0.627451, 0.521569, 1)
 theme_override_font_sizes/font_size = 16
 text = "Lv 1"
 
 [node name="LevelSlider" type="HSlider" parent="ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/VBox"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme = SubResource("Theme_mature")
@@ -240,6 +246,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_segmented_bg")
 
 [node name="OrderBubble" type="Panel" parent="ScrollContainer/VBoxContainer/Content/AiSettings/StartOrderSection/VBox/OrderControl"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 1
 anchors_preset = 4
@@ -262,6 +269,7 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 
 [node name="MeBtn" type="Button" parent="ScrollContainer/VBoxContainer/Content/AiSettings/StartOrderSection/VBox/OrderControl/Buttons"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -270,6 +278,7 @@ text = "Me"
 flat = true
 
 [node name="OpponentBtn" type="Button" parent="ScrollContainer/VBoxContainer/Content/AiSettings/StartOrderSection/VBox/OrderControl/Buttons"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.498039, 0.54902, 0.552941, 1)
@@ -293,6 +302,7 @@ theme_override_font_sizes/font_size = 14
 text = "BOARD THEME"
 
 [node name="Grid" type="HFlowContainer" parent="ScrollContainer/VBoxContainer/Content/ThemeSection/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = 20
 theme_override_constants/v_separation = 20
@@ -304,6 +314,7 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_bottom = 140
 
 [node name="StartButton" type="Button" parent="ScrollContainer/VBoxContainer/Footer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 64)
 layout_mode = 2
 size_flags_horizontal = 4

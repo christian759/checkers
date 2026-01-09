@@ -12,7 +12,7 @@ func _ready():
 	mouse_exited.connect(_on_mouse_exited)
 	pivot_offset = size / 2
 
-func setup(rank_name: String, start_level: int, accent_color: Color, current_global_level: int):
+func setup(rank_name: String, start_level: int, accent_color: Color):
 	title_label.text = rank_name
 	
 	# Glass Header Color
@@ -34,12 +34,12 @@ func setup(rank_name: String, start_level: int, accent_color: Color, current_glo
 		var icon = level_icon_scene.instantiate()
 		grid.add_child(icon)
 		
-		var state = 0 # LOCKED
+		var state = icon.State.LOCKED
 		if level_num in GameManager.completed_levels:
-			state = 2 # COMPLETED
+			state = icon.State.COMPLETED
 			completed_count += 1
 		elif level_num == GameManager.max_unlocked_level:
-			state = 1 # CURRENT
+			state = icon.State.CURRENT
 			
 		icon.setup(level_num, state, accent_color)
 	

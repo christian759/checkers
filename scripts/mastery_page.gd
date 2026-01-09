@@ -2,84 +2,61 @@ extends Control
 
 @onready var scroll_container = $VBoxContainer/ScrollContainer
 @onready var card_container = $VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer
-@onready var global_progress = $VBoxContainer/Header/ProgressLabel
+@onready var global_progress = %ProgressLabel
 
 var card_scene = preload("res://scenes/mastery_card.tscn")
 var is_scrolling = false
-var snap_speed = 10.0
 
 var ranks = [
-	{"name": "SPROUT", "color": Color("#d5f5e3")},
-	{"name": "LEAF", "color": Color("#abebc6")},
-	{"name": "SEEDLING", "color": Color("#82e0aa")},
-	{"name": "VINE", "color": Color("#58d68d")},
-	{"name": "EMERALD", "color": Color("#2ecc71")},
-	{"name": "JADE", "color": Color("#28b463")},
-	{"name": "FOREST", "color": Color("#239b56")},
-	{"name": "ANCIENT", "color": Color("#1d8348")},
-	{"name": "MYTHIC", "color": Color("#186a3e")},
-	{"name": "IMMORTAL", "color": Color("#0e311f")}
+	{"name": "SPROUT", "color": Color("#2ecc71")}, # Emerald
+	{"name": "BREEZE", "color": Color("#3498db")}, # Blue
+	{"name": "EMBER", "color": Color("#e67e22")}, # Orange
+	{"name": "STORM", "color": Color("#9b59b6")}, # Purple
+	{"name": "ROYAL", "color": Color("#f1c40f")}, # Gold
+	{"name": "ABYSS", "color": Color("#34495e")}, # Navy
+	{"name": "ZENITH", "color": Color("#e74c3c")}, # Red
+	{"name": "ETERNAL", "color": Color("#95a5a6")}, # Silver
+	{"name": "LEGEND", "color": Color("#1abc9c")}, # Turquoise
+	{"name": "DIVINE", "color": Color("#ffffff")} # White
 ]
 
 func _ready():
+	_clear_cards()
+	populate_cards()
+	
 	var completed_total = GameManager.completed_levels.size()
-	global_progress.text = "OVERALL PROGRESS: " + str(completed_total) + "/200"
-	global_progress.add_theme_color_override("font_color", Color("#2c3e50")) # Dark Slate
+	if global_progress:
+		global_progress.text = "PROGRESS: " + str(completed_total) + "/200 LEVELS"
 	
-	populate_cards(GameManager.current_level)
-	
-	scroll_container.get_h_scroll_bar().changed.connect(_on_scroll_changed)
-	call_deferred("_center_initial_card", 1) # Start at first rank (Sprout)
+	# Initial centering on the furthest progress rank
+	var current_rank_idx = clamp(floor((GameManager.max_unlocked_level - 1) / 20.0), 0, ranks.size() - 1)
+	call_deferred("_center_initial_card", current_rank_idx)
 
-func populate_cards(current_level: int):
+func _clear_cards():
+	if card_container:
+		for child in card_container.get_children():
+			child.queue_free()
+
+func populate_cards():
+	if not card_container: return
 	for i in range(ranks.size()):
 		var rank = ranks[i]
 		var card = card_scene.instantiate()
 		card_container.add_child(card)
-		card.setup(rank.name, (i * 20) + 1, rank.color, current_level)
+		card.setup(rank.name, (i * 20) + 1, rank.color)
 
-var last_scroll_h = 0.0
-var scroll_vel = 0.0
-
-func _process(delta):
-	var curr_h = scroll_container.scroll_horizontal
-	scroll_vel = abs(curr_h - last_scroll_h)
-	last_scroll_h = curr_h
+func _center_initial_card(index):
+	if not card_container or card_container.get_child_count() <= index:
+		return
+		
+	var target_card = card_container.get_child(index)
+	# Position relative to MarginContainer (the scroll content)
+	var card_x = target_card.position.x + card_container.position.x
+	var scroll_center = scroll_container.size.x / 2.0
+	var target_scroll = card_x - scroll_center + target_card.size.x / 2.0
 	
-	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not is_scrolling:
-		if scroll_vel < 2.0: # Only snap when slow
-			_handle_snapping(delta)
-
-func _on_scroll_changed():
-	is_scrolling = true
-	var timer = get_tree().create_timer(0.05)
-	timer.timeout.connect(func(): is_scrolling = false)
-
-func _handle_snapping(delta):
-	var scroll_x = scroll_container.scroll_horizontal
-	var viewport_width = scroll_container.size.x
-	var center_x = scroll_x + viewport_width / 2.0
+	# Clamp target scroll
+	var max_scroll = card_container.size.x - scroll_container.size.x
+	target_scroll = clamp(target_scroll, 0, max_scroll)
 	
-	var best_card = null
-	var min_dist = INF
-	
-	for card in card_container.get_children():
-		var card_center = card.position.x + card.size.x / 2.0 + 60 # Account for margin
-		var dist = abs(center_x - card_center)
-		if dist < min_dist:
-			min_dist = dist
-			best_card = card
-	
-	if best_card:
-		var target_scroll = card_container.position.x + best_card.position.x - (viewport_width - best_card.size.x) / 2.0
-		# Ease into the target
-		scroll_container.scroll_horizontal = lerp(float(scroll_x), float(target_scroll), 12.0 * delta)
-
-func _center_initial_card(level: int):
-	var card_index = min(floor((level - 1) / 20.0), ranks.size() - 1)
-	if card_index < card_container.get_child_count():
-		var card = card_container.get_child(card_index)
-		await get_tree().process_frame # Extra frame for layout stability
-		var viewport_width = scroll_container.size.x
-		var target_scroll = card.position.x - (viewport_width - card.size.x) / 2.0
-		scroll_container.scroll_horizontal = target_scroll
+	scroll_container.scroll_horizontal = int(target_scroll)

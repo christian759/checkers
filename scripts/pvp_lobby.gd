@@ -1,18 +1,18 @@
 extends Control
 
-@onready var bubble = $ScrollContainer/VBoxContainer/Content/ModeSection/VBox/SegmentedControl/Bubble
-@onready var ai_btn = $ScrollContainer/VBoxContainer/Content/ModeSection/VBox/SegmentedControl/Buttons/AiBtn
-@onready var friend_btn = $ScrollContainer/VBoxContainer/Content/ModeSection/VBox/SegmentedControl/Buttons/FriendBtn
+@onready var bubble = %Bubble
+@onready var ai_btn = %AiBtn
+@onready var friend_btn = %FriendBtn
 
-@onready var order_bubble = $ScrollContainer/VBoxContainer/Content/AiSettings/StartOrderSection/VBox/OrderControl/OrderBubble
-@onready var me_btn = $ScrollContainer/VBoxContainer/Content/AiSettings/StartOrderSection/VBox/OrderControl/Buttons/MeBtn
-@onready var opp_btn = $ScrollContainer/VBoxContainer/Content/AiSettings/StartOrderSection/VBox/OrderControl/Buttons/OpponentBtn
+@onready var order_bubble = %OrderBubble
+@onready var me_btn = %MeBtn
+@onready var opp_btn = %OpponentBtn
 
-@onready var ai_settings = $ScrollContainer/VBoxContainer/Content/AiSettings
-@onready var level_label = $ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/VBox/HBox/Value
-@onready var level_slider = $ScrollContainer/VBoxContainer/Content/AiSettings/LevelSection/VBox/LevelSlider
-@onready var theme_grid = $ScrollContainer/VBoxContainer/Content/ThemeSection/VBox/Grid
-@onready var start_button = $ScrollContainer/VBoxContainer/Footer/StartButton
+@onready var ai_settings = %AiSettings
+@onready var level_label = %Value
+@onready var level_slider = %LevelSlider
+@onready var theme_grid = %Grid
+@onready var start_button = %StartButton
 
 var selected_mode = 0 # 0: AI, 1: Friend
 var selected_order = 0 # 0: Me, 1: Opponent
@@ -57,11 +57,11 @@ func _on_order_toggled(index):
 func _animate_segmented(target_bubble, index, buttons):
 	var parent_width = target_bubble.get_parent().size.x
 	var target_x = 4.0 if index == 0 else parent_width / 2.0 + 2.0
-	var target_width = parent_width / 2.0 - 6.0
+	var target_width = parent_width / 2.0 - 10.0
 	
 	var tween = create_tween().set_parallel(true)
-	tween.tween_property(target_bubble, "position:x", target_x, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tween.tween_property(target_bubble, "size:x", target_width, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(target_bubble, "position:x", target_x, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(target_bubble, "size:x", target_width, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	
 	for i in range(buttons.size()):
 		var color = Color.WHITE if i == index else Color("#7f8c8d")
@@ -71,10 +71,13 @@ func _on_level_changed(value):
 	level_label.text = "Lv " + str(int(value))
 
 func _setup_theme_grid():
+	# Clear existing if any
+	for c in theme_grid.get_children(): c.queue_free()
+	
 	for i in range(GameManager.BOARD_THEMES.size()):
 		var theme_data = GameManager.BOARD_THEMES[i]
 		var btn = Button.new()
-		btn.custom_minimum_size = Vector2(64, 64)
+		btn.custom_minimum_size = Vector2(70, 70)
 		btn.flat = true
 		
 		var panel = Panel.new()
@@ -83,15 +86,15 @@ func _setup_theme_grid():
 		
 		var sb = StyleBoxFlat.new()
 		sb.bg_color = theme_data.dark
-		sb.corner_radius_top_left = 8
-		sb.corner_radius_top_right = 8
-		sb.corner_radius_bottom_right = 8
-		sb.corner_radius_bottom_left = 8
+		sb.corner_radius_top_left = 12
+		sb.corner_radius_top_right = 12
+		sb.corner_radius_bottom_right = 12
+		sb.corner_radius_bottom_left = 12
 		sb.border_width_left = 4 if i == selected_theme_index else 0
 		sb.border_width_top = 4 if i == selected_theme_index else 0
 		sb.border_width_right = 4 if i == selected_theme_index else 0
 		sb.border_width_bottom = 4 if i == selected_theme_index else 0
-		sb.border_color = Color("#16a085")
+		sb.border_color = Color("#2ecc71")
 		
 		panel.add_theme_stylebox_override("panel", sb)
 		btn.add_child(panel)

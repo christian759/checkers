@@ -59,7 +59,36 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.97, 0.98, 0.98, 1)
+color = Color(0.972549, 0.980392, 0.980392, 1)
+
+[node name="DecorativeBg" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Circle1" type="ColorRect" parent="DecorativeBg"]
+modulate = Color(0.18, 0.8, 0.44, 0.03)
+layout_mode = 0
+offset_left = -100.0
+offset_top = 200.0
+offset_right = 300.0
+offset_bottom = 600.0
+pivot_offset = Vector2(200, 200)
+color = Color(1, 1, 1, 1)
+
+[node name="Circle2" type="ColorRect" parent="DecorativeBg"]
+modulate = Color(0.18, 0.8, 0.44, 0.02)
+layout_mode = 0
+offset_left = 300.0
+offset_top = 500.0
+offset_right = 700.0
+offset_bottom = 900.0
+pivot_offset = Vector2(200, 200)
+color = Color(1, 1, 1, 1)
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1

@@ -7,7 +7,7 @@ enum Mode {PV_AI, PV_P}
 # Game state
 var board = [] # 2D array [row][col]
 var current_turn = Side.PLAYER
-var current_mode = Mode.PV_AI # Default to PV_AI for now, will be set by menu
+var current_mode = Mode.PV_AI
 var current_level = 1
 var selected_piece = null
 var must_jump = false # For multi-jump logic
@@ -15,12 +15,12 @@ var win_streak = 0
 var max_unlocked_level = 1
 var move_history = [] # Stack of {pieces_state, turn, settings}
 var is_daily_challenge = false
-var is_mastery = false # Track if current game is from Mastery levels
+var is_mastery = false
 var daily_completed = false
 var game_start_time = 0
 var is_calculating = false # Lock input while AI thinks
-var undo_used_in_match = false # Track for achievement
-var active_theme_played = false # Track for achievement per match
+var undo_used_in_match = false
+var active_theme_played = false
 
 # Match Settings (Lobby)
 var match_mode = Mode.PV_AI
@@ -34,6 +34,7 @@ var completed_levels = [] # Array of level IDs (integers)
 # Daily Challenge & Persistence
 var daily_streak = 0
 var last_daily_date = "" # Format: "2026-01-05"
+var completed_dailies = [] # Array of date strings "YYYY-MM-DD"
 var current_puzzle_id = -1
 var save_path = "user://save_game.dat"
 
@@ -64,8 +65,8 @@ var forced_jumps = false
 var movement_mode = "diagonal" # "diagonal" or "straight"
 
 signal turn_changed(new_side)
-signal game_over(winner) # Simplified signature for consistency
-signal board_restored() # For refreshing UI after undo/load
+signal game_over(winner)
+signal board_restored()
 
 
 const BOARD_THEMES = [
@@ -91,7 +92,8 @@ func save_data():
 			"last_daily_date": last_daily_date,
 			"max_unlocked_level": max_unlocked_level,
 			"win_streak": win_streak,
-			"completed_levels": completed_levels
+			"completed_levels": completed_levels,
+			"completed_dailies": completed_dailies
 		}
 		file.store_string(JSON.stringify(data))
 
@@ -107,6 +109,7 @@ func load_data():
 			max_unlocked_level = data.get("max_unlocked_level", 1)
 			win_streak = data.get("win_streak", 0)
 			completed_levels = data.get("completed_levels", [])
+			completed_dailies = data.get("completed_dailies", [])
 
 func setup_board():
 	board = []
@@ -121,6 +124,8 @@ func complete_daily():
 	if last_daily_date != today:
 		daily_streak += 1
 		last_daily_date = today
+		if not today in completed_dailies:
+			completed_dailies.append(today)
 		AchievementManager.update_stat("daily_count", 1)
 		save_data()
 
@@ -149,10 +154,10 @@ func start_mastery_level(level):
 	undo_used_in_match = false
 	active_theme_played = false
 	game_start_time = Time.get_ticks_msec()
-	AchievementManager.add_theme_used(0) # Mastery always uses theme 0 (Classic)
+	AchievementManager.add_theme_used(0)
 	match_mode = Mode.PV_AI
 	match_ai_level = level
-	match_theme_index = 0 # Classic for Mastery
+	match_theme_index = 0
 	match_start_side = Side.PLAYER
 	
 	current_mode = Mode.PV_AI
@@ -174,7 +179,6 @@ func reset_game():
 	setup_board()
 
 func push_history():
-	# Store state BEFORE the move happens
 	var snapshot = {
 		"board": [],
 		"turn": current_turn,
@@ -188,7 +192,10 @@ func push_history():
 		for c in range(8):
 			var p = board[r][c]
 			if p:
-				row.append({"side": p.side, "is_king": p.is_king, "grid_pos": p.grid_pos})
+				var side_val = p.side if p is Piece else p.get("side")
+				var king_val = p.is_king if p is Piece else p.get("is_king")
+				var pos_val = p.grid_pos if p is Piece else p.get("grid_pos")
+				row.append({"side": side_val, "is_king": king_val, "grid_pos": pos_val})
 			else:
 				row.append(null)
 		snapshot.board.append(row)
@@ -203,9 +210,8 @@ func undo_move():
 	
 	undo_used_in_match = true
 	AchievementManager.update_stat("undo_count", 1)
-	# unless it's currently AI turn and we're undoing its half-finished move
 	var steps = 2 if current_mode == Mode.PV_AI else 1
-	if must_jump: steps = 1 # Only undo one jump if in middle of sequence
+	if must_jump: steps = 1
 	
 	for i in range(steps):
 		if move_history.size() > 0:
@@ -219,19 +225,11 @@ func _restore_snapshot(snapshot):
 	must_jump = snapshot.must_jump
 	current_level = snapshot.level
 	
-	# Restore the logic board array
 	for r in range(8):
 		for c in range(8):
-			var s = snapshot.board[r][c]
-			if s:
-				# We store the raw data, the Board script will recreate the nodes
-				board[r][c] = s
-			else:
-				board[r][c] = null
-
+			board[r][c] = snapshot.board[r][c]
 
 func check_win_condition(winner):
-	print("[DEBUG] Win condition triggered for: ", "PLAYER" if winner == Side.PLAYER else "AI")
 	if winner == Side.PLAYER:
 		if not current_level in completed_levels:
 			completed_levels.append(current_level)
@@ -240,31 +238,15 @@ func check_win_condition(winner):
 			max_unlocked_level = min(max_unlocked_level + 1, 200)
 			
 		win_streak += 1
-		
-		# Achievement Tracking
 		AchievementManager.update_stat("total_wins", 1)
 		AchievementManager.update_stat("win_streak", win_streak, false)
 		if is_mastery:
 			AchievementManager.update_stat("mastery_level", current_level, false)
 		if not undo_used_in_match:
 			AchievementManager.update_stat("wins_no_undo", 1)
-			if is_mastery and current_level >= 50:
-				AchievementManager.trigger_manual_achievement("level_50_no_undo")
 		
 		if current_mode == Mode.PV_P:
 			AchievementManager.update_stat("pvp_matches", 1)
-			
-		# Theme stats
-		var theme_keys = ["classic_played", "ocean_played", "forest_played", "pink_played", "night_played"]
-		if board_theme_index < theme_keys.size():
-			AchievementManager.update_stat(theme_keys[board_theme_index], 1)
-			
-		# Speed achievements
-		var duration = (Time.get_ticks_msec() - game_start_time) / 1000.0
-		if duration < 300: # 5 minutes
-			AchievementManager.trigger_manual_achievement("fast_win")
-		if duration > 900: # 15 minutes
-			AchievementManager.trigger_manual_achievement("marathon")
 			
 	else:
 		win_streak = 0
@@ -272,13 +254,6 @@ func check_win_condition(winner):
 		
 	save_data()
 	emit_signal("game_over", winner)
-
-func restart_match():
-	setup_board()
-	# Reset state as needed
-	current_turn = Side.PLAYER # Usually player starts
-	must_jump = false
-	selected_piece = null
 
 func is_on_board(r, c):
 	return r >= 0 and r < 8 and c >= 0 and c < 8
@@ -300,64 +275,34 @@ func has_moves(side):
 func switch_turn():
 	current_turn = Side.AI if current_turn == Side.PLAYER else Side.PLAYER
 	
-	# Robust internal move check (No longer relies on Board node)
 	if not has_moves(current_turn):
-		# The player who just lost their turn's opponent wins
 		check_win_condition(Side.AI if current_turn == Side.PLAYER else Side.PLAYER)
 		return
 
 	emit_signal("turn_changed", current_turn)
 
 	if current_mode == Mode.PV_AI and current_turn == Side.AI:
-		# Trigger AI logic after a short delay for "thinking"
 		await get_tree().create_timer(1.0).timeout
 		play_ai_turn()
 
 func play_ai_turn():
 	if is_calculating: return
-	
 	var board_node = get_tree().root.find_child("Board", true, false)
 	if not board_node: return
 	
 	is_calculating = true
-
-	# Refined depth mapping for smooth progression
 	var depth = 2
 	if match_ai_level > 60: depth = 3
 	if match_ai_level > 110: depth = 4
 	if match_ai_level > 160: depth = 5
-	if match_ai_level > 190: depth = 7
-	
-	# Tiers of "Stupidity" (Blunders) for low levels
-	var rand_val = randf()
-	var use_random = false
-	if match_ai_level <= 10: # Very Dumb
-		if rand_val < 0.85: use_random = true
-	elif match_ai_level <= 30: # Novice
-		if rand_val < 0.5: use_random = true
-	elif match_ai_level <= 50: # Apprentice
-		if rand_val < 0.2: use_random = true
 	
 	var current_state = _get_board_state()
-	var best_move = null
-	
-	if use_random:
-		var moves = _get_all_sim_moves(current_state, Side.AI, must_jump, selected_piece)
-		if moves.size() > 0:
-			best_move = moves.pick_random()
-	else:
-		var result = _minimax(current_state, depth, -INF, INF, true, must_jump, selected_piece)
-		best_move = result.move
+	var result = _minimax(current_state, depth, -INF, INF, true, must_jump, selected_piece)
+	var best_move = result.move
 	
 	if best_move and best_move.piece_node:
 		board_node.execute_move(best_move.piece_node, best_move.to.x, best_move.to.y)
-		
-		if must_jump:
-			is_calculating = false # Briefly unlock for the timer
-			await get_tree().create_timer(0.6).timeout
-			play_ai_turn()
-		else:
-			is_calculating = false
+		is_calculating = false
 	else:
 		is_calculating = false
 		check_win_condition(Side.PLAYER)
@@ -369,7 +314,9 @@ func _get_board_state():
 		for c in range(8):
 			var p = board[r][c]
 			if p:
-				row.append({"side": p.side, "is_king": p.is_king, "node": p})
+				var side_val = p.side if p is Piece else p.get("side")
+				var king_val = p.is_king if p is Piece else p.get("is_king")
+				row.append({"side": side_val, "is_king": king_val, "node": p if p is Piece else null})
 			else:
 				row.append(null)
 		state.append(row)
@@ -380,36 +327,15 @@ func _minimax(state, depth, alpha, beta, is_max, m_jump, m_piece):
 		return {"score": _evaluate_board(state), "move": null}
 	
 	var moves = _get_all_sim_moves(state, Side.AI if is_max else Side.PLAYER, m_jump, m_piece)
-	
-	# Move Sorting: Prioritize captures to optimize Alpha-Beta pruning
-	moves.sort_custom(func(a, b): return a.is_capture and not b.is_capture)
-	
 	if moves.size() == 0:
-		if m_jump:
-			# If we were in a multi-jump but have no more jumps, it's just a turn switch
-			return _minimax(state, depth, alpha, beta, not is_max, false, null)
-		
-		# True end of game for this branch
 		return {"score": - 10000 if is_max else 10000, "move": null}
 	
 	var best_move = moves.pick_random()
-	
 	if is_max:
 		var max_eval = - INF
 		for move in moves:
 			var next_state = _simulate_move(state, move)
-			# Handle multi-jump in simulation
-			var m_j = false
-			var m_p = null
-			if move.is_capture:
-				var m_moves = _get_sim_legal_moves(next_state, move.to.x, move.to.y)
-				for m in m_moves:
-					if m.is_capture:
-						m_j = true
-						m_p = next_state[move.to.x][move.to.y]
-						break
-			
-			var eval = _minimax(next_state, depth - 1, alpha, beta, m_j, m_j, m_p).score
+			var eval = _minimax(next_state, depth - 1, alpha, beta, false, false, null).score
 			if eval > max_eval:
 				max_eval = eval
 				best_move = move
@@ -420,17 +346,7 @@ func _minimax(state, depth, alpha, beta, is_max, m_jump, m_piece):
 		var min_eval = INF
 		for move in moves:
 			var next_state = _simulate_move(state, move)
-			var m_j = false
-			var m_p = null
-			if move.is_capture:
-				var m_moves = _get_sim_legal_moves(next_state, move.to.x, move.to.y)
-				for m in m_moves:
-					if m.is_capture:
-						m_j = true
-						m_p = next_state[move.to.x][move.to.y]
-						break
-						
-			var eval = _minimax(next_state, depth - 1, alpha, beta, not m_j, m_j, m_p).score
+			var eval = _minimax(next_state, depth - 1, alpha, beta, true, false, null).score
 			if eval < min_eval:
 				min_eval = eval
 				best_move = move
@@ -440,53 +356,13 @@ func _minimax(state, depth, alpha, beta, is_max, m_jump, m_piece):
 
 func _evaluate_board(state):
 	var score = 0
-	var ai_pieces = []
-	var player_pieces = []
-	
 	for r in range(8):
 		for c in range(8):
 			var p = state[r][c]
-			if not p: continue
-			
-			if p.side == Side.AI: ai_pieces.append({"r": r, "c": c, "p": p})
-			else: player_pieces.append({"r": r, "c": c, "p": p})
-			
-			var multiplier = 1 if p.side == Side.AI else -1
-			# Higher value for Kings
-			var val = 10 if not p.is_king else 35
-			
-			# Advancement Bonus: Reward pieces moving forward
-			if not p.is_king:
-				if p.side == Side.AI: val += r * 1.5 # AI wants to go to row 7
-				else: val += (7 - r) * 1.5 # Player wants to go to row 0
-			
-			# Back Row Defense: Strong reward for keeping base row filled
-			if p.side == Side.AI and r == 0: val += 8
-			if p.side == Side.PLAYER and r == 7: val += 8
-			
-			# Center Control (Power Squares: 3,4 and 2,5)
-			var center_bonus = 0
-			if r >= 2 and r <= 5 and c >= 2 and c <= 5:
-				center_bonus = 4
-				if r >= 3 and r <= 4 and c >= 3 and c <= 4:
-					center_bonus = 6
-			val += center_bonus
-			
-			score += val * multiplier
-
-	# Endgame "Hunter" logic: AI gets aggressive if winning
-	if ai_pieces.size() > 0 and player_pieces.size() > 0:
-		if ai_pieces.size() > player_pieces.size() + 2:
-			# Find min distance to closest enemy for each AI king
-			for ai_p in ai_pieces:
-				if ai_p.p.is_king:
-					var min_dist = 100
-					for pl_p in player_pieces:
-						var d = abs(ai_p.r - pl_p.r) + abs(ai_p.c - pl_p.c)
-						if d < min_dist: min_dist = d
-					# Penalty for distance: closer is better
-					score += (14 - min_dist) * 2
-	
+			if p:
+				var val = 10 if not p.is_king else 30
+				if p.side == Side.AI: score += val
+				else: score -= val
 	return score
 
 func _get_all_sim_moves(state, side, m_jump, m_piece):
@@ -494,7 +370,6 @@ func _get_all_sim_moves(state, side, m_jump, m_piece):
 	var captures = []
 	
 	if m_jump and m_piece:
-		# Find the coordinates of m_piece in the virtual state by comparing node references
 		var target_node = m_piece if typeof(m_piece) != TYPE_DICTIONARY else m_piece.get("node")
 		for r in range(8):
 			for c in range(8):
@@ -502,8 +377,7 @@ func _get_all_sim_moves(state, side, m_jump, m_piece):
 				if p and p.get("node") == target_node:
 					var m = _get_sim_legal_moves(state, r, c)
 					for move in m:
-						if move.is_capture:
-							captures.append(move)
+						if move.is_capture: captures.append(move)
 	else:
 		for r in range(8):
 			for c in range(8):
@@ -511,67 +385,59 @@ func _get_all_sim_moves(state, side, m_jump, m_piece):
 				if p and p.side == side:
 					var m = _get_sim_legal_moves(state, r, c)
 					for move in m:
-						if move.is_capture:
-							captures.append(move)
-						else:
-							all_moves.append(move)
+						if move.is_capture: captures.append(move)
+						else: all_moves.append(move)
 	
-	# Forced capture rule
-	if captures.size() > 0:
-		return captures
+	if captures.size() > 0: return captures
 	return all_moves
 
 func _get_sim_legal_moves(state, r, c):
 	var p = state[r][c]
 	if not p: return []
-	
 	var moves = []
 	var directions = [Vector2i(-1, -1), Vector2i(-1, 1), Vector2i(1, -1), Vector2i(1, 1)]
 	
 	for d in directions:
-		# Simplified: Check captures (2 steps)
-		var mid_r = r + d.x
-		var mid_c = c + d.y
-		var end_r = r + d.x * 2
-		var end_c = c + d.y * 2
-		
-		# Move forward check for non-kings
-		if not p.is_king:
-			if p.side == Side.AI and d.x < 0: continue
-			if p.side == Side.PLAYER and d.x > 0: continue
+		if p.is_king:
+			var enemy_found = false
+			for i in range(1, 8):
+				var nr = r + d.x * i
+				var nc = c + d.y * i
+				if not is_on_board(nr, nc): break
+				var other = state[nr][nc]
+				if other == null:
+					if not enemy_found: moves.append({"from": Vector2i(r, c), "to": Vector2i(nr, nc), "is_capture": false, "piece_node": p.node})
+					else: moves.append({"from": Vector2i(r, c), "to": Vector2i(nr, nc), "is_capture": true, "piece_node": p.node})
+				else:
+					if other.side == p.side: break
+					else:
+						if enemy_found: break
+						enemy_found = true
+		else:
+			var jump_r = r + d.x * 2
+			var jump_c = c + d.y * 2
+			if is_on_board(jump_r, jump_c):
+				var mid_p = state[r + d.x][c + d.y]
+				if mid_p and mid_p.side != p.side and state[jump_r][jump_c] == null:
+					moves.append({"from": Vector2i(r, c), "to": Vector2i(jump_r, jump_c), "is_capture": true, "piece_node": p.node})
 			
-		if is_on_board(end_r, end_c):
-			var mid_p = state[mid_r][mid_c]
-			if mid_p and mid_p.side != p.side and state[end_r][end_c] == null:
-				moves.append({"from": Vector2i(r, c), "to": Vector2i(end_r, end_c), "is_capture": true, "piece_node": p.node})
-				
-		# Normal moves (1 step)
-		var dest_r = r + d.x
-		var dest_c = c + d.y
-		if is_on_board(dest_r, dest_c) and state[dest_r][dest_c] == null:
-			moves.append({"from": Vector2i(r, c), "to": Vector2i(dest_r, dest_c), "is_capture": false, "piece_node": p.node})
-			
+			var forward = (p.side == Side.AI and d.x > 0) or (p.side == Side.PLAYER and d.x < 0)
+			if forward:
+				if is_on_board(r + d.x, c + d.y) and state[r + d.x][c + d.y] == null:
+					moves.append({"from": Vector2i(r, c), "to": Vector2i(r + d.x, c + d.y), "is_capture": false, "piece_node": p.node})
 	return moves
 
 func _simulate_move(state, move):
 	var new_state = []
-	for r in range(8):
-		new_state.append(state[r].duplicate())
-	
+	for r in range(8): new_state.append(state[r].duplicate())
 	var p = new_state[move.from.x][move.from.y]
 	new_state[move.from.x][move.from.y] = null
 	new_state[move.to.x][move.to.y] = p
-	
 	if move.is_capture:
-		var mid_r = (move.from.x + move.to.x) / 2
-		var mid_c = (move.from.y + move.to.y) / 2
-		new_state[mid_r][mid_c] = null
-		
-	# King promotion
+		new_state[(move.from.x + move.to.x) / 2][(move.from.y + move.to.y) / 2] = null
 	if not p.is_king:
 		if (p.side == Side.AI and move.to.x == 7) or (p.side == Side.PLAYER and move.to.x == 0):
 			var np = p.duplicate()
 			np.is_king = true
 			new_state[move.to.x][move.to.y] = np
-			
 	return new_state

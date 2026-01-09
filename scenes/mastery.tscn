@@ -1,9 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://bx8h4go56obo3"]
+[gd_scene load_steps=6 format=3 uid="uid://bqm1p8v7p1k2r"]
 
-[ext_resource type="Script" uid="uid://c8jw3t84me1mk" path="res://scripts/mastery_page.gd" id="1_p2v3r"]
+[ext_resource type="Script" path="res://scripts/mastery_page.gd" id="1_v4m3r"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
-bg_color = Color(0.98, 1, 0.98, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 2
+border_color = Color(0.18, 0.8, 0.44, 0.1)
+shadow_color = Color(0, 0, 0, 0.03)
+shadow_size = 10
+
+[sub_resource type="Gradient" id="Gradient_bg"]
+colors = PackedColorArray(1, 1, 1, 1, 0.96, 0.99, 0.97, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]
+gradient = SubResource("Gradient_bg")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
 
 [node name="Mastery" type="Control"]
 layout_mode = 3
@@ -12,16 +24,87 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_p2v3r")
+script = ExtResource("1_v4m3r")
 
-[node name="Background" type="Panel" parent="."]
+[node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+texture = SubResource("GradientTexture2D_bg")
+
+[node name="DecorativeBg" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Circle1" type="ColorRect" parent="DecorativeBg"]
+modulate = Color(0.18, 0.8, 0.44, 0.04)
+layout_mode = 0
+offset_left = -150.0
+offset_top = 100.0
+offset_right = 250.0
+offset_bottom = 500.0
+pivot_offset = Vector2(200, 200)
+color = Color(1, 1, 1, 1)
+
+[node name="Circle2" type="ColorRect" parent="DecorativeBg"]
+modulate = Color(0.18, 0.8, 0.44, 0.03)
+layout_mode = 0
+offset_left = 350.0
+offset_top = 550.0
+offset_right = 850.0
+offset_bottom = 1050.0
+pivot_offset = Vector2(250, 250)
+color = Color(1, 1, 1, 1)
+
+[node name="Dots" type="Control" parent="DecorativeBg"]
+modulate = Color(0.18, 0.8, 0.44, 0.1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Dot" type="ColorRect" parent="DecorativeBg/Dots"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 250.0
+offset_right = 54.0
+offset_bottom = 254.0
+
+[node name="Dot2" type="ColorRect" parent="DecorativeBg/Dots"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 220.0
+offset_right = 124.0
+offset_bottom = 224.0
+
+[node name="Dot3" type="ColorRect" parent="DecorativeBg/Dots"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 320.0
+offset_right = 84.0
+offset_bottom = 324.0
+
+[node name="Dot4" type="ColorRect" parent="DecorativeBg/Dots"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -100.0
+offset_top = 300.0
+offset_right = -96.0
+offset_bottom = 304.0
+grow_horizontal = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -30,31 +113,36 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 0
 
-[node name="Header" type="VBoxContainer" parent="VBoxContainer"]
+[node name="Header" type="Panel" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
-theme_override_constants/separation = 5
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Header"]
-layout_mode = 2
-theme_override_constants/margin_top = 40
+[node name="VBox" type="VBoxContainer" parent="VBoxContainer/Header"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+alignment = 1
 
-[node name="Title" type="Label" parent="VBoxContainer/Header/MarginContainer"]
+[node name="Title" type="Label" parent="VBoxContainer/Header/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.0666667, 0.2, 0.0823529, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.05)
-theme_override_constants/shadow_offset_x = 0
-theme_override_constants/shadow_offset_y = 4
-theme_override_font_sizes/font_size = 52
-text = "MASTERY"
+theme_override_colors/font_color = Color(0.1, 0.3, 0.1, 1)
+theme_override_font_sizes/font_size = 42
+text = "Mastery Road"
 horizontal_alignment = 1
 
-[node name="ProgressLabel" type="Label" parent="VBoxContainer/Header"]
+[node name="ProgressLabel" type="Label" parent="VBoxContainer/Header/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.6, 0.6, 0.7, 1)
+theme_override_colors/font_color = Color(0.4, 0.6, 0.4, 1)
 theme_override_font_sizes/font_size = 16
-text = "OVERALL PROGRESS: 1/200"
+text = "PROGRESS: 0/200 LEVELS"
 horizontal_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
@@ -66,27 +154,17 @@ vertical_scroll_mode = 0
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 60
-theme_override_constants/margin_right = 60
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 80
+theme_override_constants/margin_bottom = 60
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 80
+theme_override_constants/separation = 60
+alignment = 1
 
-[node name="Footer" type="Control" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 60)
+[node name="FooterSpace" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-
-[node name="Instruction" type="Label" parent="VBoxContainer/Footer"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.5, 0.6, 0.5, 1)
-theme_override_font_sizes/font_size = 14
-text = "Swipe to explore ranks"
-horizontal_alignment = 1
-vertical_alignment = 1

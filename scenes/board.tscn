@@ -3,41 +3,41 @@
 [ext_resource type="Script" uid="uid://cis7b1wifchja" path="res://scripts/board.gd" id="1_script"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_frame"]
-bg_color = Color(0.95, 0.98, 0.95, 1)
+bg_color = Color(1, 1, 1, 1)
 border_width_left = 12
 border_width_top = 12
 border_width_right = 12
 border_width_bottom = 12
-border_color = Color(0.18, 0.8, 0.44, 0.2)
+border_color = Color(0.18, 0.8, 0.44, 0.15)
 corner_radius_top_left = 24
 corner_radius_top_right = 24
 corner_radius_bottom_right = 24
 corner_radius_bottom_left = 24
-shadow_color = Color(0, 0, 0, 0.1)
-shadow_size = 30
-shadow_offset = Vector2(0, 15)
+shadow_color = Color(0, 0, 0, 0.05)
+shadow_size = 20
+shadow_offset = Vector2(0, 10)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
 bg_color = Color(0.180392, 0.8, 0.443137, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0.18, 0.8, 0.44, 0.2)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_turn_bg"]
+bg_color = Color(1, 1, 1, 0.95)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
-shadow_color = Color(0.18, 0.8, 0.44, 0.3)
-shadow_size = 10
-shadow_offset = Vector2(0, 4)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_turn_bg"]
-bg_color = Color(1, 1, 1, 0.9)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
-corner_radius_bottom_left = 25
-shadow_color = Color(0, 0, 0, 0.05)
-shadow_size = 10
+shadow_color = Color(0, 0, 0, 0.04)
+shadow_size = 12
 
 [sub_resource type="Gradient" id="Gradient_bg"]
-colors = PackedColorArray(0.98, 1, 0.98, 1, 0.92, 0.96, 0.93, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.95, 0.98, 0.96, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]
 gradient = SubResource("Gradient_bg")
@@ -89,22 +89,26 @@ theme_override_constants/margin_right = 30
 layout_mode = 2
 
 [node name="QuitButton" type="Button" parent="UI/Header/HBox"]
-custom_minimum_size = Vector2(120, 50)
+custom_minimum_size = Vector2(110, 50)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn")
 text = "QUIT"
 
 [node name="UndoButton" type="Button" parent="UI/Header/HBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 50)
+custom_minimum_size = Vector2(110, 50)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn")
 text = "UNDO"
 
 [node name="Spacer" type="Control" parent="UI/Header/HBox"]
@@ -113,28 +117,28 @@ size_flags_horizontal = 3
 
 [node name="MatchInfo" type="VBoxContainer" parent="UI/Header/HBox"]
 layout_mode = 2
-alignment = 2
+alignment = 1
 
 [node name="ModeLabel" type="Label" parent="UI/Header/HBox/MatchInfo"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.1, 0.4, 0.1, 1)
-theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.1, 0.3, 0.1, 1)
+theme_override_font_sizes/font_size = 22
 text = "MASTERY"
 horizontal_alignment = 2
 
 [node name="LevelLabel" type="Label" parent="UI/Header/HBox/MatchInfo"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.5, 0.4, 1)
+theme_override_colors/font_color = Color(0.4, 0.6, 0.4, 1)
 theme_override_font_sizes/font_size = 14
-text = "LEVEL 1. SPROUT"
+text = "Level 1"
 horizontal_alignment = 2
 
 [node name="TimerLabel" type="Label" parent="UI/Header/HBox/MatchInfo"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.0862745, 0.627451, 0.521569, 1)
+theme_override_colors/font_color = Color(0.18, 0.8, 0.44, 1)
 theme_override_font_sizes/font_size = 16
 text = "00:00"
 horizontal_alignment = 2
@@ -152,7 +156,7 @@ theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 50
 
 [node name="TurnCard" type="Panel" parent="UI/Footer"]
-custom_minimum_size = Vector2(0, 60)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_turn_bg")
 

@@ -2,53 +2,47 @@ extends Control
 
 signal tab_selected(index)
 
-var active_color = Color("#16a085") # Emerald Green
-var inactive_color = Color("#95a5a6") # Slate Gray (Muted)
-
-@onready var tabs_container = $Tabs
+@onready var tabs = $Tabs.get_children()
 @onready var indicator = $SelectionIndicator
 
-@onready var tabs = [
-	{"btn": $Tabs/Daily, "icon": $Tabs/Daily/VBoxContainer/Icon, "label": $Tabs/Daily/VBoxContainer/Label, "id": "daily"},
-	{"btn": $Tabs/PvP, "icon": $Tabs/PvP/VBoxContainer/Icon, "label": $Tabs/PvP/VBoxContainer/Label, "id": "pvp"},
-	{"btn": $Tabs/Mastery, "icon": $Tabs/Mastery/VBoxContainer/Icon, "label": $Tabs/Mastery/VBoxContainer/Label, "id": "mastery"},
-	{"btn": $Tabs/Achievement, "icon": $Tabs/Achievement/VBoxContainer/Icon, "label": $Tabs/Achievement/VBoxContainer/Label, "id": "achievement"},
-	{"btn": $Tabs/Settings, "icon": $Tabs/Settings/VBoxContainer/Icon, "label": $Tabs/Settings/VBoxContainer/Label, "id": "settings"}
-]
+var active_color = Color("#ffffff") # White text on Emerald bubble
+var inactive_color = Color("#7f8c8d") # Grey text on White background
+var current_index = 2
 
 func _ready():
 	for i in range(tabs.size()):
-		var tab = tabs[i]
-		tab.btn.pressed.connect(_on_tab_pressed.bind(i))
+		tabs[i].pressed.connect(_on_tab_pressed.bind(i))
 	
-	# Initial position fix
-	await get_tree().process_frame
-	select_tab(2) # Mastery by default
+	# Initial position
+	call_deferred("_update_visuals", true)
 
 func _on_tab_pressed(index):
-	select_tab(index)
+	if index == current_index: return
+	current_index = index
 	emit_signal("tab_selected", index)
+	_update_visuals()
 
-func select_tab(index):
+func _update_visuals(immediate = false):
+	var target_tab = tabs[current_index]
+	var target_x = target_tab.global_position.x - global_position.x + (target_tab.size.x - indicator.size.x) / 2.0
+	
+	if immediate:
+		indicator.position.x = target_x
+	else:
+		var tween = create_tween().set_parallel(true)
+		tween.tween_property(indicator, "position:x", target_x, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	
+	# Update colors
 	for i in range(tabs.size()):
-		var tab = tabs[i]
-		if i == index:
-			tab.icon.modulate = active_color
-			tab.label.add_theme_color_override("font_color", active_color)
-			
-			# Animate Indicator (Snappier Slide)
-			var target_pos_x = tab.btn.position.x + 8
-			var target_width = tab.btn.size.x - 16
-			
-			var tween = create_tween().set_parallel(true)
-			tween.tween_property(indicator, "position:x", target_pos_x, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-			tween.tween_property(indicator, "size:x", target_width, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-			
-			# Button Scale Pulse
-			var scale_tween = create_tween()
-			scale_tween.tween_property(tab.btn, "scale", Vector2(1.1, 1.1), 0.1).set_trans(Tween.TRANS_SINE)
-			scale_tween.tween_property(tab.btn, "scale", Vector2(1.0, 1.0), 0.2).set_trans(Tween.TRANS_SINE)
+		var label = tabs[i].get_node("VBoxContainer/Label")
+		var icon = tabs[i].get_node("VBoxContainer/Icon")
+		
+		var t = create_tween().set_parallel(true)
+		if i == current_index:
+			t.tween_property(label, "theme_override_colors/font_color", active_color, 0.2)
+			t.tween_property(icon, "modulate", active_color, 0.2)
+			t.tween_property(tabs[i], "scale", Vector2(1.1, 1.1), 0.2)
 		else:
-			tab.icon.modulate = inactive_color
-			tab.label.add_theme_color_override("font_color", inactive_color)
-			tab.btn.scale = Vector2(1.0, 1.0)
+			t.tween_property(label, "theme_override_colors/font_color", inactive_color, 0.2)
+			t.tween_property(icon, "modulate", inactive_color, 0.2)
+			t.tween_property(tabs[i], "scale", Vector2(1.0, 1.0), 0.2)
