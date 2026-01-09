@@ -183,6 +183,14 @@ func start_mastery_level(level):
 	setup_board()
 	get_tree().change_scene_to_file("res://scenes/board.tscn")
 
+func restart_match():
+	if is_daily_challenge:
+		get_tree().reload_current_scene()
+	elif is_mastery:
+		start_mastery_level(current_level)
+	else:
+		start_custom_game(match_mode, match_ai_level, match_theme_index, match_start_side, match_time_limit)
+
 func reset_game():
 	current_turn = Side.PLAYER
 	selected_piece = null
