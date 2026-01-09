@@ -34,20 +34,20 @@ var completed_levels = [] # Array of level IDs (integers)
 # Daily Challenge & Persistence
 var daily_streak = 0
 var last_daily_date = "" # Format: "2026-01-05"
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+<< << << < Updatedupstream
+<< << << < Updatedupstream
+<< << << < Updatedupstream
 var completed_daily_dates = [] # Array of date strings
 var current_daily_date = "" # The specific date being played
-=======
+== == == =
 var completed_dailies = [] # Array of date strings "YYYY-MM-DD"
->>>>>>> Stashed changes
-=======
+>> >> >> > Stashedchanges
+== == == =
 var completed_dailies = [] # Array of date strings "YYYY-MM-DD"
->>>>>>> Stashed changes
-=======
+>> >> >> > Stashedchanges
+== == == =
 var completed_dailies = [] # Array of date strings "YYYY-MM-DD"
->>>>>>> Stashed changes
+>> >> >> > Stashedchanges
 var current_puzzle_id = -1
 var save_path = "user://save_game.dat"
 
@@ -118,19 +118,19 @@ func save_data():
 			"max_unlocked_level": max_unlocked_level,
 			"win_streak": win_streak,
 			"completed_levels": completed_levels,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+<< << << < Updatedupstream
+<< << << < Updatedupstream
+<< << << < Updatedupstream
 			"completed_daily_dates": completed_daily_dates
-=======
+== == == =
 			"completed_dailies": completed_dailies
->>>>>>> Stashed changes
-=======
+>> >> >> > Stashedchanges
+== == == =
 			"completed_dailies": completed_dailies
->>>>>>> Stashed changes
-=======
+>> >> >> > Stashedchanges
+== == == =
 			"completed_dailies": completed_dailies
->>>>>>> Stashed changes
+>> >> >> > Stashedchanges
 		}
 		file.store_string(JSON.stringify(data))
 
@@ -146,19 +146,19 @@ func load_data():
 			max_unlocked_level = data.get("max_unlocked_level", 1)
 			win_streak = data.get("win_streak", 0)
 			completed_levels = data.get("completed_levels", [])
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+<< << << < Updatedupstream
+<< << << < Updatedupstream
+<< << << < Updatedupstream
 			completed_daily_dates = data.get("completed_daily_dates", [])
-=======
+== == == =
 			completed_dailies = data.get("completed_dailies", [])
->>>>>>> Stashed changes
-=======
+>> >> >> > Stashedchanges
+== == == =
 			completed_dailies = data.get("completed_dailies", [])
->>>>>>> Stashed changes
-=======
+>> >> >> > Stashedchanges
+== == == =
 			completed_dailies = data.get("completed_dailies", [])
->>>>>>> Stashed changes
+>> >> >> > Stashedchanges
 
 func setup_board():
 	board = []
@@ -177,24 +177,24 @@ func complete_daily(date: String = ""):
 	if last_daily_date != today and target_date == today:
 		daily_streak += 1
 		last_daily_date = today
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+<< << << < Updatedupstream
+<< << << < Updatedupstream
+<< << << < Updatedupstream
 	
 	if not target_date in completed_daily_dates:
 		completed_daily_dates.append(target_date)
-=======
+== == == =
 		if not today in completed_dailies:
 			completed_dailies.append(today)
->>>>>>> Stashed changes
-=======
+>> >> >> > Stashedchanges
+== == == =
 		if not today in completed_dailies:
 			completed_dailies.append(today)
->>>>>>> Stashed changes
-=======
+>> >> >> > Stashedchanges
+== == == =
 		if not today in completed_dailies:
 			completed_dailies.append(today)
->>>>>>> Stashed changes
+>> >> >> > Stashedchanges
 		AchievementManager.update_stat("daily_count", 1)
 	
 	save_data()
@@ -608,27 +608,47 @@ func _get_sim_legal_moves(state, r, c):
 	var directions = [Vector2i(-1, -1), Vector2i(-1, 1), Vector2i(1, -1), Vector2i(1, 1)]
 	
 	for d in directions:
-		# Simplified: Check captures (2 steps)
-		var mid_r = r + d.x
-		var mid_c = c + d.y
-		var end_r = r + d.x * 2
-		var end_c = c + d.y * 2
-		
-		# Move forward check for non-kings
-		if not p.is_king:
-			if p.side == Side.AI and d.x < 0: continue
-			if p.side == Side.PLAYER and d.x > 0: continue
-			
-		if is_on_board(end_r, end_c):
-			var mid_p = state[mid_r][mid_c]
-			if mid_p and mid_p.side != p.side and state[end_r][end_c] == null:
-				moves.append({"from": Vector2i(r, c), "to": Vector2i(end_r, end_c), "is_capture": true, "piece_node": p.node})
+		if p.is_king:
+			# Flying King Movement & Capture
+			var enemy_found = false
+			for i in range(1, 8):
+				var nr = r + d.x * i
+				var nc = c + d.y * i
+				if not is_on_board(nr, nc): break
 				
-		# Normal moves (1 step)
-		var dest_r = r + d.x
-		var dest_c = c + d.y
-		if is_on_board(dest_r, dest_c) and state[dest_r][dest_c] == null:
-			moves.append({"from": Vector2i(r, c), "to": Vector2i(dest_r, dest_c), "is_capture": false, "piece_node": p.node})
+				var other = state[nr][nc]
+				if other == null:
+					if not enemy_found:
+						# Normal move
+						moves.append({"from": Vector2i(r, c), "to": Vector2i(nr, nc), "is_capture": false, "piece_node": p.node})
+					else:
+						# Landing after capture
+						moves.append({"from": Vector2i(r, c), "to": Vector2i(nr, nc), "is_capture": true, "piece_node": p.node})
+				else:
+					if other.side == p.side: break # Blocked by friend
+					else:
+						if enemy_found: break # Cannot jump two
+						enemy_found = true
+		else:
+			# Standard Piece
+			# Jump
+			var mid_r = r + d.x
+			var mid_c = c + d.y
+			var end_r = r + d.x * 2
+			var end_c = c + d.y * 2
+			
+			if is_on_board(end_r, end_c):
+				var mid_p = state[mid_r][mid_c]
+				if mid_p and mid_p.side != p.side and state[end_r][end_c] == null:
+					moves.append({"from": Vector2i(r, c), "to": Vector2i(end_r, end_c), "is_capture": true, "piece_node": p.node})
+			
+			# Slide (Only Forward)
+			var forward = (p.side == Side.AI and d.x > 0) or (p.side == Side.PLAYER and d.x < 0)
+			if forward:
+				var dr = r + d.x
+				var dc = c + d.y
+				if is_on_board(dr, dc) and state[dr][dc] == null:
+					moves.append({"from": Vector2i(r, c), "to": Vector2i(dr, dc), "is_capture": false, "piece_node": p.node})
 			
 	return moves
 

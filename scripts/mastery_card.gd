@@ -1,16 +1,26 @@
-extends Node2D
+extends PanelContainer
 
-@onready var title_label = $CardHull/Margin/VBox/Title
-@onready var grid = $CardHull/Margin/VBox/GridContainer
-@onready var progress_bar = $CardHull/Margin/VBox/Footer/ProgressBar
+@onready var title_label = $VBoxContainer/Header/Title
+@onready var grid = $VBoxContainer/MarginContainer/GridContainer
+@onready var header = $VBoxContainer/Header
+@onready var progress_bar = $VBoxContainer/Footer/ProgressBar
 
 var level_icon_scene = preload("res://scenes/mastery_level_icon.tscn")
 
 func _ready():
-	pass
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
+	pivot_offset = size / 2
 
-func setup(rank_name: String, start_level: int, accent_color: Color, current_global_level: int):
+func setup(rank_name: String, start_level: int, accent_color: Color):
 	title_label.text = rank_name
+	
+	# Glass Header Color
+	var header_sb = header.get_theme_stylebox("panel").duplicate()
+	header_sb.border_color = Color(accent_color, 0.4)
+	header_sb.bg_color = Color(accent_color, 0.05)
+	header.add_theme_stylebox_override("panel", header_sb)
+	
 	title_label.add_theme_color_override("font_color", accent_color)
 
 	var completed_count = 0
@@ -20,43 +30,38 @@ func setup(rank_name: String, start_level: int, accent_color: Color, current_glo
 		grid.add_child(icon)
 		
 		var state = 0 # LOCKED
-		if level_num < GameManager.max_unlocked_level:
+		
+		# LOGIC:
+		# 1. If level is in completed_levels -> COMPLETED (2)
+		# 2. If level is NOT completed but is <= max_unlocked_level -> CURRENT/UNLOCKED (1)
+		# 3. Else -> LOCKED (0)
+		
+		if level_num in GameManager.completed_levels:
 			state = 2 # COMPLETED
 			completed_count += 1
-		elif level_num == GameManager.max_unlocked_level:
-			state = 1 # CURRENT
+		elif level_num <= GameManager.max_unlocked_level:
+			state = 1 # UNLOCKED (Playable)
+		else:
+			state = 0 # LOCKED
 			
 		icon.setup(level_num, state, accent_color)
 	
-	# Update Progress Bar (Slimmer)
+	# Update Progress Bar
 	progress_bar.value = (float(completed_count) / 20.0) * 100.0
-	var pb_sb = StyleBoxFlat.new()
-	pb_sb.bg_color = accent_color.lerp(GameManager.FOREST, 0.4)
-	pb_sb.set_corner_radius_all(100)
-	progress_bar.add_theme_stylebox_override("fill", pb_sb)
-	progress_bar.custom_minimum_size.y = 8
-	
-	# Add PLAY Button (fills bottom)
-	var footer_btn = progress_bar.get_parent().get_node_or_null("PlayBtn")
-	if not footer_btn:
-		footer_btn = Button.new()
-		footer_btn.name = "PlayBtn"
-		progress_bar.get_parent().add_child(footer_btn)
-		progress_bar.get_parent().move_child(footer_btn, 0)
-	
-	footer_btn.custom_minimum_size = Vector2(0, 48)
-	var btn_sb = StyleBoxFlat.new()
-	btn_sb.bg_color = accent_color
-	btn_sb.set_corner_radius_all(24)
-	footer_btn.add_theme_stylebox_override("normal", btn_sb)
-	footer_btn.add_theme_stylebox_override("hover", btn_sb)
-	footer_btn.add_theme_stylebox_override("pressed", btn_sb)
-	
-	var is_current_rank = (current_global_level >= start_level and current_global_level < start_level + 20)
-	footer_btn.text = "CONTINUE" if is_current_rank else "REPLAY"
-	footer_btn.add_theme_color_override("font_color", Color.WHITE)
-	footer_btn.visible = true
-	
-	# Cleanup old label if exists
-	var old_lbl = progress_bar.get_parent().get_node_or_null("FooterLabel")
-	if old_lbl: old_lbl.queue_free()
+	var pb_filled = StyleBoxFlat.new()
+	pb_filled.bg_color = accent_color
+	pb_filled.corner_radius_top_left = 6
+	pb_filled.corner_radius_bottom_left = 6
+	progress_bar.add_theme_stylebox_override("fill", pb_filled)
+
+func _on_mouse_entered():
+	var tween = create_tween().set_parallel(true)
+	tween.tween_property(self, "scale", Vector2(1.02, 1.02), 0.2).set_trans(Tween.TRANS_SINE)
+	if has_node("BackgroundGlow"):
+		tween.tween_property($BackgroundGlow, "modulate:a", 0.1, 0.2)
+
+func _on_mouse_exited():
+	var tween = create_tween().set_parallel(true)
+	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.2).set_trans(Tween.TRANS_SINE)
+	if has_node("BackgroundGlow"):
+		tween.tween_property($BackgroundGlow, "modulate:a", 0.0, 0.2)
